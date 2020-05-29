@@ -73,4 +73,22 @@ describe("Lexer", () => {
       ]));
     });
   });
+
+  describe("commas", () => {
+    let source = `1,2,3 "foo,bar" ,, foo,bar,:baz,goo`;
+    let result = lex(source).result;
+
+    it("treats commas as whitespace in the right places", () => {
+      assert(_.isEqual(result, [
+        ["number", "1"],
+        ["number", "2"],
+        ["number", "3"],
+        ["string", "foo,bar"],
+        ["symbol", "foo"],
+        ["symbol", "bar"],
+        ["keyword", "baz"],
+        ["symbol", "goo"]
+      ]));
+    });
+  });
 });

@@ -23,7 +23,7 @@ let lex = source => {
         case "number": {
           // We want to close the number and ignore
           // the current character
-          if (curr === " " || curr === "\n") {
+          if (curr === " " || curr === "\n" || curr === ",") {
             acc.mode.pop();
 
             return acc;
@@ -51,7 +51,7 @@ let lex = source => {
         case "symbol": {
           // We want to close the symbol and ignore
           // the current character
-          if (curr === " " || curr === "\n") {
+          if (curr === " " || curr === "\n" || curr === ",") {
             acc.mode.pop();
 
             return acc;
@@ -95,7 +95,7 @@ let lex = source => {
         }
         case "keyword": {
           // We want to close the keyword
-          if (curr === " " || curr === "\n") {
+          if (curr === " " || curr === "\n" || curr === ",") {
             acc.mode.pop();
 
             return acc;
@@ -134,7 +134,7 @@ let lex = source => {
           // All other cases: open a symbol
           // (or it's a character to be ignored)
           } else {
-            if (curr === " " || curr === "\n") {
+            if (curr === " " || curr === "\n" || curr === ",") {
               return acc;
             // Turn special characters for maps,
             // sets, function invocations etc into
@@ -159,9 +159,6 @@ let lex = source => {
       result: []
     });
 };
-
-// Next up: treat commas as whitespace
-// (they should end numbers and symbols, though)
 
 // Next up: handle comments in lex fn instead of
 // removing them beforehand. That should allow me
