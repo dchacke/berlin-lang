@@ -114,6 +114,13 @@ let lex = source => {
           } else {
             if (curr === " " || curr === "\n") {
               return acc;
+            // Turn special characters for maps,
+            // sets, function invocations etc into
+            // tokens of their own.
+            } else if (/[{}\[\]()#]/.test(curr)) {
+              acc.result.push([curr, curr]);
+
+              return acc;
             }
 
             acc.mode.push("symbol");
