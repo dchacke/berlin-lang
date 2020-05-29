@@ -21,9 +21,20 @@ let lex = source => {
     .reduce((acc, curr) => {
       switch (last(acc.mode)) {
         case "number": {
-          // We want to close the number
+          // We want to close the number and ignore
+          // the current character
           if (curr === " " || curr === "\n") {
             acc.mode.pop();
+
+            return acc;
+          // A number must not contain the following
+          // special characters. For example, in "foo(1 2 3)",
+          // the last parenthesis is not part of the number 3,
+          // even though they are not separated by a
+          // whitespace.
+          } else if (/[{}\[\]()#]/.test(curr)) {
+            acc.mode.pop();
+            acc.result.push([curr, curr]);
 
             return acc;
           // Consume the next character as part
@@ -38,9 +49,20 @@ let lex = source => {
           }
         }
         case "symbol": {
-          // We want to close the symbol
+          // We want to close the symbol and ignore
+          // the current character
           if (curr === " " || curr === "\n") {
             acc.mode.pop();
+
+            return acc;
+          // A symbol must not contain the following
+          // special characters. For example, in "foo()",
+          // the parentheses are not part of the symbol,
+          // even though they are not separated by a
+          // whitespace.
+          } else if (/[{}\[\]()#]/.test(curr)) {
+            acc.mode.pop();
+            acc.result.push([curr, curr]);
 
             return acc;
           // Consume the next character as part
@@ -137,3 +159,15 @@ let lex = source => {
       result: []
     });
 };
+
+// Next up: treat commas as whitespace
+// (they should end numbers and symbols, though)
+
+// Next up: handle comments in lex fn instead of
+// removing them beforehand. That should allow me
+// to display error messages with accurate line
+// and character numbers later on.
+
+// Next up: allow commas to be used as thousand
+// separator. (just ignore commans when in number
+// mode and the next character is also a number).
