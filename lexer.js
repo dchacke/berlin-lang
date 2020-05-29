@@ -20,6 +20,23 @@ let lex = source => {
     .split("")
     .reduce((acc, curr) => {
       switch (last(acc.mode)) {
+        case "number": {
+          // We want to close the number
+          if (curr === " " || curr === "\n") {
+            acc.mode.pop();
+
+            return acc;
+          // Consume the next character as part
+          // of the number
+          } else {
+            let resultCount = acc.result.length;
+            let currResultCount = acc.result[resultCount - 1].length;
+
+            acc.result[resultCount - 1][currResultCount - 1] += curr;
+
+            return acc;
+          }
+        }
         case "symbol": {
           // We want to close the symbol
           if (curr === " " || curr === "\n") {
@@ -84,13 +101,24 @@ let lex = source => {
             acc.result.push(["keyword", ""]);
 
             return acc;
-          // All other cases: we want to open
-          // a symbol, in which case the current
-          // letter is already the symbol's first
-          // letter.
+          // All other cases: open a symbol or number
           } else {
-            acc.mode.push("symbol");
-            acc.result.push(["symbol", curr]);
+            if (curr === " " || curr === "\n") {
+              return acc;
+            }
+
+            let type;
+
+            if (/\d/.test(curr)) {
+              type = "number";
+            } else {
+              type = "symbol";
+            }
+
+            acc.mode.push(type);
+            // The current character is already the first
+            // character in the result
+            acc.result.push([type, curr]);
 
             return acc;
           }
