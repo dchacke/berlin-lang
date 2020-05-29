@@ -101,24 +101,25 @@ let lex = source => {
             acc.result.push(["keyword", ""]);
 
             return acc;
-          // All other cases: open a symbol or number
+          // We want to open a number
+          } else if (/\d/.test(curr)) {
+            acc.mode.push("number");
+            // The current character is already the first
+            // character in the result
+            acc.result.push(["number", curr]);
+
+            return acc;
+          // All other cases: open a symbol
+          // (or it's a character to be ignored)
           } else {
             if (curr === " " || curr === "\n") {
               return acc;
             }
 
-            let type;
-
-            if (/\d/.test(curr)) {
-              type = "number";
-            } else {
-              type = "symbol";
-            }
-
-            acc.mode.push(type);
+            acc.mode.push("symbol");
             // The current character is already the first
             // character in the result
-            acc.result.push([type, curr]);
+            acc.result.push(["symbol", curr]);
 
             return acc;
           }
