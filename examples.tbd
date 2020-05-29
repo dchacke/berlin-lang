@@ -1,0 +1,43 @@
+; # Example Syntax
+
+let [foo "bar" ; no commas
+     bar "foo"
+     done? true
+     bang! "bang"
+     this-*<>thing' "foo"
+     f x => console.log(x) {
+     inc x => {
+       ; the last statement is implicitly returned
+       x + 1 ; this is a comment
+     }
+     some-symbol :foo ; uses Symbol.for("foo") under the hood
+     ] {
+}
+
+def foo "bar"
+
+def foo fn(x y {
+  plus(x y)
+})
+
+def plus [...args] {
+  reduce([acc curr] acc + curr, args, 0)
+}
+
+; Examples of single-arity function declarations
+def foo [] {
+  console.log('something');
+}
+
+def inc [x] {
+  plus(x 1)
+}
+
+; Multi-arity function declaration
+def map
+[f] {
+  map(f [])
+}
+[f coll] {
+  ; perform map
+}
