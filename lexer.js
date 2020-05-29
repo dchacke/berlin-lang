@@ -171,3 +171,5 @@ let lex = source => {
 // Next up: allow commas to be used as thousand
 // separator. (just ignore commans when in number
 // mode and the next character is also a number).
+
+module.exports = { lex };
