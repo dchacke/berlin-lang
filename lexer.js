@@ -170,3 +170,15 @@ let lex = source => {
 // mode and the next character is also a number).
 
 module.exports = { lex };
+
+// The types of things the parser needs to recognize:
+// Function calls
+// Primitives
+// Special forms (which look like function calls, and
+// maybe they can just *be* function calls)
+// Blocks
+// Maps, Arrays, Sets
+// Booleans (which look like symbols)
+//
+// Assume that opening parenthesis means we are invoking
+// a function.
