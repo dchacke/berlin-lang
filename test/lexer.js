@@ -94,6 +94,8 @@ describe("Lexer", () => {
         ["number", "1"],
         ["number", "2"],
         ["number", "3"],
+        // It includes the comma here since it's part
+        // of a string.
         ["string", "foo,bar"],
         ["symbol", "foo"],
         ["symbol", "bar"],
