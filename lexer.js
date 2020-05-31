@@ -27,6 +27,10 @@ let lex = source => {
             acc.mode.pop();
 
             return acc;
+          // We want to ignore underscores (they serve
+          // merely as optional thousand separators)
+          } else if (curr === "_") {
+            return acc;
           // A number must not contain the following
           // special characters. For example, in "foo(1 2 3)",
           // the last parenthesis is not part of the number 3,
@@ -164,10 +168,6 @@ let lex = source => {
 // removing them beforehand. That should allow me
 // to display error messages with accurate line
 // and character numbers later on.
-
-// Next up: allow commas to be used as thousand
-// separator. (just ignore commans when in number
-// mode and the next character is also a number).
 
 module.exports = { lex };
 

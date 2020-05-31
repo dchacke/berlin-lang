@@ -18,6 +18,17 @@ describe("Lexer", () => {
     });
   });
 
+  describe("numbers", () => {
+    let source = "123_4567_89_0";
+    let result = lex(source).result;
+
+    it("ignores underscores in numbers", () => {
+      assert(_.isEqual(result, [
+        ["number", "1234567890"]
+      ]));
+    });
+  });
+
   describe("special characters", () => {
     let source = "foo(2) {:foo bar} [1] #{1 2}";
     let result = lex(source).result;
