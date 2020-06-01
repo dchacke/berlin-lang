@@ -7,6 +7,10 @@ let parse = tokens => {
   for (let i = 0; i < tokens.length; i++) {
     let [type, value] = tokens[i];
 
+    // If we encounter an opening bracket,
+    // we are dealing with an array literal,
+    // and we want to eagerly consume everything
+    // until we encounter a closing bracket.
     if (type === "[") {
       let subTokens = [];
       let outstanding = 1;
@@ -17,6 +21,8 @@ let parse = tokens => {
         let [type, value] = nextToken;
 
         if (type === "[") {
+          // For every opening bracket we find,
+          // we have to find its closing counterpart.
           outstanding++;
         } else if (type === "]") {
           outstanding--;
@@ -27,6 +33,8 @@ let parse = tokens => {
         j++;
       }
 
+      // Do not iterate over already consumed
+      // items next time.
       i += j;
 
       tree = [
@@ -45,57 +53,6 @@ let parse = tokens => {
   }
 
   return tree;
-
-  // return tokens.reduce((acc, curr, index) => {
-  //   debugger;
-
-  //   // Tokens look like ["number", "3"],
-  //   // or ["[", "["]
-  //   let [type, value] = curr;
-  //   let result = [];
-
-  //   if (type === "[") {
-  //     let subTokens = [];
-  //     let outstanding = 1;
-  //     let i = index;
-
-  //     while (i < tokens.length && outstanding > 0) {
-  //       let nextToken = tokens[i + 1];
-  //       let [type, value] = nextToken;
-
-  //       if (type === "[") {
-  //         outstanding++;
-  //       } else if (type === "]") {
-  //         outstanding--;
-  //       } else {
-  //         subTokens.push(nextToken);
-  //       }
-
-  //       i++;
-  //     }
-
-  //     // acc.push([
-  //     //   "array-literal",
-  //     //   ...parse(subTokens, "array")
-  //     // ]);
-
-  //     result = [
-  //       ...acc,
-  //       "array-literal",
-  //       ...parse(subTokens, "array")
-  //     ];
-  //   } else if (type !== "]") {
-  //     // acc.push(curr);
-
-  //     // return acc;
-  //     result = [
-  //       ...acc,
-  //       curr
-  //     ];
-  //   }
-
-  //   return result;
-  // }, []);
 };
 
 module.exports = { parse };
