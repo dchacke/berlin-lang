@@ -172,7 +172,7 @@ let lex = source => {
 module.exports = { lex };
 
 // The types of things the parser needs to recognize:
-// Function calls
+// Function/macro calls
 // Primitives
 // Special forms (which look like function calls, and
 // maybe they can just *be* function calls)
@@ -180,5 +180,13 @@ module.exports = { lex };
 // Maps, Arrays, Sets
 // Booleans (which look like symbols)
 //
+// No statements, no expressions. Only functions.
+//
 // Assume that opening parenthesis means we are invoking
 // a function.
+// Special functions that are guaranteed to be pure because
+// the compiler raises an exception when the function body
+// accesses a symbol the function wasn't explicitly passed
+// (I got this idea from Brian Will, he briefly mentioned it
+// in one of his videos, but I can't remember which one:
+// https://www.youtube.com/user/briantwill/)

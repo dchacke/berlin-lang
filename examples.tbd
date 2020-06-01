@@ -16,25 +16,25 @@ let [foo "bar" ; no commas
 
 def foo "bar"
 
-def foo fn(x y {
+defn foo fn(x y {
   plus(x y)
 })
 
-def plus [...args] {
+defn plus [...args] {
   reduce([acc curr] acc + curr, args, 0)
 }
 
 ; Examples of single-arity function declarations
-def foo [] {
+defn foo [] {
   console.log('something');
 }
 
-def inc [x] {
+defn inc [x] {
   plus(x 1)
 }
 
 ; Multi-arity function declaration
-def map
+defn map
 [f] {
   map(f [])
 }
