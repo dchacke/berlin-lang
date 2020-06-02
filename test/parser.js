@@ -10,18 +10,29 @@ describe("Parser", () => {
         ["number", "1"],
         ["number", "2"],
         ["number", "3"],
+        ["[", "["],
+        ["number", "4"],
+        ["]", "]"],
+        ["number", "5"],
         ["]", "]"]
       ];
-      let result = parse(tokens);
+      let result = parse(tokens)[0];
 
-      it("parses arrays", () => {
+      it("parses nested arrays", () => {
         assert(_.isEqual(result, [
           [
             "array-literal",
             [
               ["number", "1"],
               ["number", "2"],
-              ["number", "3"]
+              ["number", "3"],
+              [
+                "array-literal",
+                [
+                  ["number", "4"]
+                ]
+              ],
+              ["number", "5"],
             ]
           ]
         ]));
