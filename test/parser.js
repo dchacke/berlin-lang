@@ -163,4 +163,16 @@ describe("Parser", () => {
       }, /^Unmatched closing curly brace }$/);
     });
   });
+
+  describe("boolean literals", () => {
+    let tokens = [["symbol", "true"], ["symbol", "false"]];
+    let result = parse(tokens)[0];
+
+    it("parses boolean literals from their corresponding symbols", () => {
+      assert(_.isEqual(result, [
+        ["boolean-literal", "true"],
+        ["boolean-literal", "false"]
+      ]));
+    });
+  });
 });

@@ -47,6 +47,14 @@ let parse = (tokens, mode) => {
       } else {
         throw "Unmatched closing curly brace }";
       }
+    } else if (type === "symbol") {
+      if (value === "true") {
+        tree.push(["boolean-literal", "true"]);
+      } else if (value === "false") {
+        tree.push(["boolean-literal", "false"]);
+      } else {
+        tree.push(tokens[i]);
+      }
     } else if (type !== "#") {
       tree.push(tokens[i]);
     }
