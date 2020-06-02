@@ -11,7 +11,7 @@ let parse = (tokens, mode) => {
     let [type, value] = tokens[i];
 
     if (type === "[") {
-      let [subTree, newlyConsumedTokens] = parse(tokens.slice(i + 1), 'array');
+      let [subTree, newlyConsumedTokens] = parse(tokens.slice(i + 1), "array");
 
       tree.push(
         ["array-literal", subTree]
