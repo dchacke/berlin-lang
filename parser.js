@@ -1,3 +1,5 @@
+let even = n => n % 2 === 0;
+
 // Takes an array of tokens and returns
 // an array representing an abstract
 // syntax tree.
@@ -23,6 +25,26 @@ let parse = (tokens, mode) => {
         return [tree, consumedTokens];
       } else {
         throw "Unmatched closing bracket ]";
+      }
+    } else if (type === "{") {
+      let [subTree, newlyConsumedTokens] = parse(tokens.slice(i + 1), 'map');
+
+      if (!even(subTree.length)) {
+        throw "Map literal requires an even number of elements";
+      }
+
+      tree.push(
+        ["map-literal", subTree]
+      );
+
+      i += newlyConsumedTokens;
+      consumedTokens += newlyConsumedTokens;
+    } else if (type === "}") {
+      if (mode === "map") {
+        consumedTokens++;
+        return [tree, consumedTokens];
+      } else {
+        throw "Unmatched closing curly brace }";
       }
     } else {
       tree.push(tokens[i]);
