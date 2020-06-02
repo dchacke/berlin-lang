@@ -175,4 +175,65 @@ describe("Parser", () => {
       ]));
     });
   });
+
+  describe("functions", () => {
+    describe("no arguments", () => {
+      let tokens = [
+        ["symbol", "foo"],
+        ["(", "("],
+        [")", ")"]
+      ];
+      let result = parse(tokens)[0];
+
+      it("parses the function call with an empty argument list", () => {
+        assert(_.isEqual(result, [
+          [
+            "function-call",
+            "foo",
+            ["argument-list", []]
+          ]
+        ]));
+      });
+    });
+
+    describe("with arguments", () => {
+      let tokens = [
+        ["symbol", "foo"],
+        ["(", "("],
+        ["symbol", "bar"],
+        ["string", "baz"],
+        [")", ")"]
+      ];
+      let result = parse(tokens)[0];
+
+      it("parses the function call with two arguments", () => {
+        assert(_.isEqual(result, [
+          [
+            "function-call",
+            "foo",
+            [
+              "argument-list",
+              [
+                ["symbol", "bar"],
+                ["string", "baz"]
+              ]
+            ]
+          ]
+        ]));
+      });
+    });
+
+    describe("unmatched closing parenthesis", () => {
+      it("throws", () => {
+        assert.throws(() => {
+          parse([
+            ["symbol", "foo"],
+            ["(", "("],
+            [")", ")"],
+            [")", ")"]
+          ]);
+        }, /^Unmatched closing parenthesis \)$/);
+      });
+    });
+  });
 });
