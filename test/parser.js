@@ -1,3 +1,4 @@
+let util = require("util");
 let assert = require("assert");
 let { parse } = require("../parser");
 let _ = require("lodash");
@@ -59,6 +60,11 @@ describe("Parser", () => {
         ["{", "{"],
         ["number", "1"],
         ["number", "2"],
+        ["{", "{"],
+        ["number", "3"],
+        ["number", "4"],
+        ["}", "}"],
+        ["number", "5"],
         ["}", "}"]
       ];
       let result = parse(tokens)[0];
@@ -69,7 +75,15 @@ describe("Parser", () => {
             "map-literal",
             [
               ["number", "1"],
-              ["number", "2"]
+              ["number", "2"],
+              [
+                "map-literal",
+                [
+                  ["number", "3"],
+                  ["number", "4"],
+                ]
+              ],
+              ["number", "5"]
             ]
           ]
         ]));
