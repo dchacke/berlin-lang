@@ -37,6 +37,12 @@ describe("Parser", () => {
           ]
         ]));
       });
+
+      it("throws for an unmatched closing bracket", () => {
+        assert.throws(() => {
+          parse([["[", "["], ["]", "]"], ["]", "]"]]);
+        }, /^Unmatched closing bracket ]$/);
+      });
     });
   });
 });
