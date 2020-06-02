@@ -103,6 +103,17 @@ let lex = source => {
             acc.mode.pop();
 
             return acc;
+          // A keyword must not contain the following
+          // special characters. For example, in "... :foo)" --
+          // perhaps as the last element of an argument list --
+          // the closing parenthesis is not part of the keyword,
+          // even though they are not separated by a
+          // whitespace.
+          } else if (/[{}\[\]()#]/.test(curr)) {
+            acc.mode.pop();
+            acc.result.push([curr, curr]);
+
+            return acc;
           // Consume the next character as part
           // of the keyword
           } else {

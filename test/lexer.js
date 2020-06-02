@@ -1,3 +1,4 @@
+let util = require("util");
 let assert = require("assert");
 let { lex } = require("../lexer");
 let _ = require("lodash");
@@ -30,28 +31,51 @@ describe("Lexer", () => {
   });
 
   describe("special characters", () => {
-    let source = "foo(2) {:foo bar} [1] #{1 2}";
-    let result = lex(source).result;
+    describe("sets, maps, and arrays", () => {
+      let source = "foo(2) {:foo bar} [1] #{1 2}";
+      let result = lex(source).result;
 
-    it("handles special characters signifying sets, maps, and arrays", () => {
-      assert(_.isEqual(result, [
-        ["symbol", "foo"],
-        ["(", "("],
-        ["number", "2"],
-        [")", ")"],
-        ["{", "{"],
-        ["keyword", "foo"],
-        ["symbol", "bar"],
-        ["}", "}"],
-        ["[", "["],
-        ["number", "1"],
-        ["]", "]"],
-        ["#", "#"],
-        ["{", "{"],
-        ["number", "1"],
-        ["number", "2"],
-        ["}", "}"]
-      ]));
+      it("handles special characters signifying sets, maps, and arrays", () => {
+        assert(_.isEqual(result, [
+          ["symbol", "foo"],
+          ["(", "("],
+          ["number", "2"],
+          [")", ")"],
+          ["{", "{"],
+          ["keyword", "foo"],
+          ["symbol", "bar"],
+          ["}", "}"],
+          ["[", "["],
+          ["number", "1"],
+          ["]", "]"],
+          ["#", "#"],
+          ["{", "{"],
+          ["number", "1"],
+          ["number", "2"],
+          ["}", "}"]
+        ]));
+      });
+    });
+
+    describe("not as part of primitives", () => {
+      let source = "foo() :foo) bar{ 1} 1(";
+      let result = lex(source).result;
+
+      it("does not make special characters part of primitives", () => {
+        assert(_.isEqual(result, [
+          ["symbol", "foo"],
+          ["(", "("],
+          [")", ")"],
+          ["keyword", "foo"],
+          [")", ")"],
+          ["symbol", "bar"],
+          ["{", "{"],
+          ["number", "1"],
+          ["}", "}"],
+          ["number", "1"],
+          ["(", "("]
+        ]));
+      });
     });
   });
 
