@@ -159,7 +159,7 @@ let lex = source => {
         }
       }
     }, {
-      mode: [],
+      mode: [], // does this really need to be an array? I don't think tokens can be nested...
       result: []
     });
 };
