@@ -176,6 +176,35 @@ describe("Parser", () => {
     });
   });
 
+  describe("blocks", () => {
+    let tokens = [
+      ["keyword", "foo"],
+      ["symbol", "~"],
+      ["{", "{"],
+      ["symbol", "foo"],
+      ["number", "1"],
+      ["symbol", "bar"],
+      ["}", "}"],
+      ["keyword", "bar"]
+    ];
+    let result = parse(tokens)[0];
+
+    it("parses the block signified by ~{}", () => {
+      assert(_.isEqual(result, [
+        ["keyword", "foo"],
+        [
+          "block-declaration",
+          [
+            ["symbol", "foo"],
+            ["number", "1"],
+            ["symbol", "bar"]
+          ]
+        ],
+        ["keyword", "bar"]
+      ]));
+    });
+  });
+
   describe("function calls", () => {
     describe("no arguments", () => {
       let tokens = [

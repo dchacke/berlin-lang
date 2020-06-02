@@ -41,7 +41,7 @@ let parse = (tokens, mode) => {
       i += newlyConsumedTokens;
       consumedTokens += newlyConsumedTokens;
     } else if (type === "}") {
-      if (mode === "map" || mode === "set") {
+      if (mode === "map" || mode === "set" || mode === "block") {
         consumedTokens++;
         return [tree, consumedTokens];
       } else {
@@ -70,6 +70,17 @@ let parse = (tokens, mode) => {
 
         tree.push(
           ["function-call", value, ["argument-list", subTree]]
+        );
+
+        i += newlyConsumedTokens;
+        consumedTokens += newlyConsumedTokens;
+      // We are declaring a block.
+      } else if (value === "~" && tokens[i + 1] && tokens[i + 1][0] === "{") {
+        let [subTree, newlyConsumedTokens] = parse(tokens.slice(i + 2), "block");
+        newlyConsumedTokens++;
+
+        tree.push(
+          ["block-declaration", subTree]
         );
 
         i += newlyConsumedTokens;
