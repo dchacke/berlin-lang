@@ -176,7 +176,7 @@ describe("Parser", () => {
     });
   });
 
-  describe("functions", () => {
+  describe("function calls", () => {
     describe("no arguments", () => {
       let tokens = [
         ["symbol", "foo"],
