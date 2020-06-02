@@ -173,11 +173,12 @@ module.exports = { lex };
 
 // The types of things the parser needs to recognize:
 // Function/macro calls
-// Primitives
+// ✓ Primitives
 // Special forms (which look like function calls, and
-// maybe they can just *be* function calls)
+// maybe they can just *be* function calls, at least
+// as far as the consumer of the language is concerned)
 // Blocks
-// Maps, Arrays, Sets
+// ✓ Maps, Arrays, Sets
 // Booleans (which look like symbols)
 //
 // No statements, no expressions. Only functions.
