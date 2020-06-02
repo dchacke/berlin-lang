@@ -52,4 +52,60 @@ describe("Parser", () => {
       }, /^Unmatched closing bracket ]$/);
     });
   });
+
+  describe("maps", () => {
+    describe("well formed", () => {
+      let tokens = [
+        ["{", "{"],
+        ["number", "1"],
+        ["number", "2"],
+        ["}", "}"]
+      ];
+      let result = parse(tokens)[0];
+
+      it("parses nested maps", () => {
+        assert(_.isEqual(result, [
+          [
+            "map-literal",
+            [
+              ["number", "1"],
+              ["number", "2"]
+            ]
+          ]
+        ]));
+      });
+    });
+
+    describe("malformed", () => {
+      describe("unmatched closing curly brace", () => {
+        let tokens = [
+          ["{", "{"],
+          ["number", "1"],
+          ["number", "2"],
+          ["}", "}"],
+          ["}", "}"]
+        ];
+
+        it("throws", () => {
+          assert.throws(() => {
+            parse(tokens);
+          }, /^Unmatched closing curly brace }$/);
+        });
+      });
+
+      describe("uneven number of elements", () => {
+        let tokens = [
+          ["{", "{"],
+          ["number", "1"],
+          ["}", "}"]
+        ];
+
+        it("throws", () => {
+          assert.throws(() => {
+            parse(tokens);
+          }, /^Map literal requires an even number of elements$/);
+        });
+      });
+    });
+  });
 });
