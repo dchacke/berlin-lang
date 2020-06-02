@@ -122,4 +122,45 @@ describe("Parser", () => {
       });
     });
   });
+
+  describe("sets", () => {
+    let tokens = [
+      ["#", "#"],
+      ["{", "{"],
+      ["number", "1"],
+      ["number", "2"],
+      ["#", "#"],
+      ["{", "{"],
+      ["number", "3"],
+      ["}", "}"],
+      ["number", "4"],
+      ["}", "}"]
+    ];
+    let result = parse(tokens)[0];
+
+    it("parses nested sets", () => {
+      assert(_.isEqual(result, [
+        [
+          "set-literal",
+          [
+            ["number", "1"],
+            ["number", "2"],
+            [
+              "set-literal",
+              [
+                ["number", "3"]
+              ]
+            ],
+            ["number", "4"],
+          ]
+        ]
+      ]));
+    });
+
+    it("throws for an unmatched closing bracket", () => {
+      assert.throws(() => {
+        parse([["#", "#"], ["{", "{"], ["}", "}"], ["}", "}"]]);
+      }, /^Unmatched closing curly brace }$/);
+    });
+  });
 });

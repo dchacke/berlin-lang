@@ -27,26 +27,27 @@ let parse = (tokens, mode) => {
         throw "Unmatched closing bracket ]";
       }
     } else if (type === "{") {
-      let [subTree, newlyConsumedTokens] = parse(tokens.slice(i + 1), 'map');
+      let literal = tokens[i - 1] && tokens[i - 1][0] === "#" ? "set" : "map";
+      let [subTree, newlyConsumedTokens] = parse(tokens.slice(i + 1), literal);
 
-      if (!even(subTree.length)) {
+      if (!even(subTree.length) && literal === "map") {
         throw "Map literal requires an even number of elements";
       }
 
       tree.push(
-        ["map-literal", subTree]
+        [`${literal}-literal`, subTree]
       );
 
       i += newlyConsumedTokens;
       consumedTokens += newlyConsumedTokens;
     } else if (type === "}") {
-      if (mode === "map") {
+      if (mode === "map" || mode === "set") {
         consumedTokens++;
         return [tree, consumedTokens];
       } else {
         throw "Unmatched closing curly brace }";
       }
-    } else {
+    } else if (type !== "#") {
       tree.push(tokens[i]);
     }
 
