@@ -187,10 +187,17 @@ module.exports = { lex };
 // ✓ Primitives
 // Special forms (which look like function calls, and
 // maybe they can just *be* function calls, at least
-// as far as the consumer of the language is concerned)
+// as far as the consumer of the language is concerned):
+// - def
+// - let
+// - fn
+// (- maybe later: fn! for functions that can only access
+//  the values of symbols they are explicitly given in the
+//  form of arguments)
 // Blocks
 // ✓ Maps, Arrays, Sets
-// Booleans (which look like symbols)
+// ✓ Booleans (which look like symbols)
+// Destructuring
 //
 // No statements, no expressions. Only functions.
 //
