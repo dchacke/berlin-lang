@@ -59,7 +59,9 @@ let translate = ast => {
         result = acc + "(" +
           children[1]
             .map(child => [child])
-            .map(translate).join(",") + ")";
+            .map(translate)
+            .join(",")
+          + ")";
         break;
       }
     }
