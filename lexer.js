@@ -211,6 +211,11 @@ module.exports = { lex };
 // Closing brackets and braces on same line, not next line
 // (as a convention).
 //
+// Do I need to escape single and double quotes and
+// backticks that are part of symbols, keywords, and
+// strings? Is that a security issue or only a compile-time
+// issue?
+//
 // Assume that opening parenthesis means we are invoking
 // a function.
 // Special functions that are guaranteed to be pure because

@@ -35,7 +35,7 @@ let translate = ast => {
         break;
       }
       case "string": {
-        result = acc + "\"" + children + "\"";
+        result = acc + "`" + children + "`";
         break;
       }
       case "keyword": {

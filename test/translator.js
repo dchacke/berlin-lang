@@ -23,7 +23,7 @@ describe("Translator", () => {
     it("converts the ast into a js function call", () => {
       assert.equal(result, `foo
 (bar
-,"baz"
+,\`baz\`
 )
 `);
     });
@@ -61,6 +61,15 @@ describe("Translator", () => {
       it("does not change the symbol literal", () => {
         assert.equal(result, "foo_bar\n");
       });
+    });
+  });
+
+  describe("strings", () => {
+    let ast = [["string", "foo_bar"]];
+    let result = translate(ast);
+
+    it("surrounds the string with back ticks", () => {
+      assert.equal(result, "`foo_bar`\n");
     });
   });
 });
