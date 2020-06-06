@@ -179,7 +179,7 @@ describe("Parser", () => {
   describe("blocks", () => {
     let tokens = [
       ["keyword", "foo"],
-      ["symbol", "~"],
+      ["~", "~"],
       ["{", "{"],
       ["symbol", "foo"],
       ["number", "1"],

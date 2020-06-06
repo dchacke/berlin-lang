@@ -27,16 +27,35 @@ let parse = (tokens, mode) => {
         throw "Unmatched closing bracket ]";
       }
     } else if (type === "{") {
-      let literal = tokens[i - 1] && tokens[i - 1][0] === "#" ? "set" : "map";
-      let [subTree, newlyConsumedTokens] = parse(tokens.slice(i + 1), literal);
+      let mode;
 
-      if (!even(subTree.length) && literal === "map") {
+      if (tokens[i - 1]) {
+        if (tokens[i - 1][0] === "#") {
+          mode = "set";
+        } else if (tokens[i - 1][0] === "~") {
+          mode = "block";
+        } else {
+          mode = "map";
+        }
+      } else {
+        mode = "map";
+      }
+
+      let [subTree, newlyConsumedTokens] = parse(tokens.slice(i + 1), mode);
+
+      if (!even(subTree.length) && mode === "map") {
         throw "Map literal requires an even number of elements";
       }
 
-      tree.push(
-        [`${literal}-literal`, subTree]
-      );
+      if (mode === "block") {
+        tree.push(
+          ["block-declaration", subTree]
+        );
+      } else {
+        tree.push(
+          [`${mode}-literal`, subTree]
+        );
+      }
 
       i += newlyConsumedTokens;
       consumedTokens += newlyConsumedTokens;
@@ -73,21 +92,10 @@ let parse = (tokens, mode) => {
         tree.push(["boolean-literal", "true"]);
       } else if (value === "false") {
         tree.push(["boolean-literal", "false"]);
-      // We are declaring a block.
-      } else if (value === "~" && tokens[i + 1] && tokens[i + 1][0] === "{") {
-        let [subTree, newlyConsumedTokens] = parse(tokens.slice(i + 2), "block");
-        newlyConsumedTokens++;
-
-        tree.push(
-          ["block-declaration", subTree]
-        );
-
-        i += newlyConsumedTokens;
-        consumedTokens += newlyConsumedTokens;
       } else {
         tree.push(tokens[i]);
       }
-    } else if (type !== "#") {
+    } else if (type !== "#" && type !== "~") {
       tree.push(tokens[i]);
     }
 
