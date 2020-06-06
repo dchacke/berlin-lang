@@ -42,6 +42,10 @@ let translate = ast => {
         result = acc + "Symbol.for(\"" + children + "\")";
         break;
       }
+      case "number": {
+        result = acc + children;
+        break;
+      }
       case "function-call": {
         result = acc + "(" +
           children[1]

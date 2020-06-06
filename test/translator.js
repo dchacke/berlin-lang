@@ -72,4 +72,13 @@ describe("Translator", () => {
       assert.equal(result, "`foo_bar`\n");
     });
   });
+
+  describe("numbers", () => {
+    let ast = [["number", "12"]];
+    let result = translate(ast);
+
+    it("does not touch numbers", () => {
+      assert.equal(result, "12\n");
+    });
+  });
 });
