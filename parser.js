@@ -47,6 +47,20 @@ let parse = (tokens, mode) => {
       } else {
         throw "Unmatched closing curly brace }";
       }
+    // We are invoking a fn. (We look ahead and check
+    // here for an opening parenthesis, which tells us it's
+    // a function call. Therefore, there is no need to check
+    // for an opening parenthesis above like we do with open
+    // brackets and curly braces.)
+    } else if (type === "(") {
+      let [subTree, newlyConsumedTokens] = parse(tokens.slice(i + 1), "arguments");
+
+      tree.push(
+        ["function-call", ["argument-list", subTree]]
+      );
+
+      i += newlyConsumedTokens;
+      consumedTokens += newlyConsumedTokens;
     } else if (type === ")") {
       if (mode === "arguments") {
         consumedTokens++;
@@ -59,21 +73,6 @@ let parse = (tokens, mode) => {
         tree.push(["boolean-literal", "true"]);
       } else if (value === "false") {
         tree.push(["boolean-literal", "false"]);
-      // We are invoking a fn. (We look ahead and check
-      // here for an opening parenthesis, which tells us it's
-      // a function call. Therefore, there is no need to check
-      // for an opening parenthesis above like we do with open
-      // brackets and curly braces.)
-      } else if (tokens[i + 1] && tokens[i + 1][0] === "(") {
-        let [subTree, newlyConsumedTokens] = parse(tokens.slice(i + 2), "arguments");
-        newlyConsumedTokens++;
-
-        tree.push(
-          ["function-call", value, ["argument-list", subTree]]
-        );
-
-        i += newlyConsumedTokens;
-        consumedTokens += newlyConsumedTokens;
       // We are declaring a block.
       } else if (value === "~" && tokens[i + 1] && tokens[i + 1][0] === "{") {
         let [subTree, newlyConsumedTokens] = parse(tokens.slice(i + 2), "block");

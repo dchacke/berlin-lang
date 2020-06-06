@@ -208,7 +208,6 @@ describe("Parser", () => {
   describe("function calls", () => {
     describe("no arguments", () => {
       let tokens = [
-        ["symbol", "foo"],
         ["(", "("],
         [")", ")"]
       ];
@@ -218,7 +217,6 @@ describe("Parser", () => {
         assert(_.isEqual(result, [
           [
             "function-call",
-            "foo",
             ["argument-list", []]
           ]
         ]));
@@ -237,9 +235,16 @@ describe("Parser", () => {
 
       it("parses the function call with two arguments", () => {
         assert(_.isEqual(result, [
+          // Not also that it treats the preceding symbol
+          // as something entirely separate. The parser
+          // doesn't care that the symbol contains the
+          // functions (and it might not) -- that's for
+          // the next step in the chain to figure out.
+          // This is to allow functions to be invoked
+          // immediately after declaration.
+          [ 'symbol', 'foo' ],
           [
             "function-call",
-            "foo",
             [
               "argument-list",
               [
