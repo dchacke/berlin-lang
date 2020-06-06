@@ -32,10 +32,10 @@ describe("Lexer", () => {
 
   describe("special characters", () => {
     describe("sets, maps, and arrays", () => {
-      let source = "foo(2) {:foo bar} [1] #{1 2}";
+      let source = "foo(2) {:foo bar} [1] #{1 2} ~{1 2 3}";
       let result = lex(source).result;
 
-      it("handles special characters signifying sets, maps, and arrays", () => {
+      it("handles special characters signifying sets, maps, blocks, and arrays", () => {
         assert(_.isEqual(result, [
           ["symbol", "foo"],
           ["(", "("],
@@ -52,13 +52,19 @@ describe("Lexer", () => {
           ["{", "{"],
           ["number", "1"],
           ["number", "2"],
-          ["}", "}"]
+          ["}", "}"],
+          ["~", "~"],
+          ["{", "{"],
+          ["number", "1"],
+          ["number", "2"],
+          ["number", "3"],
+          ["}", "}"],
         ]));
       });
     });
 
     describe("not as part of primitives", () => {
-      let source = "foo() :foo) bar{ 1} 1(";
+      let source = "foo() :foo) bar{ 1} 1( ~\"foo\"";
       let result = lex(source).result;
 
       it("does not make special characters part of primitives", () => {
@@ -73,7 +79,9 @@ describe("Lexer", () => {
           ["number", "1"],
           ["}", "}"],
           ["number", "1"],
-          ["(", "("]
+          ["(", "("],
+          ["~", "~"],
+          ["string", "foo"]
         ]));
       });
     });

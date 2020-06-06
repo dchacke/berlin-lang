@@ -36,7 +36,7 @@ let lex = source => {
           // the last parenthesis is not part of the number 3,
           // even though they are not separated by a
           // whitespace.
-          } else if (/[{}\[\]()#]/.test(curr)) {
+          } else if (/[{}\[\]()#~]/.test(curr)) {
             acc.mode.pop();
             acc.result.push([curr, curr]);
 
@@ -64,7 +64,7 @@ let lex = source => {
           // the parentheses are not part of the symbol,
           // even though they are not separated by a
           // whitespace.
-          } else if (/[{}\[\]()#]/.test(curr)) {
+          } else if (/[{}\[\]()#~]/.test(curr)) {
             acc.mode.pop();
             acc.result.push([curr, curr]);
 
@@ -109,7 +109,7 @@ let lex = source => {
           // the closing parenthesis is not part of the keyword,
           // even though they are not separated by a
           // whitespace.
-          } else if (/[{}\[\]()#]/.test(curr)) {
+          } else if (/[{}\[\]()#~]/.test(curr)) {
             acc.mode.pop();
             acc.result.push([curr, curr]);
 
@@ -154,7 +154,7 @@ let lex = source => {
             // Turn special characters for maps,
             // sets, function invocations etc into
             // tokens of their own.
-            } else if (/[{}\[\]()#]/.test(curr)) {
+            } else if (/[{}\[\]()#~]/.test(curr)) {
               acc.result.push([curr, curr]);
 
               return acc;
