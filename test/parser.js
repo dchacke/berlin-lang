@@ -239,7 +239,7 @@ describe("Parser", () => {
           // as something entirely separate. The parser
           // doesn't care that the symbol contains the
           // functions (and it might not) -- that's for
-          // the next step in the chain to figure out.
+          // the translator to figure out.
           // This is to allow functions to be invoked
           // immediately after declaration.
           [ 'symbol', 'foo' ],
