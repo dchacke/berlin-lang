@@ -157,7 +157,7 @@ describe("Parser", () => {
       ]));
     });
 
-    it("throws for an unmatched closing bracket", () => {
+    it("throws for an unmatched closing curly brace", () => {
       assert.throws(() => {
         parse([["#", "#"], ["{", "{"], ["}", "}"], ["}", "}"]]);
       }, /^Unmatched closing curly brace }$/);
