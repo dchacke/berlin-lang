@@ -208,6 +208,9 @@ module.exports = { lex };
 //
 // No statements, no expressions. Only functions.
 //
+// Closing brackets and braces on same line, not next line
+// (as a convention).
+//
 // Assume that opening parenthesis means we are invoking
 // a function.
 // Special functions that are guaranteed to be pure because
