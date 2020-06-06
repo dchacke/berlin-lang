@@ -46,6 +46,15 @@ let translate = ast => {
         result = acc + children;
         break;
       }
+      case "array-literal": {
+        result = acc + "[" +
+          children
+            .map(child => [child])
+            .map(translate)
+            .join(",")
+          + "]";
+        break;
+      }
       case "function-call": {
         result = acc + "(" +
           children[1]

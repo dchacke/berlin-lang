@@ -81,4 +81,36 @@ describe("Translator", () => {
       assert.equal(result, "12\n");
     });
   });
+
+  describe("arrays", () => {
+    let ast = [
+      [
+        "array-literal",
+        [
+          ["number", "1"],
+          ["number", "2"],
+          ["number", "3"],
+          [
+            "array-literal",
+            [
+              ["number", "4"]
+            ]
+          ],
+          ["number", "5"],
+        ]
+      ]
+    ];
+    let result = translate(ast);
+
+    it("translates nested arrays", () => {
+      assert.equal(result, `[1
+,2
+,3
+,[4
+]
+,5
+]
+`);
+    });
+  });
 });
