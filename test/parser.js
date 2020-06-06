@@ -242,7 +242,7 @@ describe("Parser", () => {
           // the translator to figure out.
           // This is to allow functions to be invoked
           // immediately after declaration.
-          [ 'symbol', 'foo' ],
+          ["symbol", "foo"],
           [
             "function-call",
             [
