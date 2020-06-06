@@ -24,7 +24,7 @@ let safe_symbol = symbol => {
   }, symbol);
 };
 
-let translate = ast => {
+let translate = (ast, depth = 0) => {
   return ast.reduce((acc, curr, i) => {
     let [type, children] = curr;
     let result;
@@ -50,7 +50,7 @@ let translate = ast => {
         result = acc + "[" +
           children
             .map(child => [child])
-            .map(translate)
+            .map(tree => translate(tree, depth + 1))
             .join(",")
           + "]";
         break;
@@ -59,14 +59,38 @@ let translate = ast => {
         result = acc + "(" +
           children[1]
             .map(child => [child])
-            .map(translate)
+            .map(tree => translate(tree, depth + 1))
             .join(",")
           + ")";
         break;
       }
     }
 
-    return result + "\n";
+    // Determine if we want to add a semicolon
+    // and line break at the end. We only want
+    // to do that when we are still at the top
+    // level and the next element in the ast is
+    // not a function call (otherwise we're putting
+    // a semicolon between a function's name and
+    // its parentheses).
+    // TODO: When translating blocks (which is yet
+    // to be implemented), pass in depth=0 for the
+    // recursive calls to the block's children.
+    let eol;
+
+    if (depth === 0) {
+      let next = ast[i + 1];
+
+      if (next && next[0] === "function-call") {
+        eol = false;
+      } else {
+        eol = true;
+      }
+    } else {
+      eol = false;
+    }
+
+    return result + (eol ? ";\n" : " ");
   }, "");
 };
 

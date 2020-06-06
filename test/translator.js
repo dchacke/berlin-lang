@@ -21,11 +21,8 @@ describe("Translator", () => {
     let result = translate(ast);
 
     it("converts the ast into a js function call", () => {
-      assert.equal(result, `foo
-(bar
-,\`baz\`
-)
-`);
+      assert.equal(result, `foo;
+(bar ,\`baz\` ) `);
     });
   });
 
@@ -34,7 +31,7 @@ describe("Translator", () => {
     let result = translate(ast);
 
     it("converts keywords into js symbols", () => {
-      assert.equal(result, "Symbol.for(\"foo-bar!\")\n");
+      assert.equal(result, "Symbol.for(\"foo-bar!\") ");
     });
   });
 
@@ -50,7 +47,7 @@ describe("Translator", () => {
           "__POUND____DOLLAR____PERCENT____CARET__" +
           "__AMPERSAND____ASTERISK____EQUALS____QUOTE__" +
           "__QUESTION_MARK____FORWARD_SLASH____BACKSLASH__" +
-          "__LESS_THAN____GREATER_THAN__bar\n");
+          "__LESS_THAN____GREATER_THAN__bar ");
       });
     });
 
@@ -59,7 +56,7 @@ describe("Translator", () => {
       let result = translate(ast);
 
       it("does not change the symbol literal", () => {
-        assert.equal(result, "foo_bar\n");
+        assert.equal(result, "foo_bar ");
       });
     });
   });
@@ -69,7 +66,7 @@ describe("Translator", () => {
     let result = translate(ast);
 
     it("surrounds the string with back ticks", () => {
-      assert.equal(result, "`foo_bar`\n");
+      assert.equal(result, "`foo_bar` ");
     });
   });
 
@@ -78,7 +75,7 @@ describe("Translator", () => {
     let result = translate(ast);
 
     it("does not touch numbers", () => {
-      assert.equal(result, "12\n");
+      assert.equal(result, "12 ");
     });
   });
 
@@ -103,14 +100,7 @@ describe("Translator", () => {
     let result = translate(ast);
 
     it("translates nested arrays", () => {
-      assert.equal(result, `[1
-,2
-,3
-,[4
-]
-,5
-]
-`);
+      assert.equal(result, `[1 ,2 ,3 ,[4 ] ,5 ] `);
     });
   });
 });
