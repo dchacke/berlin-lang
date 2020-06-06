@@ -51,6 +51,15 @@ let translate = (ast, depth = 0) => {
           children
             .map(child => [child])
             .map(tree => translate(tree, depth + 1))
+            // Both for arrays and functions' argument lists,
+            // elements should not be separated by a comma
+            // for fn invocations (otherwise a(b(c)) turns
+            // into a (b, (c )).
+            // I'm surprised it does this, as nested function
+            // calls should already be nested in the ast,
+            // they shouldn't be siblings, yet it seems they
+            // are siblings, why else do they get a comma stuck
+            // in between them?
             .join(",")
           + "]";
         break;
@@ -64,6 +73,9 @@ let translate = (ast, depth = 0) => {
           + ")";
         break;
       }
+      // TODO: Translate blocks with depth=0
+      // passed into the recursive calls for
+      // the block's children.
     }
 
     // Determine if we want to add a semicolon
@@ -73,9 +85,6 @@ let translate = (ast, depth = 0) => {
     // not a function call (otherwise we're putting
     // a semicolon between a function's name and
     // its parentheses).
-    // TODO: When translating blocks (which is yet
-    // to be implemented), pass in depth=0 for the
-    // recursive calls to the block's children.
     let eol;
 
     if (depth === 0) {
