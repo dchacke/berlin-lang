@@ -60,10 +60,10 @@ let translate = (ast, depth = 0) => {
         // If what follows is a function declaration,
         // we can discard this symbol, because later on
         // we only need to say () => {}, not fn () => {}.
-        if (children !== "fn") {
-          result = acc + safe_symbol(children);
-        } else {
+        if (children === "fn") {
           result = acc;
+        } else {
+          result = acc + safe_symbol(children);
         }
 
         break;
