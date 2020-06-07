@@ -50,7 +50,7 @@ let pairwise = array => {
   return [result, ...pairwise(rest)];
 };
 
-let translate = (ast, depth = 0) => {
+let translate = (ast, depth = 0, parentType) => {
   return ast.reduce((acc, curr, i) => {
     let [type, children] = curr;
     let result;
@@ -61,27 +61,27 @@ let translate = (ast, depth = 0) => {
         // we can discard this symbol, because later on
         // we only need to say () => {}, not fn () => {}.
         if (children === "fn") {
-          result = acc;
+          result = "";
         } else {
-          result = acc + safe_symbol(children);
+          result = safe_symbol(children);
         }
 
         break;
       }
       case "string": {
-        result = acc + "`" + children + "`";
+        result = "`" + children + "`";
         break;
       }
       case "keyword": {
-        result = acc + "Symbol.for(\"" + children + "\")";
+        result = "Symbol.for(\"" + children + "\")";
         break;
       }
       case "number": {
-        result = acc + children;
+        result = children;
         break;
       }
       case "array-literal": {
-        result = acc + "[" +
+        result = "[" +
           children.reduce(conjoin_children(depth), "")
           + "]";
         break;
@@ -95,7 +95,7 @@ let translate = (ast, depth = 0) => {
         break;
       }
       case "block-declaration": {
-        result = acc + "{" + translate(children) + "}";
+        result = "{" + translate(children, 0, "block-declaration") + "}";
         break;
       }
       case "function-call": {
@@ -110,12 +110,12 @@ let translate = (ast, depth = 0) => {
             throw("Function declaration requires code block");
           }
 
-          result = acc + "((" +
+          result = "((" +
             args.reduce(conjoin_children(depth), "")
             + ") => " + translate([fnBlock], depth + 1) + ")";
         // No, it's really a function *invocation*
         } else {
-          result = acc + "(" +
+          result = "(" +
             children[1].reduce(conjoin_children(depth), "")
             + ")";
         }
@@ -148,7 +148,19 @@ let translate = (ast, depth = 0) => {
       eol = false;
     }
 
-    return result + (eol ? ";\n" : " ");
+    // If we are inside a block declaration, we want
+    // to prepend a return statement to the last
+    // element.
+    let returnStatement;
+
+    if (parentType === "block-declaration" && i === ast.length - 1) {
+      returnStatement = "return ";
+    } else {
+      returnStatement = "";
+    }
+
+
+    return acc + returnStatement + result + (eol ? ";\n" : " ");
   }, "");
 };
 

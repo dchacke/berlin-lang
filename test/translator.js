@@ -177,7 +177,7 @@ describe("Translator", () => {
     let result = translate(ast);
 
     it("translates the block", () => {
-      assert.equal(result, `{1;\n2;\n3;\n};\n`);
+      assert.equal(result, `{1;\n2;\nreturn 3;\n};\n`);
     });
   });
 
@@ -215,7 +215,8 @@ describe("Translator", () => {
                 [
                   "block-declaration",
                   [
-                    ["number", "1"]
+                    ["number", "1"],
+                    ["number", "2"]
                   ]
                 ]
               ]
@@ -225,7 +226,7 @@ describe("Translator", () => {
         let result = translate(ast);
 
         it("translates the function declaration", () => {
-          assert.equal(result, ` ((x ,y ) => {1;\n} );\n`);
+          assert.equal(result, ` ((x ,y ) => {1;\nreturn 2;\n} );\n`);
         });
       });
 
@@ -250,7 +251,7 @@ describe("Translator", () => {
         let result = translate(ast);
 
         it("translates the function declaration", () => {
-          assert.equal(result, ` (() => {1;\n} );\n`);
+          assert.equal(result, ` (() => {return 1;\n} );\n`);
         });
       });
     });
