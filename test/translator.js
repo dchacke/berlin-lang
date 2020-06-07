@@ -199,4 +199,103 @@ describe("Translator", () => {
       assert.equal(result, `new Map([[1 ,2 ] ,[Symbol.for("foo") ,\`bar\` ] ]);\n`);
     });
   });
+
+  describe("function declaration", () => {
+    describe("with block", () => {
+      describe("with arguments", () => {
+        let ast = [
+          ["symbol", "fn"],
+          [
+            "function-call",
+            [
+              "argument-list",
+              [
+                ["symbol", "x"],
+                ["symbol", "y"],
+                [
+                  "block-declaration",
+                  [
+                    ["number", "1"]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ];
+        let result = translate(ast);
+
+        it("translates the function declaration", () => {
+          assert.equal(result, ` (x ,y ) => {1;\n};\n;\n`);
+        });
+      });
+
+      describe("without arguments", () => {
+        let ast = [
+          ["symbol", "fn"],
+          [
+            "function-call",
+            [
+              "argument-list",
+              [
+                [
+                  "block-declaration",
+                  [
+                    ["number", "1"]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ];
+        let result = translate(ast);
+
+        it("translates the function declaration", () => {
+          assert.equal(result, ` () => {1;\n};\n;\n`);
+        });
+      });
+    });
+
+    describe("without block", () => {
+      describe("with arguments", () => {
+        let ast = [
+          ["symbol", "fn"],
+          [
+            "function-call",
+            [
+              "argument-list",
+              [
+                ["symbol", "x"],
+                ["symbol", "y"]
+              ]
+            ]
+          ]
+        ];
+
+        it("throws without a block", () => {
+          assert.throws(() => {
+            translate(ast);
+          }, /^Function declaration requires code block$/);
+        });
+      });
+
+      describe("without arguments", () => {
+        let ast = [
+          ["symbol", "fn"],
+          [
+            "function-call",
+            [
+              "argument-list",
+              []
+            ]
+          ]
+        ];
+
+        it("throws without a block", () => {
+          assert.throws(() => {
+            translate(ast);
+          }, /^Function declaration requires code block$/);
+        });
+      });
+    });
+  });
 });

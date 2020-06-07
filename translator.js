@@ -57,7 +57,15 @@ let translate = (ast, depth = 0) => {
 
     switch(type) {
       case "symbol": {
-        result = acc + safe_symbol(children);
+        // If what follows is a function declaration,
+        // we can discard this symbol, because later on
+        // we only need to say () => {}, not fn () => {}.
+        if (children !== "fn") {
+          result = acc + safe_symbol(children);
+        } else {
+          result = acc;
+        }
+
         break;
       }
       case "string": {
@@ -91,13 +99,29 @@ let translate = (ast, depth = 0) => {
         break;
       }
       case "function-call": {
-        result = acc + "(" +
-          children[1].reduce(conjoin_children(depth), "")
-          + ")";
+        let previous = ast[i - 1];
+
+        // Is this a function *declaration*?
+        if (previous && previous[0] === "symbol" && previous[1] === "fn") {
+          let fnBlock = children[1][children[1].length - 1];
+          let args = children[1].slice(0, children[1].length - 1);
+
+          if (!fnBlock || fnBlock[0] !== "block-declaration") {
+            throw("Function declaration requires code block");
+          }
+
+          result = acc + "(" +
+            args.reduce(conjoin_children(depth), "")
+            + ") => " + translate([fnBlock]);
+        // No, it's really a function *invocation*
+        } else {
+          result = acc + "(" +
+            children[1].reduce(conjoin_children(depth), "")
+            + ")";
+        }
+
         break;
       }
-      // TODO: Treat a function call preceded by the symbol
-      // "fn" as a function *declaration*.
     }
 
     // Determine if we want to add a semicolon
