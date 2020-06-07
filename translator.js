@@ -24,6 +24,20 @@ let safe_symbol = symbol => {
   }, symbol);
 };
 
+let conjoin_children = depth => {
+  return (acc, child, j, children) => {
+    let tree = [child];
+    let translation = translate(tree, depth + 1);
+    let delimiter = "";
+
+    if (children[j + 1] && children[j + 1][0] !== "function-call") {
+      delimiter = ",";
+    }
+
+    return acc + translation + delimiter;
+  };
+};
+
 let translate = (ast, depth = 0) => {
   return ast.reduce((acc, curr, i) => {
     let [type, children] = curr;
@@ -48,28 +62,13 @@ let translate = (ast, depth = 0) => {
       }
       case "array-literal": {
         result = acc + "[" +
-          children
-            .map(child => [child])
-            .map(tree => translate(tree, depth + 1))
-            // Both for arrays and functions' argument lists,
-            // elements should not be separated by a comma
-            // for fn invocations (otherwise a(b(c)) turns
-            // into a (b, (c )).
-            // I'm surprised it does this, as nested function
-            // calls should already be nested in the ast,
-            // they shouldn't be siblings, yet it seems they
-            // are siblings, why else do they get a comma stuck
-            // in between them?
-            .join(",")
+          children.reduce(conjoin_children(depth), "")
           + "]";
         break;
       }
       case "function-call": {
         result = acc + "(" +
-          children[1]
-            .map(child => [child])
-            .map(tree => translate(tree, depth + 1))
-            .join(",")
+          children[1].reduce(conjoin_children(depth), "")
           + ")";
         break;
       }

@@ -79,27 +79,87 @@ describe("Translator", () => {
   });
 
   describe("arrays", () => {
-    let ast = [
-      [
-        "array-literal",
+    describe("nested with numbers", () => {
+      let ast = [
         [
-          ["number", "1"],
-          ["number", "2"],
-          ["number", "3"],
+          "array-literal",
           [
-            "array-literal",
+            ["number", "1"],
+            ["number", "2"],
+            ["number", "3"],
             [
-              ["number", "4"]
-            ]
-          ],
-          ["number", "5"],
+              "array-literal",
+              [
+                ["number", "4"]
+              ]
+            ],
+            ["number", "5"],
+          ]
+        ]
+      ];
+      let result = translate(ast);
+
+      it("translates nested arrays", () => {
+        assert.equal(result, `[1 ,2 ,3 ,[4 ] ,5 ];\n`);
+      });
+    });
+
+    describe("nested with function calls", () => {
+      // This is "[bar(x) y]"
+      let ast = [
+        [
+          "array-literal",
+          [
+            ["symbol", "bar"],
+            [
+              "function-call",
+              [
+                "argument-list",
+                [
+                  ["symbol", "x"]
+                ]
+              ]
+            ],
+            ["symbol", "y"]
+          ]
+        ]
+      ];
+      let result = translate(ast);
+
+      it("converts the ast into a nested array with a function call", () => {
+        assert.equal(result, `[bar (x ) ,y ];\n`);
+      });
+    });
+  });
+
+  describe("nested, multi-parameter fn call", () => {
+    // This is "foo(bar(x) y)"
+    let ast =  [
+      ["symbol", "foo"],
+      [
+        "function-call",
+        [
+          "argument-list",
+          [
+            ["symbol", "bar"],
+            [
+              "function-call",
+              [
+                "argument-list",
+                [
+                  ["symbol", "x"]
+                ]
+              ]
+            ],
+            ["symbol", "y"]
+          ]
         ]
       ]
     ];
     let result = translate(ast);
 
-    it("translates nested arrays", () => {
-      assert.equal(result, `[1 ,2 ,3 ,[4 ] ,5 ];\n`);
+    it("converts the ast into a nested js function call", () => {
+      assert.equal(result, `foo (bar (x ) ,y );\n`);
     });
   });
 });
