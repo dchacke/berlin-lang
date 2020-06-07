@@ -123,6 +123,8 @@ let translate = (ast, depth = 0) => {
         break;
       }
     }
+    // TODO: Wrap whatever is being invoked in parentheses.
+    // TODO: Prepend last child in fn block with string "return."
 
     // Determine if we want to add a semicolon
     // and line break at the end. We only want
