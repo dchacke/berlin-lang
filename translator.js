@@ -38,6 +38,18 @@ let conjoin_children = depth => {
   };
 };
 
+// Turns [1,2,3,4,5,6] into [[1,2],[3,4],[5,6]].
+let pairwise = array => {
+  if (array.length === 0) {
+    return [];
+  }
+
+  let rest = array.slice(2);
+  let result = [array[0], array[1]];
+
+  return [result, ...pairwise(rest)];
+};
+
 let translate = (ast, depth = 0) => {
   return ast.reduce((acc, curr, i) => {
     let [type, children] = curr;
@@ -64,6 +76,14 @@ let translate = (ast, depth = 0) => {
         result = acc + "[" +
           children.reduce(conjoin_children(depth), "")
           + "]";
+        break;
+      }
+      case "map-literal": {
+        result = "new Map([" +
+          pairwise(children)
+            .map(pairs => ["array-literal", pairs])
+            .reduce(conjoin_children(depth), "")
+          + "])";
         break;
       }
       case "block-declaration": {

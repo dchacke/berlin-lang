@@ -180,4 +180,23 @@ describe("Translator", () => {
       assert.equal(result, `{1;\n2;\n3;\n};\n`);
     });
   });
+
+  describe("maps", () => {
+    let ast = [
+      [
+        "map-literal",
+        [
+          ["number", "1"],
+          ["number", "2"],
+          ["keyword", "foo"],
+          ["string", "bar"]
+        ]
+      ]
+    ];
+    let result = translate(ast);
+
+    it("translates the map into a JS Map constructor invocation", () => {
+      assert.equal(result, `new Map([[1 ,2 ] ,[Symbol.for("foo") ,\`bar\` ] ]);\n`);
+    });
+  });
 });
