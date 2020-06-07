@@ -124,6 +124,8 @@ let translate = (ast, depth = 0) => {
       }
     }
     // TODO: Prepend last child in fn block with string "return."
+    // It may be fine to just do so in *any* block as long as I
+    // only ever use blocks with functions.
 
     // Determine if we want to add a semicolon
     // and line break at the end. We only want
