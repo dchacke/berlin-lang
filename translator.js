@@ -76,6 +76,8 @@ let translate = (ast, depth = 0) => {
           + ")";
         break;
       }
+      // TODO: Treat a function call preceded by the symbol
+      // "fn" as a function *declaration*.
     }
 
     // Determine if we want to add a semicolon
