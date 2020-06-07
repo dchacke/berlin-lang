@@ -110,9 +110,9 @@ let translate = (ast, depth = 0) => {
             throw("Function declaration requires code block");
           }
 
-          result = acc + "(" +
+          result = acc + "((" +
             args.reduce(conjoin_children(depth), "")
-            + ") => " + translate([fnBlock]);
+            + ") => " + translate([fnBlock], depth + 1) + ")";
         // No, it's really a function *invocation*
         } else {
           result = acc + "(" +
@@ -123,7 +123,6 @@ let translate = (ast, depth = 0) => {
         break;
       }
     }
-    // TODO: Wrap whatever is being invoked in parentheses.
     // TODO: Prepend last child in fn block with string "return."
 
     // Determine if we want to add a semicolon

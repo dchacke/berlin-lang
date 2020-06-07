@@ -225,7 +225,7 @@ describe("Translator", () => {
         let result = translate(ast);
 
         it("translates the function declaration", () => {
-          assert.equal(result, ` (x ,y ) => {1;\n};\n;\n`);
+          assert.equal(result, ` ((x ,y ) => {1;\n} );\n`);
         });
       });
 
@@ -250,7 +250,7 @@ describe("Translator", () => {
         let result = translate(ast);
 
         it("translates the function declaration", () => {
-          assert.equal(result, ` () => {1;\n};\n;\n`);
+          assert.equal(result, ` (() => {1;\n} );\n`);
         });
       });
     });
