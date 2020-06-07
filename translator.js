@@ -66,15 +66,16 @@ let translate = (ast, depth = 0) => {
           + "]";
         break;
       }
+      case "block-declaration": {
+        result = acc + "{" + translate(children) + "}";
+        break;
+      }
       case "function-call": {
         result = acc + "(" +
           children[1].reduce(conjoin_children(depth), "")
           + ")";
         break;
       }
-      // TODO: Translate blocks with depth=0
-      // passed into the recursive calls for
-      // the block's children.
     }
 
     // Determine if we want to add a semicolon

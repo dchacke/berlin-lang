@@ -162,4 +162,22 @@ describe("Translator", () => {
       assert.equal(result, `foo (bar (x ) ,y );\n`);
     });
   });
+
+  describe("blocks", () => {
+    let ast = [
+      [
+        "block-declaration",
+        [
+          ["number", "1"],
+          ["number", "2"],
+          ["number", "3"]
+        ]
+      ]
+    ];
+    let result = translate(ast);
+
+    it("translates the block", () => {
+      assert.equal(result, `{1;\n2;\n3;\n};\n`);
+    });
+  });
 });
