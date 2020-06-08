@@ -88,6 +88,13 @@ let parse = (tokens, mode) => {
         throw "Unmatched closing parenthesis )";
       }
     } else if (type === "symbol") {
+      // We could just treat booleans as symbols...
+      // For now we will treat them separately
+      // in case anything can be done with that
+      // additional information, and in case we
+      // want to write translators for other
+      // languages someday for which the information
+      // may matter.
       if (value === "true") {
         tree.push(["boolean-literal", "true"]);
       } else if (value === "false") {

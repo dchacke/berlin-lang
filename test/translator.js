@@ -60,6 +60,18 @@ describe("Translator", () => {
     });
   });
 
+  describe("booleans", () => {
+    let ast = [
+      ["boolean-literal", "true"],
+      ["boolean-literal", "false"]
+    ];
+    let result = translate(ast);
+
+    it("treats booleans as symbols", () => {
+      assert.equal(result, "true;\nfalse;\n");
+    });
+  });
+
   describe("strings", () => {
     let ast = [["string", "foo_bar"]];
     let result = translate(ast);

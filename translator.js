@@ -68,6 +68,10 @@ let translate = (ast, depth = 0, parentType) => {
 
         break;
       }
+      case "boolean-literal": {
+        result = children;
+        break;
+      }
       case "string": {
         result = "`" + children + "`";
         break;
