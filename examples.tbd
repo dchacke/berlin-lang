@@ -41,3 +41,17 @@ defn map
 [f coll] {
   ; perform map
 }
+
+
+
+
+let x = :foo;
+let y = "bar";
+return [x, y];
+
+
+fn(x y ~{
+  [x y
+   {x y}
+   1 2 #{3 4 5}]
+})(:foo "bar")

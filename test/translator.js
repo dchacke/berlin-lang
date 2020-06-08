@@ -200,6 +200,30 @@ describe("Translator", () => {
     });
   });
 
+  describe("sets", () => {
+    let ast = [
+      [
+        "set-literal",
+        [
+          ["number", "1"],
+          ["string", "foo"],
+          [
+            "array-literal",
+            [
+              ["symbol", "bar"],
+              ["keyword", "baz"]
+            ]
+          ]
+        ]
+      ]
+    ];
+    let result = translate(ast);
+
+    it("translates the set into a JS Set constructor invocation", () => {
+      assert.equal(result, `new Set([1 ,\`foo\` ,[bar ,Symbol.for("baz") ] ]);\n`);
+    });
+  });
+
   describe("function declaration", () => {
     describe("with block", () => {
       describe("with arguments", () => {

@@ -94,6 +94,12 @@ let translate = (ast, depth = 0, parentType) => {
           + "])";
         break;
       }
+      case "set-literal": {
+        result = "new Set([" +
+          children.reduce(conjoin_children(depth), "")
+          +"])";
+        break;
+      }
       case "block-declaration": {
         result = "{" + translate(children, 0, "block-declaration") + "}";
         break;
