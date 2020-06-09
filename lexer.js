@@ -197,14 +197,16 @@ module.exports = { lex };
 // ((fn [a]
 //   ((fn [b]) (+ a 2))) 1)
 // ...and so on, ever more deeply nested.
-// - fn
+// ✓ - fn
 // (- maybe later: fn! for functions that can only access
 //  the values of symbols they are explicitly given in the
 //  form of arguments)
-// Blocks
+// ✓ Blocks
 // ✓ Maps, Arrays, Sets
 // ✓ Booleans (which look like symbols)
 // Destructuring
+// JS intertop with .fn
+// How to use JS operators like +, -, etc?
 //
 // No statements, no expressions. Only functions.
 //
@@ -216,7 +218,7 @@ module.exports = { lex };
 // strings? Is that a security issue or only a compile-time
 // issue?
 //
-// Assume that opening parenthesis means we are invoking
+// ✓ Assume that opening parenthesis means we are invoking
 // a function.
 // Special functions that are guaranteed to be pure because
 // the compiler raises an exception when the function body
