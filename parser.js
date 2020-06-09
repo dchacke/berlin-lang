@@ -74,8 +74,20 @@ let parse = (tokens, mode) => {
     } else if (type === "(") {
       let [subTree, newlyConsumedTokens] = parse(tokens.slice(i + 1), "arguments");
 
+      let invocable = tree[tree.length - 1];
+
+      if (invocable === undefined) {
+        throw "Cannot invoke missing function";
+      }
+
+      tree.pop();
+
       tree.push(
-        ["function-call", ["argument-list", subTree]]
+        [
+          "function-call",
+          ["invocable", invocable],
+          ["argument-list", subTree]
+        ]
       );
 
       i += newlyConsumedTokens;

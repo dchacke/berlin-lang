@@ -206,8 +206,24 @@ describe("Parser", () => {
   });
 
   describe("function calls", () => {
+    describe("no invocable", () => {
+      let tokens = [
+        // Note that no symbol or structure
+        // precedes the opening parenthesis
+        ["(", "("],
+        [")", ")"]
+      ];
+
+      it("throws an exception", () => {
+        assert.throws(() => {
+          parse(tokens);
+        }, /^Cannot invoke missing function$/);
+      });
+    });
+
     describe("no arguments", () => {
       let tokens = [
+        ["symbol", "foo"],
         ["(", "("],
         [")", ")"]
       ];
@@ -217,7 +233,14 @@ describe("Parser", () => {
         assert(_.isEqual(result, [
           [
             "function-call",
-            ["argument-list", []]
+            [
+              "invocable",
+              ["symbol", "foo"]
+            ],
+            [
+              "argument-list",
+              []
+            ]
           ]
         ]));
       });
@@ -235,21 +258,60 @@ describe("Parser", () => {
 
       it("parses the function call with two arguments", () => {
         assert(_.isEqual(result, [
-          // Not also that it treats the preceding symbol
-          // as something entirely separate. The parser
-          // doesn't care that the symbol contains the
-          // functions (and it might not) -- that's for
-          // the translator to figure out.
-          // This is to allow functions to be invoked
-          // immediately after declaration.
-          ["symbol", "foo"],
           [
             "function-call",
+            [
+              "invocable",
+              ["symbol", "foo"]
+            ],
             [
               "argument-list",
               [
                 ["symbol", "bar"],
                 ["string", "baz"]
+              ]
+            ]
+          ]
+        ]));
+      });
+    });
+
+    describe("consecutive fn calls", () => {
+      let tokens = [
+        ["symbol", "foo"],
+        ["(", "("],
+        ["symbol", "a"],
+        [")", ")"],
+        ["(", "("],
+        ["symbol", "b"],
+        [")", ")"]
+      ];
+      let result = parse(tokens)[0];
+
+      it("nests the parse trees", () => {
+        assert(_.isEqual(result, [
+          [
+            "function-call",
+            [
+              "invocable",
+              [
+                "function-call",
+                [
+                  "invocable",
+                  ["symbol", "foo"]
+                ],
+                [
+                  "argument-list",
+                  [
+                    ["symbol", "a"]
+                  ]
+                ]
+              ]
+            ],
+            [
+              "argument-list",
+              [
+                ["symbol", "b"]
               ]
             ]
           ]
