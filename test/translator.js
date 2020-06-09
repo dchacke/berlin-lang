@@ -6,9 +6,12 @@ let _ = require("lodash");
 describe("Translator", () => {
   describe("simple ast", () => {
     let ast =  [
-      ["symbol", "foo"],
       [
         "function-call",
+        [
+          "invocable",
+          ["symbol", "foo"]
+        ],
         [
           "argument-list",
           [
@@ -21,7 +24,7 @@ describe("Translator", () => {
     let result = translate(ast);
 
     it("converts the ast into a js function call", () => {
-      assert.equal(result, `foo (bar ,\`baz\` );\n`);
+      assert.equal(result, `(foo )(bar ,\`baz\` );\n`);
     });
   });
 
@@ -122,9 +125,12 @@ describe("Translator", () => {
         [
           "array-literal",
           [
-            ["symbol", "bar"],
             [
               "function-call",
+              [
+                "invocable",
+                ["symbol", "bar"]
+              ],
               [
                 "argument-list",
                 [
@@ -139,7 +145,7 @@ describe("Translator", () => {
       let result = translate(ast);
 
       it("converts the ast into a nested array with a function call", () => {
-        assert.equal(result, `[bar (x ) ,y ];\n`);
+        assert.equal(result, `[(bar )(x ) ,y ];\n`);
       });
     });
   });
@@ -147,15 +153,21 @@ describe("Translator", () => {
   describe("nested, multi-parameter fn call", () => {
     // This is "foo(bar(x) y)"
     let ast =  [
-      ["symbol", "foo"],
       [
         "function-call",
         [
+          "invocable",
+          ["symbol", "foo"]
+        ],
+        [
           "argument-list",
           [
-            ["symbol", "bar"],
             [
               "function-call",
+              [
+                "invocable",
+                ["symbol", "bar"]
+              ],
               [
                 "argument-list",
                 [
@@ -171,7 +183,7 @@ describe("Translator", () => {
     let result = translate(ast);
 
     it("converts the ast into a nested js function call", () => {
-      assert.equal(result, `foo (bar (x ) ,y );\n`);
+      assert.equal(result, `(foo )((bar )(x ) ,y );\n`);
     });
   });
 
@@ -240,9 +252,12 @@ describe("Translator", () => {
     describe("with block", () => {
       describe("with arguments", () => {
         let ast = [
-          ["symbol", "fn"],
           [
             "function-call",
+            [
+              "invocable",
+              ["symbol", "fn"]
+            ],
             [
               "argument-list",
               [
@@ -262,15 +277,18 @@ describe("Translator", () => {
         let result = translate(ast);
 
         it("translates the function declaration", () => {
-          assert.equal(result, ` ((x ,y ) => {1;\nreturn 2;\n} );\n`);
+          assert.equal(result, `((x ,y ) => {1;\nreturn 2;\n} );\n`);
         });
       });
 
       describe("without arguments", () => {
         let ast = [
-          ["symbol", "fn"],
           [
             "function-call",
+            [
+              "invocable",
+              ["symbol", "fn"]
+            ],
             [
               "argument-list",
               [
@@ -287,7 +305,92 @@ describe("Translator", () => {
         let result = translate(ast);
 
         it("translates the function declaration", () => {
-          assert.equal(result, ` (() => {return 1;\n} );\n`);
+          assert.equal(result, `(() => {return 1;\n} );\n`);
+        });
+      });
+
+      // This one is mainly to check for the correct placement
+      // of "return".
+      describe("arbitrary, complex example", () => {
+        // This ast is
+        // fn(vector ~{
+        //   vector(1)
+        // })(fn(x ~{[x]}))
+        let ast = [
+          [
+            "function-call",
+            [
+              "invocable",
+              [
+                "function-call",
+                [
+                  "invocable",
+                  ["symbol", "fn"]
+                ],
+                [
+                  "argument-list",
+                  [
+                    ["symbol", "vector"],
+                    [
+                      "block-declaration",
+                      [
+                        [
+                          "function-call",
+                          [
+                            "invocable",
+                            ["symbol", "vector"]
+                          ],
+                          [
+                            "argument-list",
+                            [
+                              ["number", "1"]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ],
+            [
+              "argument-list",
+              [
+                [
+                  "function-call",
+                  [
+                    "invocable",
+                    ["symbol", "fn"]
+                  ],
+                  [
+                    "argument-list",
+                    [
+                      ["symbol", "x"],
+                      [
+                        "block-declaration",
+                        [
+                          [
+                            "array-literal",
+                            [
+                              ["symbol", "x"]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ];
+        let result = translate(ast);
+
+        it("translates the ast correctly", () => {
+          assert.equal(result, `(((vector ) => {return (vector )(1 );
+} ) )(((x ) => {return [x ];
+} ) );
+`);
         });
       });
     });
@@ -295,9 +398,12 @@ describe("Translator", () => {
     describe("without block", () => {
       describe("with arguments", () => {
         let ast = [
-          ["symbol", "fn"],
           [
             "function-call",
+            [
+              "invocable",
+              ["symbol", "fn"]
+            ],
             [
               "argument-list",
               [
@@ -317,9 +423,12 @@ describe("Translator", () => {
 
       describe("without arguments", () => {
         let ast = [
-          ["symbol", "fn"],
           [
             "function-call",
+            [
+              "invocable",
+              ["symbol", "fn"]
+            ],
             [
               "argument-list",
               []

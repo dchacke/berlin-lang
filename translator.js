@@ -109,12 +109,12 @@ let translate = (ast, depth = 0, parentType) => {
         break;
       }
       case "function-call": {
-        let previous = ast[i - 1];
+        let [_, [__, invocable], [___, fnArgs]] = curr;
 
         // Is this a function *declaration*?
-        if (previous && previous[0] === "symbol" && previous[1] === "fn") {
-          let fnBlock = children[1][children[1].length - 1];
-          let args = children[1].slice(0, children[1].length - 1);
+        if (invocable[0] === "symbol" && invocable[1] === "fn") {
+          let fnBlock = fnArgs[fnArgs.length - 1];
+          let args = fnArgs.slice(0, fnArgs.length - 1);
 
           if (!fnBlock || fnBlock[0] !== "block-declaration") {
             throw("Function declaration requires code block");
@@ -125,8 +125,8 @@ let translate = (ast, depth = 0, parentType) => {
             + ") => " + translate([fnBlock], depth + 1) + ")";
         // No, it's really a function *invocation*
         } else {
-          result = "(" +
-            children[1].reduce(conjoin_children(depth), "")
+          result = "(" + translate([invocable], depth + 1) + ")" + "(" +
+            fnArgs.reduce(conjoin_children(depth), "")
             + ")";
         }
 
@@ -139,24 +139,12 @@ let translate = (ast, depth = 0, parentType) => {
 
     // Determine if we want to add a semicolon
     // and line break at the end. We only want
-    // to do that when we are still at the top
+    // to do that if we are still at the top
     // level and the next element in the ast is
     // not a function call (otherwise we're putting
     // a semicolon between a function's name and
     // its parentheses).
-    let eol;
-
-    if (depth === 0) {
-      let next = ast[i + 1];
-
-      if (next && next[0] === "function-call") {
-        eol = false;
-      } else {
-        eol = true;
-      }
-    } else {
-      eol = false;
-    }
+    let eol = depth === 0;
 
     // If we are inside a block declaration, we want
     // to prepend a return statement to the last
