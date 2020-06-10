@@ -187,6 +187,54 @@ describe("Translator", () => {
     });
   });
 
+  describe("instance method", () => {
+    let ast = [
+      [
+        "function-call",
+        [
+          "invocable",
+          ["symbol", ".concat"]
+        ],
+        [
+          "argument-list",
+          [
+            ["string", "foo"],
+            ["string", " bar"]
+          ]
+        ]
+      ]
+    ];
+    let result = translate(ast);
+
+    it("invokes the given method on the first argument and passes the remaining arguments", () => {
+      assert.equal(result, `((\`foo\` ).concat (\` bar\` ));\n`);
+    });
+  });
+
+  describe("constructors", () => {
+    let ast = [
+      [
+        "function-call",
+        [
+          "invocable",
+          ["symbol", "Foo."]
+        ],
+        [
+          "argument-list",
+          [
+            ["string", "bar"],
+            ["string", " baz"]
+          ]
+        ]
+      ]
+    ];
+    let result = translate(ast);
+
+    it("instantiates the constructor with the given arguments", () => {
+      assert.equal(result, "(new Foo (`bar` ,` baz` ));\n");
+    });
+  });
+
   describe("blocks", () => {
     let ast = [
       [
@@ -441,54 +489,6 @@ describe("Translator", () => {
             translate(ast);
           }, /^Function declaration requires code block$/);
         });
-      });
-    });
-
-    describe("instance method", () => {
-      let ast = [
-        [
-          "function-call",
-          [
-            "invocable",
-            ["symbol", ".concat"]
-          ],
-          [
-            "argument-list",
-            [
-              ["string", "foo"],
-              ["string", " bar"]
-            ]
-          ]
-        ]
-      ];
-      let result = translate(ast);
-
-      it("invokes the given method on the first argument and passes the remaining arguments", () => {
-        assert.equal(result, `((\`foo\` ).concat (\` bar\` ));\n`);
-      });
-    });
-
-    describe("constructors", () => {
-      let ast = [
-        [
-          "function-call",
-          [
-            "invocable",
-            ["symbol", "Foo."]
-          ],
-          [
-            "argument-list",
-            [
-              ["string", "bar"],
-              ["string", " baz"]
-            ]
-          ]
-        ]
-      ];
-      let result = translate(ast);
-
-      it("instantiates the constructor with the given arguments", () => {
-        assert.equal(result, "(new Foo (`bar` ,` baz` ));\n");
       });
     });
   });
