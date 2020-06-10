@@ -125,9 +125,14 @@ let translate = (ast, depth = 0, parentType) => {
             + ") => " + translate([fnBlock], depth + 1) + ")";
         // No, it's really a function *invocation*
         } else {
-          result = "(" + translate([invocable], depth + 1) + ")" + "(" +
-            fnArgs.reduce(conjoin_children(depth), "")
-            + ")";
+          // We are invoking an instance method
+          if (invocable[1][0] === ".") {
+            result = "(" + "(" + translate([fnArgs[0]], depth + 1) + ")" + translate([invocable], depth + 1) + "(" + fnArgs.slice(1).reduce(conjoin_children(depth), "") + ")" + ")";
+          } else {
+            result = "(" + translate([invocable], depth + 1) + ")" + "(" +
+              fnArgs.reduce(conjoin_children(depth), "")
+              + ")";
+          }
         }
 
         break;

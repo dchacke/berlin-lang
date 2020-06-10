@@ -443,5 +443,29 @@ describe("Translator", () => {
         });
       });
     });
+
+    describe("instance method", () => {
+      let ast = [
+        [
+          "function-call",
+          [
+            "invocable",
+            ["symbol", ".concat"]
+          ],
+          [
+            "argument-list",
+            [
+              ["string", "foo"],
+              ["string", " bar"]
+            ]
+          ]
+        ]
+      ];
+      let result = translate(ast);
+
+      it("invokes the given method on the first argument and passes the remaining arguments", () => {
+        assert.equal(result, `((\`foo\` ).concat (\` bar\` ));\n`);
+      });
+    });
   });
 });
