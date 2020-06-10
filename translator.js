@@ -125,8 +125,11 @@ let translate = (ast, depth = 0, parentType) => {
             + ") => " + translate([fnBlock], depth + 1) + ")";
         // No, it's really a function *invocation*
         } else {
+          // We want to invoke an operator
+          if (invocable[1] === "operator") {
+            result = `(${translate([fnArgs[1]], depth + 1)} ${fnArgs[0][1]} ${translate([fnArgs[2]], depth + 1)})`;
           // We are invoking an instance method
-          if (invocable[1][0] === ".") {
+          } else if (invocable[1][0] === ".") {
             result = "(" + "(" + translate([fnArgs[0]], depth + 1) + ")" + translate([invocable], depth + 1) + "(" + fnArgs.slice(1).reduce(conjoin_children(depth), "") + ")" + ")";
           // We are instantiating a constructor
           } else if (invocable[1][invocable[1].length - 1] === ".") {

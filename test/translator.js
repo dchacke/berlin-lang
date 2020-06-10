@@ -496,4 +496,31 @@ describe("Translator", () => {
       assert.equal(result, `new Set([1 ,\`foo\` ,[bar ,Symbol.for("baz") ] ]);\n`);
     });
   });
+
+  describe("special forms (other than function declarations)", () => {
+    describe("operator", () => {
+      let ast = [
+        [
+          "function-call",
+          [
+            "invocable",
+            ["symbol", "operator"]
+          ],
+          [
+            "argument-list",
+            [
+              ["symbol", "==="],
+              ["number", "1"],
+              ["number", "2"]
+            ]
+          ]
+        ]
+      ];
+      let result = translate(ast);
+
+      it("invokes the given operator with the given arguments", () => {
+        assert.equal(result, "(1  === 2 );\n");
+      });
+    });
+  });
 });

@@ -206,7 +206,7 @@ module.exports = { lex };
 // ✓ Booleans (which look like symbols)
 // Destructuring
 // JS interop with .fn, .-attr, fn. for constructors, and set! like in ClojureScript
-// How to use JS operators like +, -, etc?
+// ✓ How to use JS operators like +, -, etc?
 //
 // No statements, no expressions. Only functions.
 //
