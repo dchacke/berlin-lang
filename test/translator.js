@@ -522,5 +522,36 @@ describe("Translator", () => {
         assert.equal(result, "(1  === 2 );\n");
       });
     });
+
+    describe("set", () => {
+      let ast = [
+        [
+          "function-call",
+          [
+            "invocable",
+            ["symbol", "set"]
+          ],
+          [
+            "argument-list",
+            [
+              [
+                "map-literal",
+                [
+                  ["number", "1"],
+                  ["number", "2"]
+                ]
+              ],
+              ["number", "1"],
+              ["number", "3"]
+            ]
+          ]
+        ]
+      ];
+      let result = translate(ast);
+
+      it("translates the set invocation into an assignment", () => {
+        assert.equal(result, `((new Map([[1 ,2 ] ]) )[(1 )] = (3 ));\n`);
+      });
+    });
   });
 });

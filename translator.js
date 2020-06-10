@@ -128,6 +128,13 @@ let translate = (ast, depth = 0, parentType) => {
           // We want to invoke an operator
           if (invocable[1] === "operator") {
             result = `(${translate([fnArgs[1]], depth + 1)} ${fnArgs[0][1]} ${translate([fnArgs[2]], depth + 1)})`;
+          // We want to set a field
+          } else if (invocable[1] === "set") {
+            let settable = fnArgs[0];
+            let field = fnArgs[1];
+            let val = fnArgs[2];
+
+            result = `((${translate([settable], depth + 1)})[(${translate([field], depth + 1)})] = (${translate([val], depth + 1)}))`;
           // We are invoking an instance method
           } else if (invocable[1][0] === ".") {
             result = "(" + "(" + translate([fnArgs[0]], depth + 1) + ")" + translate([invocable], depth + 1) + "(" + fnArgs.slice(1).reduce(conjoin_children(depth), "") + ")" + ")";
