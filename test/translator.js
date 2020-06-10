@@ -467,5 +467,29 @@ describe("Translator", () => {
         assert.equal(result, `((\`foo\` ).concat (\` bar\` ));\n`);
       });
     });
+
+    describe("constructors", () => {
+      let ast = [
+        [
+          "function-call",
+          [
+            "invocable",
+            ["symbol", "Foo."]
+          ],
+          [
+            "argument-list",
+            [
+              ["string", "bar"],
+              ["string", " baz"]
+            ]
+          ]
+        ]
+      ];
+      let result = translate(ast);
+
+      it("instantiates the constructor with the given arguments", () => {
+        assert.equal(result, "(new Foo (`bar` ,` baz` ));\n");
+      });
+    });
   });
 });

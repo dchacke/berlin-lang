@@ -128,6 +128,10 @@ let translate = (ast, depth = 0, parentType) => {
           // We are invoking an instance method
           if (invocable[1][0] === ".") {
             result = "(" + "(" + translate([fnArgs[0]], depth + 1) + ")" + translate([invocable], depth + 1) + "(" + fnArgs.slice(1).reduce(conjoin_children(depth), "") + ")" + ")";
+          // We are instantiating a constructor
+          } else if (invocable[1][invocable[1].length - 1] === ".") {
+            invocable[1] = invocable[1].slice(0, -1);
+            result = `(new ${translate([invocable], depth + 1)}(${fnArgs.reduce(conjoin_children(depth), "")}))`;
           } else {
             result = "(" + translate([invocable], depth + 1) + ")" + "(" +
               fnArgs.reduce(conjoin_children(depth), "")
