@@ -4,27 +4,313 @@ let { translate } = require("../translator");
 let _ = require("lodash");
 
 describe("Translator", () => {
-  describe("simple ast", () => {
-    let ast =  [
-      [
-        "function-call",
-        [
-          "invocable",
-          ["symbol", "foo"]
-        ],
-        [
-          "argument-list",
+  describe("functions", () => {
+    describe("function invocations", () => {
+      describe("simple function invocation", () => {
+        let ast =  [
           [
-            ["symbol", "bar"],
-            ["string", "baz"]
+            "function-call",
+            [
+              "invocable",
+              ["symbol", "foo"]
+            ],
+            [
+              "argument-list",
+              [
+                ["symbol", "bar"],
+                ["string", "baz"]
+              ]
+            ]
           ]
-        ]
-      ]
-    ];
-    let result = translate(ast);
+        ];
+        let result = translate(ast);
 
-    it("converts the ast into a js function call", () => {
-      assert.equal(result, `(foo )(bar ,\`baz\` );\n`);
+        it("converts the ast into a js function call", () => {
+          assert.equal(result, `(foo )(bar ,\`baz\` );\n`);
+        });
+      });
+
+      describe("nested, multi-parameter fn call", () => {
+        // This is "foo(bar(x) y)"
+        let ast =  [
+          [
+            "function-call",
+            [
+              "invocable",
+              ["symbol", "foo"]
+            ],
+            [
+              "argument-list",
+              [
+                [
+                  "function-call",
+                  [
+                    "invocable",
+                    ["symbol", "bar"]
+                  ],
+                  [
+                    "argument-list",
+                    [
+                      ["symbol", "x"]
+                    ]
+                  ]
+                ],
+                ["symbol", "y"]
+              ]
+            ]
+          ]
+        ];
+        let result = translate(ast);
+
+        it("converts the ast into a nested js function call", () => {
+          assert.equal(result, `(foo )((bar )(x ) ,y );\n`);
+        });
+      });
+
+      describe("instance method", () => {
+        let ast = [
+          [
+            "function-call",
+            [
+              "invocable",
+              ["symbol", ".concat"]
+            ],
+            [
+              "argument-list",
+              [
+                ["string", "foo"],
+                ["string", " bar"]
+              ]
+            ]
+          ]
+        ];
+        let result = translate(ast);
+
+        it("invokes the given method on the first argument and passes the remaining arguments", () => {
+          assert.equal(result, `((\`foo\` ).concat (\` bar\` ));\n`);
+        });
+      });
+
+      describe("constructors", () => {
+        let ast = [
+          [
+            "function-call",
+            [
+              "invocable",
+              ["symbol", "Foo."]
+            ],
+            [
+              "argument-list",
+              [
+                ["string", "bar"],
+                ["string", " baz"]
+              ]
+            ]
+          ]
+        ];
+        let result = translate(ast);
+
+        it("instantiates the constructor with the given arguments", () => {
+          assert.equal(result, "(new Foo (`bar` ,` baz` ));\n");
+        });
+      });
+    });
+
+    describe("function declaration", () => {
+      describe("with block", () => {
+        describe("with arguments", () => {
+          let ast = [
+            [
+              "function-call",
+              [
+                "invocable",
+                ["symbol", "fn"]
+              ],
+              [
+                "argument-list",
+                [
+                  ["symbol", "x"],
+                  ["symbol", "y"],
+                  [
+                    "block-declaration",
+                    [
+                      ["number", "1"],
+                      ["number", "2"]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ];
+          let result = translate(ast);
+
+          it("translates the function declaration", () => {
+            assert.equal(result, `((x ,y ) => {1;\nreturn 2;\n} );\n`);
+          });
+        });
+
+        describe("without arguments", () => {
+          let ast = [
+            [
+              "function-call",
+              [
+                "invocable",
+                ["symbol", "fn"]
+              ],
+              [
+                "argument-list",
+                [
+                  [
+                    "block-declaration",
+                    [
+                      ["number", "1"]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ];
+          let result = translate(ast);
+
+          it("translates the function declaration", () => {
+            assert.equal(result, `(() => {return 1;\n} );\n`);
+          });
+        });
+
+        // This one is mainly to check for the correct placement
+        // of "return".
+        describe("arbitrary, complex example", () => {
+          // This ast is
+          // fn(vector ~{
+          //   vector(1)
+          // })(fn(x ~{[x]}))
+          let ast = [
+            [
+              "function-call",
+              [
+                "invocable",
+                [
+                  "function-call",
+                  [
+                    "invocable",
+                    ["symbol", "fn"]
+                  ],
+                  [
+                    "argument-list",
+                    [
+                      ["symbol", "vector"],
+                      [
+                        "block-declaration",
+                        [
+                          [
+                            "function-call",
+                            [
+                              "invocable",
+                              ["symbol", "vector"]
+                            ],
+                            [
+                              "argument-list",
+                              [
+                                ["number", "1"]
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              [
+                "argument-list",
+                [
+                  [
+                    "function-call",
+                    [
+                      "invocable",
+                      ["symbol", "fn"]
+                    ],
+                    [
+                      "argument-list",
+                      [
+                        ["symbol", "x"],
+                        [
+                          "block-declaration",
+                          [
+                            [
+                              "array-literal",
+                              [
+                                ["symbol", "x"]
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ];
+          let result = translate(ast);
+
+          it("translates the ast correctly", () => {
+            assert.equal(result, `(((vector ) => {return (vector )(1 );
+} ) )(((x ) => {return [x ];
+} ) );
+`);
+          });
+        });
+      });
+
+      describe("without block", () => {
+        describe("with arguments", () => {
+          let ast = [
+            [
+              "function-call",
+              [
+                "invocable",
+                ["symbol", "fn"]
+              ],
+              [
+                "argument-list",
+                [
+                  ["symbol", "x"],
+                  ["symbol", "y"]
+                ]
+              ]
+            ]
+          ];
+
+          it("throws without a block", () => {
+            assert.throws(() => {
+              translate(ast);
+            }, /^Function declaration requires code block$/);
+          });
+        });
+
+        describe("without arguments", () => {
+          let ast = [
+            [
+              "function-call",
+              [
+                "invocable",
+                ["symbol", "fn"]
+              ],
+              [
+                "argument-list",
+                []
+              ]
+            ]
+          ];
+
+          it("throws without a block", () => {
+            assert.throws(() => {
+              translate(ast);
+            }, /^Function declaration requires code block$/);
+          });
+        });
+      });
     });
   });
 
@@ -150,91 +436,6 @@ describe("Translator", () => {
     });
   });
 
-  describe("nested, multi-parameter fn call", () => {
-    // This is "foo(bar(x) y)"
-    let ast =  [
-      [
-        "function-call",
-        [
-          "invocable",
-          ["symbol", "foo"]
-        ],
-        [
-          "argument-list",
-          [
-            [
-              "function-call",
-              [
-                "invocable",
-                ["symbol", "bar"]
-              ],
-              [
-                "argument-list",
-                [
-                  ["symbol", "x"]
-                ]
-              ]
-            ],
-            ["symbol", "y"]
-          ]
-        ]
-      ]
-    ];
-    let result = translate(ast);
-
-    it("converts the ast into a nested js function call", () => {
-      assert.equal(result, `(foo )((bar )(x ) ,y );\n`);
-    });
-  });
-
-  describe("instance method", () => {
-    let ast = [
-      [
-        "function-call",
-        [
-          "invocable",
-          ["symbol", ".concat"]
-        ],
-        [
-          "argument-list",
-          [
-            ["string", "foo"],
-            ["string", " bar"]
-          ]
-        ]
-      ]
-    ];
-    let result = translate(ast);
-
-    it("invokes the given method on the first argument and passes the remaining arguments", () => {
-      assert.equal(result, `((\`foo\` ).concat (\` bar\` ));\n`);
-    });
-  });
-
-  describe("constructors", () => {
-    let ast = [
-      [
-        "function-call",
-        [
-          "invocable",
-          ["symbol", "Foo."]
-        ],
-        [
-          "argument-list",
-          [
-            ["string", "bar"],
-            ["string", " baz"]
-          ]
-        ]
-      ]
-    ];
-    let result = translate(ast);
-
-    it("instantiates the constructor with the given arguments", () => {
-      assert.equal(result, "(new Foo (`bar` ,` baz` ));\n");
-    });
-  });
-
   describe("blocks", () => {
     let ast = [
       [
@@ -293,203 +494,6 @@ describe("Translator", () => {
 
     it("translates the set into a JS Set constructor invocation", () => {
       assert.equal(result, `new Set([1 ,\`foo\` ,[bar ,Symbol.for("baz") ] ]);\n`);
-    });
-  });
-
-  describe("function declaration", () => {
-    describe("with block", () => {
-      describe("with arguments", () => {
-        let ast = [
-          [
-            "function-call",
-            [
-              "invocable",
-              ["symbol", "fn"]
-            ],
-            [
-              "argument-list",
-              [
-                ["symbol", "x"],
-                ["symbol", "y"],
-                [
-                  "block-declaration",
-                  [
-                    ["number", "1"],
-                    ["number", "2"]
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ];
-        let result = translate(ast);
-
-        it("translates the function declaration", () => {
-          assert.equal(result, `((x ,y ) => {1;\nreturn 2;\n} );\n`);
-        });
-      });
-
-      describe("without arguments", () => {
-        let ast = [
-          [
-            "function-call",
-            [
-              "invocable",
-              ["symbol", "fn"]
-            ],
-            [
-              "argument-list",
-              [
-                [
-                  "block-declaration",
-                  [
-                    ["number", "1"]
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ];
-        let result = translate(ast);
-
-        it("translates the function declaration", () => {
-          assert.equal(result, `(() => {return 1;\n} );\n`);
-        });
-      });
-
-      // This one is mainly to check for the correct placement
-      // of "return".
-      describe("arbitrary, complex example", () => {
-        // This ast is
-        // fn(vector ~{
-        //   vector(1)
-        // })(fn(x ~{[x]}))
-        let ast = [
-          [
-            "function-call",
-            [
-              "invocable",
-              [
-                "function-call",
-                [
-                  "invocable",
-                  ["symbol", "fn"]
-                ],
-                [
-                  "argument-list",
-                  [
-                    ["symbol", "vector"],
-                    [
-                      "block-declaration",
-                      [
-                        [
-                          "function-call",
-                          [
-                            "invocable",
-                            ["symbol", "vector"]
-                          ],
-                          [
-                            "argument-list",
-                            [
-                              ["number", "1"]
-                            ]
-                          ]
-                        ]
-                      ]
-                    ]
-                  ]
-                ]
-              ]
-            ],
-            [
-              "argument-list",
-              [
-                [
-                  "function-call",
-                  [
-                    "invocable",
-                    ["symbol", "fn"]
-                  ],
-                  [
-                    "argument-list",
-                    [
-                      ["symbol", "x"],
-                      [
-                        "block-declaration",
-                        [
-                          [
-                            "array-literal",
-                            [
-                              ["symbol", "x"]
-                            ]
-                          ]
-                        ]
-                      ]
-                    ]
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ];
-        let result = translate(ast);
-
-        it("translates the ast correctly", () => {
-          assert.equal(result, `(((vector ) => {return (vector )(1 );
-} ) )(((x ) => {return [x ];
-} ) );
-`);
-        });
-      });
-    });
-
-    describe("without block", () => {
-      describe("with arguments", () => {
-        let ast = [
-          [
-            "function-call",
-            [
-              "invocable",
-              ["symbol", "fn"]
-            ],
-            [
-              "argument-list",
-              [
-                ["symbol", "x"],
-                ["symbol", "y"]
-              ]
-            ]
-          ]
-        ];
-
-        it("throws without a block", () => {
-          assert.throws(() => {
-            translate(ast);
-          }, /^Function declaration requires code block$/);
-        });
-      });
-
-      describe("without arguments", () => {
-        let ast = [
-          [
-            "function-call",
-            [
-              "invocable",
-              ["symbol", "fn"]
-            ],
-            [
-              "argument-list",
-              []
-            ]
-          ]
-        ];
-
-        it("throws without a block", () => {
-          assert.throws(() => {
-            translate(ast);
-          }, /^Function declaration requires code block$/);
-        });
-      });
     });
   });
 });
