@@ -646,5 +646,31 @@ describe("Translator", () => {
         }, /^Uneven number of elements in let$/);
       });
     });
+
+    describe("var", () => {
+      describe("simple variable declaration", () => {
+        let ast = [
+          [
+            "function-call",
+            [
+              "invocable",
+              ["symbol", "def"]
+            ],
+            [
+              "argument-list",
+              [
+                ["symbol", "a"],
+                ["number", "1"]
+              ]
+            ]
+          ]
+        ];
+        let result = translate(ast);
+
+        it("translates the variable declaration", () => {
+          assert.equal(result, `(let a  = 1 );\n`);
+        });
+      });
+    });
   });
 });

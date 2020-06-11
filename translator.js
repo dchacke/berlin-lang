@@ -128,6 +128,12 @@ let translate = (ast, depth = 0, parentType) => {
           // We want to invoke an operator
           if (invocable[1] === "invoke-operator") {
             result = `(${translate([fnArgs[1]], depth + 1)} ${fnArgs[0][1]} ${translate([fnArgs[2]], depth + 1)})`;
+          // We want to declare a variable
+          } else if (invocable[1] === "def") {
+            let varName = fnArgs[0];
+            let val = fnArgs[1];
+
+            result = `(let ${translate([varName], depth + 1)} = ${translate([val], depth + 1)})`;
           // We want to set a field
           } else if (invocable[1] === "set") {
             let settable = fnArgs[0];
