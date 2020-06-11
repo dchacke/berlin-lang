@@ -126,7 +126,7 @@ let translate = (ast, depth = 0, parentType) => {
         // No, it's really a function *invocation*
         } else {
           // We want to invoke an operator
-          if (invocable[1] === "operator") {
+          if (invocable[1] === "invoke-operator") {
             result = `(${translate([fnArgs[1]], depth + 1)} ${fnArgs[0][1]} ${translate([fnArgs[2]], depth + 1)})`;
           // We want to set a field
           } else if (invocable[1] === "set") {

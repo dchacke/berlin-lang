@@ -498,13 +498,13 @@ describe("Translator", () => {
   });
 
   describe("special forms (other than function declarations)", () => {
-    describe("operator", () => {
+    describe("invoke-operator", () => {
       let ast = [
         [
           "function-call",
           [
             "invocable",
-            ["symbol", "operator"]
+            ["symbol", "invoke-operator"]
           ],
           [
             "argument-list",
