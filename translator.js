@@ -135,6 +135,59 @@ let translate = (ast, depth = 0, parentType) => {
             let val = fnArgs[2];
 
             result = `((${translate([settable], depth + 1)})[(${translate([field], depth + 1)})] = (${translate([val], depth + 1)}))`;
+          // We are declaring variables in a let-block
+          } else if (invocable[1] === "let") {
+            let declarations = pairwise(fnArgs[0][1]);
+            let block = fnArgs[1][1];
+
+            // First, we transform the declarations and block
+            // into a new structure which we can then translate.
+            // (Doing this feels macro-ish. I need to look into
+            // supporting macros. Maybe all special forms can
+            // be rewritten to use macros instead and then they
+            // don't even need to be part of the compiler.)
+            let build = (declarations, block) => {
+              if (declarations.length === 0) {
+                return block;
+              }
+
+              let declaration = declarations[0];
+              let rest = declarations.slice(1);
+
+              return [
+                [
+                  "function-call",
+                  [
+                    "invocable",
+                    [
+                      "function-call",
+                      [
+                        "invocable",
+                        ["symbol", "fn"]
+                      ],
+                      [
+                        "argument-list",
+                        [
+                          declaration[0],
+                          [
+                            "block-declaration",
+                            build(rest, block)
+                          ]
+                        ]
+                      ]
+                    ]
+                  ],
+                  [
+                    "argument-list",
+                    [declaration[1]]
+                  ]
+                ]
+              ]
+            };
+
+            let tree = build(declarations, block);
+
+            result = "(" + translate(tree, depth + 1) + ")";
           // We are invoking an instance method
           } else if (invocable[1][0] === ".") {
             result = "(" + "(" + translate([fnArgs[0]], depth + 1) + ")" + translate([invocable], depth + 1) + "(" + fnArgs.slice(1).reduce(conjoin_children(depth), "") + ")" + ")";
@@ -175,7 +228,6 @@ let translate = (ast, depth = 0, parentType) => {
     } else {
       returnStatement = "";
     }
-
 
     return acc + returnStatement + result + (eol ? ";\n" : " ");
   }, "");

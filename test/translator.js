@@ -549,8 +549,66 @@ describe("Translator", () => {
       ];
       let result = translate(ast);
 
-      it("translates the set invocation into an assignment", () => {
+      it("translates the call to set into an assignment", () => {
         assert.equal(result, `((new Map([[1 ,2 ] ]) )[(1 )] = (3 ));\n`);
+      });
+    });
+
+    describe("let", () => {
+      let ast = [
+        [
+          "function-call",
+          [
+            "invocable",
+            ["symbol", "let"]
+          ],
+          [
+            "argument-list",
+            [
+              [
+                "array-literal",
+                [
+                  ["symbol", "a"],
+                  ["number", "1"],
+
+                  ["symbol", "b"],
+                  ["number", "2"],
+
+                  ["symbol", "c"],
+                  [
+                    "function-call",
+                    [
+                      "invocable",
+                      ["symbol", "plus"]
+                    ],
+                    [
+                      "argument-list",
+                      [
+                        ["symbol", "a"],
+                        ["symbol", "b"]
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              [
+                "block-declaration",
+                [
+                  ["symbol", "c"]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ];
+      let result = translate(ast);
+
+      it("translates the call to let into nested functions", () => {
+        assert.equal(result, `((((a ) => {return (((b ) => {return (((c ) => {return c;
+} ) )((plus )(a ,b ) );
+} ) )(2 );
+} ) )(1 ) );
+`);
       });
     });
   });
