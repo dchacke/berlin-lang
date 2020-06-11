@@ -137,6 +137,10 @@ let translate = (ast, depth = 0, parentType) => {
             result = `((${translate([settable], depth + 1)})[(${translate([field], depth + 1)})] = (${translate([val], depth + 1)}))`;
           // We are declaring variables in a let-block
           } else if (invocable[1] === "let") {
+            if (fnArgs[0][1].length % 2 !== 0) {
+              throw "Uneven number of elements in let";
+            }
+
             let declarations = pairwise(fnArgs[0][1]);
             let block = fnArgs[1][1];
 

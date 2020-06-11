@@ -611,5 +611,40 @@ describe("Translator", () => {
 `);
       });
     });
+
+    describe("uneven number of elements in array", () => {
+      let ast = [
+        [
+          "function-call",
+          [
+            "invocable",
+            ["symbol", "let"]
+          ],
+          [
+            "argument-list",
+            [
+              [
+                "array-literal",
+                [
+                  ["symbol", "a"],
+                ]
+              ],
+              [
+                "block-declaration",
+                [
+                  ["symbol", "c"]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ];
+
+      it("throws an exception requesting an even number of elements", () => {
+        assert.throws(() => {
+          translate(ast);
+        }, /^Uneven number of elements in let$/);
+      });
+    });
   });
 });
