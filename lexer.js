@@ -207,6 +207,8 @@ module.exports = { lex };
 // Destructuring
 // ✓ JS interop with .fn, .-attr, fn. for constructors, and set! like in ClojureScript
 // ✓ How to use JS operators like +, -, etc?
+// var (as a single statement, no block)
+// if (takes at least one block, optionally a second one)
 //
 // No statements, no expressions. Only functions.
 //
