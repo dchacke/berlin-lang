@@ -141,6 +141,27 @@ let translate = (ast, depth = 0, parentType) => {
             let val = fnArgs[2];
 
             result = `((${translate([settable], depth + 1)})[(${translate([field], depth + 1)})] = (${translate([val], depth + 1)}))`;
+          // We are declaring a conditional
+          } else if (invocable[1] === "if") {
+            if (fnArgs.length < 2) {
+              throw "If form requires at least two arguments";
+            }
+
+            let condition = fnArgs[0];
+            let trueBranch = fnArgs[1];
+            let falseBranch = fnArgs[2];
+
+            if (falseBranch) {
+              result = `(if (${translate([condition], depth + 1)}) {
+  (() => ${translate([trueBranch], depth + 1)})();
+} else {
+  (() => ${translate([falseBranch], depth + 1)})();
+})`;
+            } else {
+              result = `(if (${translate([condition], depth + 1)}) {
+  (() => ${translate([trueBranch], depth + 1)})();
+})`;
+            }
           // We are declaring variables in a let-block
           } else if (invocable[1] === "let") {
             if (fnArgs[0][1].length % 2 !== 0) {

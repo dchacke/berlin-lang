@@ -672,5 +672,106 @@ describe("Translator", () => {
         });
       });
     });
+
+    describe("if", () => {
+      describe("with else branch", () => {
+        let ast = [
+          [
+            "function-call",
+            [
+              "invocable",
+              ["symbol", "if"]
+            ],
+            [
+              "argument-list",
+              [
+                ["boolean-literal", "true"],
+                [
+                  "block-declaration",
+                  [
+                    ["number", "1"]
+                  ]
+                ],
+                [
+                  "block-declaration",
+                  [
+                    ["number", "2"]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ];
+        let result = translate(ast);
+
+        it("translates the if special form", () => {
+          assert.equal(result, `(if (true ) {
+  (() => {return 1;
+} )();
+} else {
+  (() => {return 2;
+} )();
+});
+`);
+        });
+      });
+
+      describe("without else branch", () => {
+        let ast = [
+          [
+            "function-call",
+            [
+              "invocable",
+              ["symbol", "if"]
+            ],
+            [
+              "argument-list",
+              [
+                ["boolean-literal", "true"],
+                [
+                  "block-declaration",
+                  [
+                    ["number", "1"]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ];
+        let result = translate(ast);
+
+        it("translates the if special form", () => {
+          assert.equal(result, `(if (true ) {
+  (() => {return 1;
+} )();
+});
+`);
+        });
+      });
+
+      describe("without if branch", () => {
+        let ast = [
+          [
+            "function-call",
+            [
+              "invocable",
+              ["symbol", "if"]
+            ],
+            [
+              "argument-list",
+              [
+                ["boolean-literal", "true"]
+              ]
+            ]
+          ]
+        ];
+
+        it("throws", () => {
+          assert.throws(() => {
+            translate(ast);
+          }, /^If form requires at least two arguments$/);
+        });
+      });
+    });
   });
 });
