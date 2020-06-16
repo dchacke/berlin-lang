@@ -534,13 +534,7 @@ describe("Translator", () => {
           [
             "argument-list",
             [
-              [
-                "map-literal",
-                [
-                  ["number", "1"],
-                  ["number", "2"]
-                ]
-              ],
+              ["symbol", "a"],
               ["number", "1"],
               ["number", "3"]
             ]
@@ -550,7 +544,7 @@ describe("Translator", () => {
       let result = translate(ast);
 
       it("translates the call to set into an assignment", () => {
-        assert.equal(result, `((new Map([[1 ,2 ] ]) )[(1 )] = (3 ));\n`);
+        assert.equal(result, `((a )[(1 )] = (3 ));\n`);
       });
     });
 
