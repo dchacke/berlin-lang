@@ -1,12 +1,12 @@
 {
-  "name": "tbd",
+  "name": "berlin-lang",
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "mocha"
   },
-  "author": "dennis hackethal",
+  "author": "Dennis Hackethal",
   "license": "ISC",
   "devDependencies": {
     "mocha": "^7.2.0"
