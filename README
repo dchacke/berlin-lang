@@ -1,5 +1,11 @@
 # Berlin Lang
 
+## Credit
+
+The Berlin language is intended to be a hybrid between Clojure and JavaScript. Indeed, its transpiler generates JavaScript source code.
+
+References to each specific Clojure function that has inspired the Berlin language are too numerous to mention individually and every time, but you will see Clojure's influence in many of Berlin's functions and special forms, particularly `def`, `let`, and `fn`. If a Berlin function or special form exists by the same name in Clojure, it was probably inspired by that Clojure counterpart.
+
 ## ISC License
 
 Copyright 2020 Dennis Hackethal
