@@ -9,9 +9,8 @@
   "author": "Dennis Hackethal",
   "license": "ISC",
   "devDependencies": {
+    "lodash": "^4.17.15",
     "mocha": "^7.2.0"
   },
-  "dependencies": {
-    "lodash": "^4.17.15"
-  }
+  "dependencies": {}
 }
