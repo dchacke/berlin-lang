@@ -152,15 +152,15 @@ let translate = (ast, depth = 0, parentType) => {
             let falseBranch = fnArgs[2];
 
             if (falseBranch) {
-              result = `(if (${translate([condition], depth + 1)}) {
+              result = `if (${translate([condition], depth + 1)}) {
   (() => ${translate([trueBranch], depth + 1)})();
 } else {
   (() => ${translate([falseBranch], depth + 1)})();
-})`;
+}`;
             } else {
-              result = `(if (${translate([condition], depth + 1)}) {
+              result = `if (${translate([condition], depth + 1)}) {
   (() => ${translate([trueBranch], depth + 1)})();
-})`;
+}`;
             }
           // We are declaring variables in a let-block
           } else if (invocable[1] === "let") {

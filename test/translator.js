@@ -722,13 +722,13 @@ describe("Translator", () => {
         let result = translate(ast);
 
         it("translates the if special form", () => {
-          assert.equal(result, `(if (true ) {
+          assert.equal(result, `if (true ) {
   (() => {return 1;
 } )();
 } else {
   (() => {return 2;
 } )();
-});
+};
 `);
         });
       });
@@ -758,10 +758,10 @@ describe("Translator", () => {
         let result = translate(ast);
 
         it("translates the if special form", () => {
-          assert.equal(result, `(if (true ) {
+          assert.equal(result, `if (true ) {
   (() => {return 1;
 } )();
-});
+};
 `);
         });
       });
