@@ -133,7 +133,7 @@ let translate = (ast, depth = 0, parentType) => {
             let varName = fnArgs[0];
             let val = fnArgs[1];
 
-            result = `(let ${translate([varName], depth + 1)} = ${translate([val], depth + 1)})`;
+            result = `let ${translate([varName], depth + 1)} = ${translate([val], depth + 1)}`;
           // We want to set a field
           } else if (invocable[1] === "set") {
             let settable = fnArgs[0];

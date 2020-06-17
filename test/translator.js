@@ -662,7 +662,7 @@ describe("Translator", () => {
         let result = translate(ast);
 
         it("translates the variable declaration", () => {
-          assert.equal(result, `(let a  = 1 );\n`);
+          assert.equal(result, `let a  = 1 ;\n`);
         });
       });
     });
