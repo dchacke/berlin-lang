@@ -55,3 +55,28 @@ fn(x y ~{
    {x y}
    1 2 #{3 4 5}]
 })(:foo "bar")
+
+
+(defn map [f coll]
+  (if (empty? coll)
+    coll
+    (cons (f (first coll)) (map f (rest coll)))))
+
+def(= fn(a b ~{invoke-operator("=" a b)}))
+def(zero? fn(a ~{= a 0}))
+def(empty fn(coll ~{zero?(.-length(coll))}))
+def(first fn(coll ~{.-0(coll)}))
+def(rest fn(coll ~{.slice(coll 1)}))
+def(cons fn(el coll ~{[el ...coll]}))
+def(log fn(...args ~{.log(console ...args)}))
+def(plus fn(a b ~{invoke-operator("+" a b)}))
+def(inc fn(a ~{plus a 1}))
+
+log(inc(1))
+
+def(map fn(f coll ~{if(empty(coll)
+                       ~{[]}
+                       ~{let([el first(coll)]
+                             ~{cons(f(el) map(f rest(coll)))})})}))
+
+log(map(inc [1 2 3]))
