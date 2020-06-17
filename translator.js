@@ -219,9 +219,18 @@ let translate = (ast, depth = 0, parentType) => {
             let tree = build(declarations, block);
 
             result = "(" + translate(tree, depth + 1) + ")";
-          // We are invoking an instance method
+          // We are reading or setting a field
           } else if (invocable[1][0] === ".") {
-            result = "(" + "(" + translate([fnArgs[0]], depth + 1) + ")" + translate([invocable], depth + 1) + "(" + fnArgs.slice(1).reduce(conjoin_children(depth), "") + ")" + ")";
+            // We are reading a field
+            if (invocable[1][1] === "-") {
+              invocable[1] = invocable[1].slice(2);
+              invocable[0] = "string";
+
+              result = `((${translate([fnArgs[0]], depth + 1)})[(${translate([invocable], depth + 1)})])`;
+            } else {
+              // We are invoking an instance method
+              result = "(" + "(" + translate([fnArgs[0]], depth + 1) + ")" + translate([invocable], depth + 1) + "(" + fnArgs.slice(1).reduce(conjoin_children(depth), "") + ")" + ")";
+            }
           // We are instantiating a constructor
           } else if (invocable[1][invocable[1].length - 1] === ".") {
             invocable[1] = invocable[1].slice(0, -1);

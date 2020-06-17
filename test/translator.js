@@ -548,6 +548,29 @@ describe("Translator", () => {
       });
     });
 
+    describe("access", () => {
+      let ast = [
+        [
+          "function-call",
+          [
+            "invocable",
+            ["symbol", ".-foo"]
+          ],
+          [
+            "argument-list",
+            [
+              ["symbol", "a"]
+            ]
+          ]
+        ]
+      ];
+      let result = translate(ast);
+
+      it("translates into a field access", () => {
+        assert.equal(result, `((a )[(\`foo\` )]);\n`);
+      });
+    });
+
     describe("let", () => {
       let ast = [
         [
