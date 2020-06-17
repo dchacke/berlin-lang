@@ -1,5 +1,31 @@
 # Berlin Lang
 
+## Description
+
+Berlin is a small, functional programming language that lives at the intersection between JavaScript and Clojure. It comes with a transpiler that spits out JavaScript code.
+
+## Usage
+
+To transpile a .berlin file, use the [Berlin CLI](https://github.com/dchacke/berlin-cli).
+
+For direct usage within JavaScript, do the following:
+
+First, install the language by running
+
+```bash
+$ npm install berlin-lang
+```
+
+Then, in your JavaScript file, write:
+
+```js
+let { transpile } = require("berlin-lang/transpiler");
+transpile("def(foo 1)");
+// => "let foo = 1;"
+```
+
+The `transpile` function takes a string of Berlin source code and return a string of the equivalent JavaScript source code. You may then `eval` that source code.
+
 ## Credit
 
 The Berlin language is intended to be a hybrid between Clojure and JavaScript. Indeed, its transpiler generates JavaScript source code.
