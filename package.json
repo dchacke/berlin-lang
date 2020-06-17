@@ -1,7 +1,7 @@
 {
   "name": "berlin-lang",
   "version": "0.1.1",
-  "description": "",
+  "description": "The Berlin programming language",
   "main": "index.js",
   "scripts": {
     "test": "mocha"
