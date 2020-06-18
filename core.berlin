@@ -2,9 +2,12 @@ def(= fn(a b ~{invoke-operator("===" a b)}))
 
 def(zero? fn(a ~{=(a 0)}))
 
+def(empty? fn(coll ~{zero?(.-length(coll))}))
+
 ; Export the above functions
 def(exp Object.())
 set(exp "=" =)
 set(exp "zero?" zero?)
+set(exp "empty?" empty?)
 
 set(module "exports" exp)
