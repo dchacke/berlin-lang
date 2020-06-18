@@ -5,7 +5,7 @@ let _ = require("lodash");
 
 describe("Lexer", () => {
   describe("primitives", () => {
-    let source = `123 :foo "bar" baz 4.5`;
+    let source = `123 :foo "bar" baz 4.5 -1 +2`;
     let result = lex(source).result;
 
     it("tokenizes primitives", () => {
@@ -14,7 +14,9 @@ describe("Lexer", () => {
         ["keyword", "foo"],
         ["string", "bar"],
         ["symbol", "baz"],
-        ["number", "4.5"]
+        ["number", "4.5"],
+        ["number", "-1"],
+        ["number", "+2"]
       ]));
     });
   });

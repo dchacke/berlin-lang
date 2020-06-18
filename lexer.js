@@ -10,6 +10,8 @@ let remove_comments = source => {
 
 let last = a => a[a.length - 1];
 
+let isNumber = a => /\d/.test(a);
+
 // Takes a source string and turns
 // it into a sequence of tokens.
 let lex = source => {
@@ -18,7 +20,7 @@ let lex = source => {
 
   return source
     .split("")
-    .reduce((acc, curr) => {
+    .reduce((acc, curr, i) => {
       switch (last(acc.mode)) {
         case "number": {
           // We want to close the number and ignore
@@ -139,7 +141,10 @@ let lex = source => {
 
             return acc;
           // We want to open a number
-          } else if (/\d/.test(curr)) {
+          } else if (
+            isNumber(curr) ||
+            (isNumber(source[i + 1]) && (curr === "-" || curr === "+"))
+          ) {
             acc.mode.push("number");
             // The current character is already the first
             // character in the result

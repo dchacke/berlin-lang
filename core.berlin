@@ -6,11 +6,35 @@ def(empty? fn(coll ~{zero?(.-length(coll))}))
 
 def(first fn(coll ~{.-0(coll)}))
 
+def(rest fn(coll ~{.slice(coll 1)}))
+
+def(cons fn(el coll ~{[el ...coll]}))
+
+def(log fn(...args ~{.log(console ...args)}))
+
+def(+ fn(a b ~{invoke-operator("+" a b)}))
+
 ; Export the above functions
 def(exp Object.())
 set(exp "=" =)
 set(exp "zero?" zero?)
 set(exp "empty?" empty?)
 set(exp "first" first)
+set(exp "rest" rest)
+set(exp "cons" cons)
+set(exp "log" log)
+set(exp "+" +)
 
 set(module "exports" exp)
+
+; def(plus fn(a b ~{invoke-operator("+" a b)}))
+; def(inc fn(a ~{plus(a 1)}))
+;
+; log(inc(1))
+;
+; def(map fn(f coll ~{if(empty(coll)
+;                        ~{[]}
+;                        ~{let([el first(coll)]
+;                              ~{cons(f(el) map(f rest(coll)))})})}))
+;
+; log(map(inc [1 2 3]))

@@ -585,11 +585,31 @@ return ((((c ) => {return c;
   });
 
   describe("numbers", () => {
-    let ast = [["number", "12"]];
-    let result = translate(ast);
+    describe("plain", () => {
+      let ast = [["number", "12"]];
+      let result = translate(ast);
 
-    it("does not touch numbers", () => {
-      assert.equal(result, "12;\n");
+      it("does not touch the number", () => {
+        assert.equal(result, "12;\n");
+      });
+    });
+
+    describe("positive", () => {
+      let ast = [["number", "+12"]];
+      let result = translate(ast);
+
+      it("does not touch the number", () => {
+        assert.equal(result, "+12;\n");
+      });
+    });
+
+    describe("negative", () => {
+      let ast = [["number", "-12"]];
+      let result = translate(ast);
+
+      it("does not touch the number", () => {
+        assert.equal(result, "-12;\n");
+      });
     });
   });
 

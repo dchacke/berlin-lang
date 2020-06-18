@@ -1,10 +1,14 @@
 def(assert require("assert"))
+def(_ require("lodash"))
 def(core require("../core"))
 
 def(= .-=(core))
 def(zero? .-zero?(core))
 def(empty? .-empty?(core))
 def(first .-first(core))
+def(rest .-rest(core))
+def(cons .-cons(core))
+def(+ .-+(core))
 
 describe("core" fn(~{
   describe("=" fn(~{
@@ -40,6 +44,28 @@ describe("core" fn(~{
   describe("first" fn(~{
     it("returns the first element in an array" fn(~{
       .equal(assert first([1 2 3]) 1)
+    }))
+  }))
+
+  describe("rest" fn(~{
+    it("returns all but the first element in an array" fn(~{
+      assert(.isEqual(_ rest([1 2 3]) [2 3]))
+    }))
+  }))
+
+  describe("cons" fn(~{
+    it("constructs a new array with the given element at the beginning" fn(~{
+      assert(.isEqual(_ cons(1 [2 3]) [1 2 3]))
+    }))
+  }))
+
+  describe("+" fn(~{
+    it("adds two given numbers" fn(~{
+      .equal(assert +(1 2) 3)
+    }))
+
+    it("works for negative numbers, too" fn(~{
+      .equal(assert +(-1 -2) -3)
     }))
   }))
 }))
