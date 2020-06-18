@@ -1,6 +1,4 @@
-def(= fn(a b ~{
-        invoke-operator("===" a b)
-      }))
+def(= fn(a b ~{invoke-operator("===" a b)}))
 
 def(zero? fn(a ~{=(a 0)}))
 
