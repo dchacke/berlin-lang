@@ -1,0 +1,16 @@
+def(assert require("assert"))
+def(core require("../core"))
+
+def(= .-=(core))
+
+describe("core" fn(~{
+  describe("=" fn(~{
+    it("returns true for equal things" fn(~{
+      .equal(assert =(1 1) true)
+    }))
+
+    it("returns false for unequal things" fn(~{
+      .equal(assert =(1 2) false)
+    }))
+  }))
+}))

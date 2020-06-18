@@ -1,0 +1,9 @@
+def(= fn(a b ~{
+        invoke-operator("===" a b)
+      }))
+
+; Export the above functions
+def(exp Object.())
+set(exp "=" =)
+
+set(module "exports" exp)

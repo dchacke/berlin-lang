@@ -4,6 +4,7 @@
   "description": "The Berlin programming language",
   "main": "index.js",
   "scripts": {
+    "pretest": "berlin core.berlin core.js && berlin test/core.berlin test/core.js",
     "test": "mocha"
   },
   "author": "Dennis Hackethal",
