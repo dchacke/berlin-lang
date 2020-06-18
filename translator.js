@@ -60,9 +60,14 @@ let translate = (ast, depth = 0, parentType = null, symbolWhitelist = new Set())
     switch(type) {
       case "symbol": {
         let symbol = children;
+        let symbolCheck = symbol;
 
-        if (symbolWhitelist.size && !symbolWhitelist.has(symbol)) {
-          throw `Cannot access symbol ${symbol} in strict function. Pass ${symbol} in fn! declaration instead or declare it using let block`;
+        if (symbol.startsWith("...")) {
+          symbolCheck = symbol.slice(3);
+        }
+
+        if (symbolWhitelist.size && !symbolWhitelist.has(symbolCheck) && !symbolCheck.startsWith(".")) {
+          throw `Cannot access symbol ${symbolCheck} in strict function. Pass ${symbolCheck} in fn! declaration instead or declare it using let block`;
         }
 
         // If what follows is a function declaration,
@@ -134,7 +139,10 @@ let translate = (ast, depth = 0, parentType = null, symbolWhitelist = new Set())
             let standardSymbols = ["fn", "fn!", "let", "def", "if"];
 
             whitelist = new Set(
-              args.map(last).concat(standardSymbols)
+              args
+                .map(last)
+                .map(arg => arg.startsWith("...") ? arg.slice(3) : arg)
+                .concat(standardSymbols)
             );
           } else {
             whitelist = new Set();

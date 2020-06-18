@@ -364,11 +364,46 @@ describe("Translator", () => {
               [
                 // a is passed
                 ["symbol", "a"],
+                ["symbol", "...args"],
                 [
                   "block-declaration",
                   [
                     // Accessing a should be fine
                     ["symbol", "a"],
+                    // Accessing args should be fine,
+                    // both with and without splat
+                    ["symbol", "args"],
+                    ["symbol", "...args"],
+                    // All of the following should be fine
+                    // (they weren't explicitly passed, but
+                    // they either come as part of an object,
+                    // or they are being splat).
+                    [
+                      "function-call",
+                      [
+                        "invocable",
+                        ["symbol", ".foo"]
+                      ],
+                      [
+                        "argument-list",
+                        [
+                          ["symbol", "a"],
+                        ]
+                      ]
+                    ],
+                    [
+                      "function-call",
+                      [
+                        "invocable",
+                        ["symbol", ".-foo"]
+                      ],
+                      [
+                        "argument-list",
+                        [
+                          ["symbol", "a"],
+                        ]
+                      ]
+                    ],
                     [
                       "function-call",
                       [
@@ -410,7 +445,8 @@ describe("Translator", () => {
                               // Accessing c should be fine because
                               // it was declared within the fn! using
                               // a let block
-                              ["symbol", "c"]
+                              ["symbol", "c"],
+                              ["symbol", "...c"]
                             ]
                           ]
                         ]
@@ -425,11 +461,16 @@ describe("Translator", () => {
         let result = translate(ast);
 
         it("works and creates the same outpout as fn", () => {
-          assert.equal(result, `((a ) => {a;
+          assert.equal(result, `((a ,...args ) => {a;
+args;
+...args;
+((a ).foo ());
+((a )[(\`foo\` )]);
 let b  = 3 ;
 1;
 b;
-return ((((c ) => {return c;
+return ((((c ) => {c;
+return ...c;
 } ) )(2 ) );
 } );
 `);
@@ -522,6 +563,38 @@ return ((((c ) => {return c;
             assert.throws(() => {
               translate(ast);
             }, /^Cannot access symbol c in strict function. Pass c in fn! declaration instead or declare it using let block$/);
+          });
+        });
+
+        describe("splat", () => {
+          let ast = [
+            [
+              "function-call",
+              [
+                "invocable",
+                ["symbol", "fn!"]
+              ],
+              [
+                "argument-list",
+                [
+                  [
+                    "block-declaration",
+                    [
+                      // Accessing a should throw, even
+                      // though it starts with a dot, which
+                      // would get .-a and .a off the hook.
+                      ["symbol", "...a"]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ];
+
+          it("throws", () => {
+            assert.throws(() => {
+              translate(ast);
+            }, /^Cannot access symbol a in strict function. Pass a in fn! declaration instead or declare it using let block$/);
           });
         });
       });
