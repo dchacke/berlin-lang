@@ -1,26 +1,26 @@
-def(= fn(a b ~{invoke-operator("===" a b)}))
+def(= fn!(a b ~{invoke-operator("===" a b)}))
 
 def(zero? fn(a ~{=(a 0)}))
 
 def(empty? fn(coll ~{zero?(.-length(coll))}))
 
-def(first fn(coll ~{.-0(coll)}))
+def(first fn!(coll ~{.-0(coll)}))
 
-def(rest fn(coll ~{.slice(coll 1)}))
+def(rest fn!(coll ~{.slice(coll 1)}))
 
-def(cons fn(el coll ~{[el ...coll]}))
+def(cons fn!(el coll ~{[el ...coll]}))
 
 def(log fn(...args ~{.log(console ...args)}))
 
-def(+ fn(a b ~{invoke-operator("+" a b)}))
+def(+ fn!(a b ~{invoke-operator("+" a b)}))
 
-def(- fn(a b ~{invoke-operator("-" a b)}))
+def(- fn!(a b ~{invoke-operator("-" a b)}))
 
-def(* fn(a b ~{invoke-operator("*" a b)}))
+def(* fn!(a b ~{invoke-operator("*" a b)}))
 
-def(/ fn(a b ~{invoke-operator("/" a b)}))
+def(/ fn!(a b ~{invoke-operator("/" a b)}))
 
-def(% fn(a b ~{invoke-operator("%" a b)}))
+def(% fn!(a b ~{invoke-operator("%" a b)}))
 
 def(inc fn(a ~{+(a 1)}))
 
