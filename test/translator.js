@@ -349,6 +349,183 @@ describe("Translator", () => {
         });
       });
     });
+
+    describe("fn! declaration", () => {
+      describe("not trying to access non-passed parameters", () => {
+        let ast = [
+          [
+            "function-call",
+            [
+              "invocable",
+              ["symbol", "fn!"]
+            ],
+            [
+              "argument-list",
+              [
+                // a is passed
+                ["symbol", "a"],
+                [
+                  "block-declaration",
+                  [
+                    // Accessing a should be fine
+                    ["symbol", "a"],
+                    [
+                      "function-call",
+                      [
+                        "invocable",
+                        ["symbol", "def"]
+                      ],
+                      [
+                        "argument-list",
+                        [
+                          ["symbol", "b"],
+                          ["number", "3"]
+                        ]
+                      ]
+                    ],
+                    // "Accessing" some number should be fine
+                    ["number", "1"],
+                    // Accessing b should be fine because we
+                    // declared it within the fn! using def
+                    ["symbol", "b"],
+                    [
+                      "function-call",
+                      [
+                        "invocable",
+                        ["symbol", "let"]
+                      ],
+                      [
+                        "argument-list",
+                        [
+                          [
+                            "array-literal",
+                            [
+                              ["symbol", "c"],
+                              ["number", "2"]
+                            ]
+                          ],
+                          [
+                            "block-declaration",
+                            [
+                              // Accessing c should be fine because
+                              // it was declared within the fn! using
+                              // a let block
+                              ["symbol", "c"]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ];
+        let result = translate(ast);
+
+        it("works and creates the same outpout as fn", () => {
+          assert.equal(result, `((a ) => {a;
+let b  = 3 ;
+1;
+b;
+return ((((c ) => {return c;
+} ) )(2 ) );
+} );
+`);
+        });
+      });
+
+      describe("trying to access non-passed parameters", () => {
+        describe("not nested", () => {
+          let ast = [
+            [
+              "function-call",
+              [
+                "invocable",
+                ["symbol", "fn!"]
+              ],
+              [
+                "argument-list",
+                [
+                  [
+                    "block-declaration",
+                    [
+                      // Accessing a should throw
+                      ["symbol", "a"]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ];
+
+          it("throws", () => {
+            assert.throws(() => {
+              translate(ast);
+            }, /^Cannot access symbol a in strict function. Pass a in fn! declaration instead or declare it using let block$/);
+          });
+        });
+
+        describe("nested", () => {
+          let ast = [
+            [
+              "function-call",
+              [
+                "invocable",
+                ["symbol", "fn!"]
+              ],
+              [
+                "argument-list",
+                [
+                  [
+                    "block-declaration",
+                    [
+                      [
+                        "function-call",
+                        [
+                          "invocable",
+                          ["symbol", "let"]
+                        ],
+                        [
+                          "argument-list",
+                          [
+                            [
+                              "array-literal",
+                              [
+                                ["symbol", "b"],
+                                ["number", "2"]
+                              ]
+                            ],
+                            [
+                              "block-declaration",
+                              [
+                                // Accessing b should *not* throw because it
+                                // was declared in the let block inside the fn!.
+                                ["symbol", "b"],
+                                // Accessing c *should* throw because it was not
+                                // passed to the fn! nor declared within it.
+                                ["symbol", "c"]
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ];
+
+          it("throws", () => {
+            assert.throws(() => {
+              translate(ast);
+            }, /^Cannot access symbol c in strict function. Pass c in fn! declaration instead or declare it using let block$/);
+          });
+        });
+      });
+    });
   });
 
   describe("keywords", () => {
