@@ -67,6 +67,43 @@ describe("Translator", () => {
         });
       });
 
+      describe("another nested, multi-parameter fn call", () => {
+        // This is "foo(y bar(x))"
+        let ast =  [
+          [
+            "function-call",
+            [
+              "invocable",
+              ["symbol", "foo"]
+            ],
+            [
+              "argument-list",
+              [
+                ["symbol", "y"],
+                [
+                  "function-call",
+                  [
+                    "invocable",
+                    ["symbol", "bar"]
+                  ],
+                  [
+                    "argument-list",
+                    [
+                      ["symbol", "x"]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ];
+        let result = translate(ast);
+
+        it("converts the ast into a nested js function call", () => {
+          assert.equal(result, `(foo )(y ,(bar )(x ) );\n`);
+        });
+      });
+
       describe("instance method", () => {
         let ast = [
           [

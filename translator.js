@@ -30,7 +30,7 @@ let conjoin_children = depth => {
     let translation = translate(tree, depth + 1);
     let delimiter = "";
 
-    if (children[j + 1] && children[j + 1][0] !== "function-call") {
+    if (children[j + 1]) {
       delimiter = ",";
     }
 
