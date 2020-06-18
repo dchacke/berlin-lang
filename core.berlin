@@ -42,8 +42,6 @@ set(exp "inc" inc)
 
 set(module "exports" exp)
 
-; def(inc fn(a ~{plus(a 1)}))
-;
 ; def(map fn(f coll ~{if(empty(coll)
 ;                        ~{[]}
 ;                        ~{let([el first(coll)]
