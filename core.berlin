@@ -14,6 +14,16 @@ def(log fn(...args ~{.log(console ...args)}))
 
 def(+ fn(a b ~{invoke-operator("+" a b)}))
 
+def(- fn(a b ~{invoke-operator("-" a b)}))
+
+def(* fn(a b ~{invoke-operator("*" a b)}))
+
+def(/ fn(a b ~{invoke-operator("/" a b)}))
+
+def(% fn(a b ~{invoke-operator("%" a b)}))
+
+def(inc fn(a ~{+(a 1)}))
+
 ; Export the above functions
 def(exp Object.())
 set(exp "=" =)
@@ -24,13 +34,15 @@ set(exp "rest" rest)
 set(exp "cons" cons)
 set(exp "log" log)
 set(exp "+" +)
+set(exp "-" -)
+set(exp "*" *)
+set(exp "/" /)
+set(exp "%" %)
+set(exp "inc" inc)
 
 set(module "exports" exp)
 
-; def(plus fn(a b ~{invoke-operator("+" a b)}))
 ; def(inc fn(a ~{plus(a 1)}))
-;
-; log(inc(1))
 ;
 ; def(map fn(f coll ~{if(empty(coll)
 ;                        ~{[]}

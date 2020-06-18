@@ -9,6 +9,11 @@ def(first .-first(core))
 def(rest .-rest(core))
 def(cons .-cons(core))
 def(+ .-+(core))
+def(- .--(core))
+def(* .-*(core))
+def(/ .-/(core))
+def(% .-%(core))
+def(inc .-inc(core))
 
 describe("core" fn(~{
   describe("=" fn(~{
@@ -66,6 +71,56 @@ describe("core" fn(~{
 
     it("works for negative numbers, too" fn(~{
       .equal(assert +(-1 -2) -3)
+    }))
+  }))
+
+  describe("-" fn(~{
+    it("subtracts two given numbers" fn(~{
+      .equal(assert -(1 2) -1)
+    }))
+
+    it("works for negative numbers, too" fn(~{
+      .equal(assert -(-1 -2) 1)
+    }))
+  }))
+
+  describe("*" fn(~{
+    it("multiplies two given numbers" fn(~{
+      .equal(assert *(1 2) 2)
+    }))
+
+    it("works for negative numbers, too" fn(~{
+      .equal(assert *(-1 -2) 2)
+    }))
+  }))
+
+  describe("/" fn(~{
+    it("divides two given numbers" fn(~{
+      .equal(assert /(1 2) 0.5)
+    }))
+
+    it("works for negative numbers, too" fn(~{
+      .equal(assert /(-1 -2) 0.5)
+    }))
+  }))
+
+  describe("%" fn(~{
+    it("calculates the modulo" fn(~{
+      .equal(assert %(6 4) 2)
+    }))
+
+    it("works for negative numbers, too" fn(~{
+      .equal(assert %(-6 -4) -2)
+    }))
+  }))
+
+  describe("inc" fn(~{
+    it("adds one to the given number" fn(~{
+      .equal(assert inc(5) 6)
+    }))
+
+    it("works with a negative number, too" fn(~{
+      .equal(assert inc(-5) -4)
     }))
   }))
 }))
