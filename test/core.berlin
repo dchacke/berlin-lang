@@ -2,6 +2,7 @@ def(assert require("assert"))
 def(core require("../core"))
 
 def(= .-=(core))
+def(zero? .-zero?(core))
 
 describe("core" fn(~{
   describe("=" fn(~{
@@ -11,6 +12,16 @@ describe("core" fn(~{
 
     it("returns false for unequal things" fn(~{
       .equal(assert =(1 2) false)
+    }))
+  }))
+
+  describe("zero?" fn(~{
+    it("returns true for 0" fn(~{
+      .equal(assert zero?(0) true)
+    }))
+
+    it("returns false for non-0" fn(~{
+      .equal(assert zero?(1) false)
     }))
   }))
 }))

@@ -2,8 +2,11 @@ def(= fn(a b ~{
         invoke-operator("===" a b)
       }))
 
+def(zero? fn(a ~{=(a 0)}))
+
 ; Export the above functions
 def(exp Object.())
 set(exp "=" =)
+set(exp "zero?" zero?)
 
 set(module "exports" exp)
