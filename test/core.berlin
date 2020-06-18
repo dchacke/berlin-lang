@@ -4,6 +4,7 @@ def(core require("../core"))
 def(= .-=(core))
 def(zero? .-zero?(core))
 def(empty? .-empty?(core))
+def(first .-first(core))
 
 describe("core" fn(~{
   describe("=" fn(~{
@@ -33,6 +34,12 @@ describe("core" fn(~{
 
     it("returns false for non-empty arrays" fn(~{
       .equal(assert empty?([1]) false)
+    }))
+  }))
+
+  describe("first" fn(~{
+    it("returns the first element in an array" fn(~{
+      .equal(assert first([1 2 3]) 1)
     }))
   }))
 }))
