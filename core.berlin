@@ -18,15 +18,13 @@ def(or fn(...args
 def(and fn(...args
   if(empty?(args)
     true
-    if(=(count(args) 1)
-      first(args)
-      if(=(count(args) 2)
-        if(truthy?(first(args))
+    if(truthy?(first(args))
+      if(=(count(args) 1)
+        first(args)
+        if(=(count(args) 2)
           last(args)
-          first(args))
-        if(truthy?(first(args))
-          apply(and rest(args))
-          first(args)))))))
+          apply(and rest(args))))
+      first(args)))))
 
 def(zero? fn(a =(a 0)))
 
