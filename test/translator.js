@@ -1004,95 +1004,97 @@ return ...c;
     });
 
     describe("let", () => {
-      let ast = [
-        [
-          "function-call",
+      describe("example of a realistic use case", () => {
+        let ast = [
           [
-            "invocable",
-            ["symbol", "let"]
-          ],
-          [
-            "argument-list",
+            "function-call",
             [
+              "invocable",
+              ["symbol", "let"]
+            ],
+            [
+              "argument-list",
               [
-                "array-literal",
                 [
-                  ["symbol", "a"],
-                  ["number", "1"],
-
-                  ["symbol", "b"],
-                  ["number", "2"],
-
-                  ["symbol", "c"],
+                  "array-literal",
                   [
-                    "function-call",
+                    ["symbol", "a"],
+                    ["number", "1"],
+
+                    ["symbol", "b"],
+                    ["number", "2"],
+
+                    ["symbol", "c"],
                     [
-                      "invocable",
-                      ["symbol", "plus"]
-                    ],
-                    [
-                      "argument-list",
+                      "function-call",
                       [
-                        ["symbol", "a"],
-                        ["symbol", "b"]
+                        "invocable",
+                        ["symbol", "plus"]
+                      ],
+                      [
+                        "argument-list",
+                        [
+                          ["symbol", "a"],
+                          ["symbol", "b"]
+                        ]
                       ]
                     ]
                   ]
-                ]
-              ],
-              [
-                "block-declaration",
+                ],
                 [
-                  ["symbol", "c"]
+                  "block-declaration",
+                  [
+                    ["symbol", "c"]
+                  ]
                 ]
               ]
             ]
           ]
-        ]
-      ];
-      let result = translate(ast);
+        ];
+        let result = translate(ast);
 
-      it("translates the call to let into nested functions", () => {
-        assert.equal(result, `((((a ) => {return (((b ) => {return (((c ) => {return c;
+        it("translates the call to let into nested functions", () => {
+          assert.equal(result, `((((a ) => {return (((b ) => {return (((c ) => {return c;
 } ) )((plus )(a ,b ) );
 } ) )(2 );
 } ) )(1 ) );
 `);
+        });
       });
-    });
 
-    describe("uneven number of elements in array", () => {
-      let ast = [
-        [
-          "function-call",
+      describe("uneven number of elements in array", () => {
+        let ast = [
           [
-            "invocable",
-            ["symbol", "let"]
-          ],
-          [
-            "argument-list",
+            "function-call",
             [
+              "invocable",
+              ["symbol", "let"]
+            ],
+            [
+              "argument-list",
               [
-                "array-literal",
                 [
-                  ["symbol", "a"],
-                ]
-              ],
-              [
-                "block-declaration",
+                  "array-literal",
+                  [
+                    ["symbol", "a"],
+                  ]
+                ],
                 [
-                  ["symbol", "c"]
+                  "block-declaration",
+                  [
+                    ["symbol", "c"]
+                  ]
                 ]
               ]
             ]
           ]
-        ]
-      ];
+        ];
 
-      it("throws an exception requesting an even number of elements", () => {
-        assert.throws(() => {
-          translate(ast);
-        }, /^Uneven number of elements in let$/);
+        it("throws an exception requesting an even number of elements", () => {
+          assert.throws(() => {
+            translate(ast);
+          }, /^Uneven number of elements in let$/);
+        });
       });
     });
 
