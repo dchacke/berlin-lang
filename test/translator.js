@@ -807,26 +807,52 @@ return ...c;
   describe("special forms (other than function declarations)", () => {
     describe("invoke-operator", () => {
       describe("one argument", () => {
-        let ast = [
-          [
-            "function-call",
+        describe("not throw", () => {
+          let ast = [
             [
-              "invocable",
-              ["symbol", "invoke-operator"]
-            ],
-            [
-              "argument-list",
+              "function-call",
               [
-                ["symbol", "typeof"],
-                ["number", "1"]
+                "invocable",
+                ["symbol", "invoke-operator"]
+              ],
+              [
+                "argument-list",
+                [
+                  ["symbol", "typeof"],
+                  ["number", "1"]
+                ]
               ]
             ]
-          ]
-        ];
-        let result = translate(ast);
+          ];
+          let result = translate(ast);
 
-        it("invokes the given operator with the given argument", () => {
-          assert.equal(result, "typeof 1 ;\n");
+          it("invokes the given operator with the given argument", () => {
+            assert.equal(result, "typeof 1 ;\n");
+          });
+        });
+
+        describe("throw", () => {
+          let ast = [
+            [
+              "function-call",
+              [
+                "invocable",
+                ["symbol", "invoke-operator"]
+              ],
+              [
+                "argument-list",
+                [
+                  ["symbol", "throw"],
+                  ["string", "exception message"]
+                ]
+              ]
+            ]
+          ];
+          let result = translate(ast);
+
+          it("wraps the operator invocation with a self-invoking fns", () => {
+            assert.equal(result, "(() => {throw `exception message` })();\n");
+          });
         });
       });
 

@@ -159,7 +159,15 @@ let translate = (ast, depth = 0, parentType = null, symbolWhitelist = new Set())
           // We want to invoke an operator
           if (invocable[1] === "invoke-operator") {
             if (fnArgs.length === 2) {
-              result = `${fnArgs[0][1]} ${translate([fnArgs[1]], depth + 1, null, symbolWhitelist)}`;
+              // If it's the throw operator, we need to wrap it
+              // in a self-invoking fn, or else preceding it with
+              // a return statement as we do later on will cause JS
+              // to complain.
+              if (fnArgs[0][1] === "throw") {
+                result = `(() => {${fnArgs[0][1]} ${translate([fnArgs[1]], depth + 1, null, symbolWhitelist)}})()`;
+              } else {
+                result = `${fnArgs[0][1]} ${translate([fnArgs[1]], depth + 1, null, symbolWhitelist)}`;
+              }
             } else if (fnArgs.length === 3) {
               result = `(${translate([fnArgs[1]], depth + 1, null, symbolWhitelist)} ${fnArgs[0][1]} ${translate([fnArgs[2]], depth + 1, null, symbolWhitelist)})`;
             } else {
