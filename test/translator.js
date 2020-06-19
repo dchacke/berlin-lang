@@ -318,11 +318,10 @@ describe("Translator", () => {
               ]
             ]
           ];
+          let result = translate(ast);
 
-          it("throws without a block", () => {
-            assert.throws(() => {
-              translate(ast);
-            }, /^Function declaration requires code block$/);
+          it("treats the last given argument as a block", () => {
+            assert.equal(result, `((x ) => {return y;\n} );\n`);
           });
         });
 
@@ -344,7 +343,7 @@ describe("Translator", () => {
           it("throws without a block", () => {
             assert.throws(() => {
               translate(ast);
-            }, /^Function declaration requires code block$/);
+            }, /^Function declaration requires at least one argument$/);
           });
         });
       });
@@ -1096,6 +1095,36 @@ return ...c;
           }, /^Uneven number of elements in let$/);
         });
       });
+
+      describe("implicit block", () => {
+        let ast = [
+          [
+            "function-call",
+            [
+              "invocable",
+              ["symbol", "let"]
+            ],
+            [
+              "argument-list",
+              [
+                [
+                  "array-literal",
+                  [
+                    ["symbol", "a"],
+                    ["number", "1"],
+                  ]
+                ],
+                ["symbol", "a"]
+              ]
+            ]
+          ]
+        ];
+        let result = translate(ast);
+
+        it("wraps the last argument in a block", () => {
+          assert.equal(result, `((((a ) => {return a;\n} ) )(1 ) );\n`);
+        });
+      });
     });
 
     describe("var", () => {
@@ -1219,6 +1248,37 @@ return ...c;
           assert.throws(() => {
             translate(ast);
           }, /^If form requires at least two arguments$/);
+        });
+      });
+
+      describe("with implicit branches only", () => {
+        let ast = [
+          [
+            "function-call",
+            [
+              "invocable",
+              ["symbol", "if"]
+            ],
+            [
+              "argument-list",
+              [
+                ["boolean-literal", "true"],
+                ["number", "1"],
+                ["number", "2"]
+              ]
+            ]
+          ]
+        ];
+        let result = translate(ast);
+
+        it("wraps the second and third argument in blocks", () => {
+          assert.equal(result, `((true ) ?
+(() => {return 1;
+} )()
+:
+(() => {return 2;
+} )());
+`);
         });
       });
     });

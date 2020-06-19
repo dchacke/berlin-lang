@@ -52,6 +52,8 @@ let pairwise = array => {
 
 let last = coll => coll[coll.length - 1];
 
+let wrapInBlock = ast => ["block-declaration", [ast]];
+
 let translate = (ast, depth = 0, parentType = null, symbolWhitelist = new Set()) => {
   return ast.reduce((acc, curr, i) => {
     let [type, children] = curr;
@@ -131,10 +133,13 @@ let translate = (ast, depth = 0, parentType = null, symbolWhitelist = new Set())
         // Is this a function *declaration*?
         if (invocable[0] === "symbol" && (invocable[1] === "fn" || invocable[1] === "fn!")) {
           let fnBlock = fnArgs[fnArgs.length - 1];
+
           let args = fnArgs.slice(0, fnArgs.length - 1);
 
-          if (!fnBlock || fnBlock[0] !== "block-declaration") {
-            throw("Function declaration requires code block");
+          if (!fnBlock) {
+            throw("Function declaration requires at least one argument");
+          } else if (fnBlock[0] !== "block-declaration") {
+            fnBlock = wrapInBlock(fnBlock);
           }
 
           let whitelist;
@@ -221,7 +226,15 @@ let translate = (ast, depth = 0, parentType = null, symbolWhitelist = new Set())
             let trueBranch = fnArgs[1];
             let falseBranch = fnArgs[2];
 
+            if (trueBranch[0] !== "block-declaration") {
+              trueBranch = wrapInBlock(trueBranch);
+            }
+
             if (falseBranch) {
+              if (falseBranch[0] !== "block-declaration") {
+                falseBranch = wrapInBlock(falseBranch);
+              }
+
               result = `((${translate([condition], depth + 1, null, symbolWhitelist)}) ?
 (() => ${translate([trueBranch], depth + 1, null, symbolWhitelist)})()
 :
@@ -237,7 +250,13 @@ let translate = (ast, depth = 0, parentType = null, symbolWhitelist = new Set())
             }
 
             let declarations = pairwise(fnArgs[0][1]);
-            let block = fnArgs[1][1];
+            let blockDeclaration = fnArgs[1];
+
+            if (blockDeclaration[0] !== "block-declaration") {
+              blockDeclaration = wrapInBlock(blockDeclaration);
+            }
+
+            block = blockDeclaration[1];
 
             // First, we transform the declarations and block
             // into a new structure which we can then translate.
