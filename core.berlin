@@ -100,7 +100,7 @@ def(not falsey?)
 
 def(even? fn(a ~{zero?(%(a 2))}))
 
-def(odd? fn(a ~{not(even?(a))})) ; TODO: Use comp instead
+def(odd? fn(a ~{comp(not even?)(a)}))
 
 def(apply fn(f ...args ~{
   let([additionalArgs arr(butlast(args))
@@ -135,11 +135,18 @@ def(reduce fn(...args ~{
                result f(val item)]
           ~{reduce(f result rest(coll))})})})})}))
 
-def(comp fn(...args ~{
-  let([val last(args)
-       fns butlast(args)]
-    ~{reduce(fn(acc curr ~{
-              curr(acc)}) val fns)})}))
+def(reverse fn(coll ~{
+  if(empty?(coll)
+    ~{[]}
+    ~{let([r reverse(rest(coll))]
+      ~{[...r first(coll)]})})}))
+
+def(comp fn(...fns ~{
+  let([fns reverse(fns)] ~{
+    fn(...args ~{
+      reduce(fn(acc curr ~{curr(acc)})
+             apply(first(fns) args)
+             rest(fns))})})}))
 
 ; Export the above functions
 def(exp Object.())
@@ -184,6 +191,7 @@ set(exp "apply" apply)
 set(exp "map" map)
 set(exp "filter" filter)
 set(exp "reduce" reduce)
+set(exp "reverse" reverse)
 set(exp "comp" comp)
 
 set(module "exports" exp)

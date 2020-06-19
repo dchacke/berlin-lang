@@ -42,6 +42,7 @@ def(apply .-apply(core))
 def(map .-map(core))
 def(filter .-filter(core))
 def(reduce .-reduce(core))
+def(reverse .-reverse(core))
 def(comp .-comp(core))
 
 describe("core" fn(~{
@@ -515,9 +516,15 @@ describe("core" fn(~{
     }))
   }))
 
+  describe("reverse" fn(~{
+    it("reverses the given array" fn(~{
+      assert(.isEqual(_ reverse([1 2 3]) [3 2 1]))
+    }))
+  }))
+
   describe("comp" fn(~{
     it("applies the given functions to the given value from right to left" fn(~{
-      .equal(assert comp(not even? 1) true)
+      .equal(assert comp(not even?)(1) true)
     }))
   }))
 }))
