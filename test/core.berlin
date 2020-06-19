@@ -44,6 +44,8 @@ def(filter .-filter(core))
 def(reduce .-reduce(core))
 def(reverse .-reverse(core))
 def(comp .-comp(core))
+def(-> .-->(core))
+def(->> .-->>(core))
 
 describe("core" fn({
   describe("=" fn({
@@ -525,6 +527,20 @@ describe("core" fn({
   describe("comp" fn({
     it("applies the given functions to the given value from right to left" fn({
       .equal(assert comp(not even?)(1) true)
+    }))
+  }))
+
+  describe("thread first (->)" fn({
+    it("invokes the given fns and places each intermediate result
+        as the first argument at every step" fn({
+      .equal(assert ->(1 [+ 2] [- 4] [* 4]) -4)
+    }))
+  }))
+
+  describe("thread last (->>)" fn({
+    it("invokes the given fns and places each intermediate result
+        as the last argument at every step" fn({
+      .equal(assert ->>([1 2 3 4] [map inc] [filter even?] [reduce +]) 6)
     }))
   }))
 }))

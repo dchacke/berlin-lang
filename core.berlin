@@ -148,6 +148,23 @@ def(comp fn(...fns {
              apply(first(fns) args)
              rest(fns))})})}))
 
+def(thread fn(type {
+  fn(val ...exprs {
+    reduce(fn(acc curr {
+      if(array?(curr) {
+        let([f first(curr)
+             args rest(curr)] {
+          if(=(type "first") {
+            apply(f acc args)} {
+            if(=(type "last") {
+              f(...args acc)} {
+              invoke-operator("throw" "Unknown thread type")})})})} {
+        curr(acc)})})
+      val exprs)})}))
+
+def(-> thread("first"))
+def(->> thread("last"))
+
 ; Export the above functions
 def(exp Object.())
 set(exp "=" =)
@@ -193,5 +210,7 @@ set(exp "filter" filter)
 set(exp "reduce" reduce)
 set(exp "reverse" reverse)
 set(exp "comp" comp)
+set(exp "->" ->)
+set(exp "->>" ->>)
 
 set(module "exports" exp)
