@@ -116,12 +116,3 @@ set(exp "filter" filter)
 set(exp "reduce" reduce)
 
 set(module "exports" exp)
-
-
-
-; def(map fn(f coll ~{if(empty(coll)
-;                        ~{[]}
-;                        ~{let([el first(coll)]
-;                              ~{cons(f(el) map(f rest(coll)))})})}))
-;
-; log(map(inc [1 2 3]))
