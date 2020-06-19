@@ -7,7 +7,7 @@ def(zero? fn(a ~{=(a 0)}))
 def(count fn!(coll ~{.-length(coll)}))
 
 def(empty? fn(coll ~{
-  if(=(coll nil)
+  if(nil?(coll)
     ~{true}
     ~{zero?(count(coll))})}))
 
@@ -30,7 +30,7 @@ def(butlast fn(coll ~{
     ~{nil})}))
 
 def(rest fn(coll ~{
-  if(=(coll nil)
+  if(nil?(coll)
     ~{[]}
     ~{.slice(coll 1)})}))
 
@@ -39,7 +39,7 @@ def(next fn(coll ~{
     if(empty?(r) ~{nil} ~{r})})}))
 
 def(cons fn(el coll ~{
-  if(=(coll nil)
+  if(nil?(coll)
     ~{[el]}
     ~{[el ...coll]})}))
 
@@ -53,7 +53,7 @@ def(map? fn(a ~{invoke-operator("instanceof" a Map)}))
 def(array? fn(a ~{.isArray(Array a)}))
 
 def(arr fn(a ~{
-  if(=(a nil)
+  if(nil?(a)
     ~{[]}
     ~{if(string?(a)
       ~{.split(a "")}
@@ -86,7 +86,7 @@ def(false? fn(a ~{=(a false)}))
 def(truthy? fn(a ~{
   if(=(a false)
     ~{false}
-    ~{if(=(a nil)
+    ~{if(nil?(a)
         ~{false}
         ~{if(=(a undefined)
             ~{false}
