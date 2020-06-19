@@ -19,7 +19,7 @@ def(string? .-string?(core))
 def(number? .-number?(core))
 def(keyword? .-keyword?(core))
 def(boolean? .-boolean?(core))
-def(null? .-null?(core))
+def(nil? .-nil?(core))
 def(set? .-set?(core))
 def(map? .-map?(core))
 def(array? .-array?(core))
@@ -81,8 +81,8 @@ describe("core" fn(~{
       .equal(assert empty?([1]) false)
     }))
 
-    it("returns true for null" fn(~{
-      .equal(assert empty?(null) true)
+    it("returns true for nil" fn(~{
+      .equal(assert empty?(nil) true)
     }))
   }))
 
@@ -115,8 +115,8 @@ describe("core" fn(~{
       .equal(assert last([1 2 3 5]) 5)
     }))
 
-    it("returns null when given an empty array" fn(~{
-      .equal(assert last([]) null)
+    it("returns nil when given an empty array" fn(~{
+      .equal(assert last([]) nil)
     }))
   }))
 
@@ -125,8 +125,8 @@ describe("core" fn(~{
       assert(.isEqual(_ butlast([1 2 3]) [1 2]))
     }))
 
-    it("returns null when given an empty array" fn(~{
-      assert(.isEqual(_ butlast([]) null))
+    it("returns nil when given an empty array" fn(~{
+      assert(.isEqual(_ butlast([]) nil))
     }))
   }))
 
@@ -139,8 +139,8 @@ describe("core" fn(~{
       assert(.isEqual(_ rest([]) []))
     }))
 
-    it("returns an empty array when given null" fn(~{
-      assert(.isEqual(_ rest(null) []))
+    it("returns an empty array when given nil" fn(~{
+      assert(.isEqual(_ rest(nil) []))
     }))
   }))
 
@@ -149,12 +149,12 @@ describe("core" fn(~{
       assert(.isEqual(_ next([1 2 3]) [2 3]))
     }))
 
-    it("returns null when given an empty array" fn(~{
-      assert(.isEqual(_ next([]) null))
+    it("returns nil when given an empty array" fn(~{
+      assert(.isEqual(_ next([]) nil))
     }))
 
-    it("returns null when given null" fn(~{
-      assert(.isEqual(_ next(null) null))
+    it("returns nil when given nil" fn(~{
+      assert(.isEqual(_ next(nil) nil))
     }))
   }))
 
@@ -163,8 +163,8 @@ describe("core" fn(~{
       assert(.isEqual(_ cons(1 [2 3]) [1 2 3]))
     }))
 
-    it("treats null as an empty array" fn(~{
-      assert(.isEqual(_ cons(1 null) [1]))
+    it("treats nil as an empty array" fn(~{
+      assert(.isEqual(_ cons(1 nil) [1]))
     }))
   }))
 
@@ -226,17 +226,17 @@ describe("core" fn(~{
     }))
   }))
 
-  describe("null?" fn(~{
-    it("returns true for null" fn(~{
-      assert(null?(null))
+  describe("nil?" fn(~{
+    it("returns true for nil" fn(~{
+      assert(nil?(nil))
     }))
 
-    it("returns false for non-null values" fn(~{
-      assert(not(null?(1)))
-      assert(not(null?("foo")))
-      assert(not(null?([])))
-      assert(not(null?({})))
-      assert(not(null?(false)))
+    it("returns false for non-nil values" fn(~{
+      assert(not(nil?(1)))
+      assert(not(nil?("foo")))
+      assert(not(nil?([])))
+      assert(not(nil?({})))
+      assert(not(nil?(false)))
     }))
   }))
 
@@ -287,8 +287,8 @@ describe("core" fn(~{
       assert(.isEqual(_ arr([1 2 3]) [1 2 3]))
     }))
 
-    it("returns an empty array when given null" fn(~{
-      assert(.isEqual(_ arr(null) []))
+    it("returns an empty array when given nil" fn(~{
+      assert(.isEqual(_ arr(nil) []))
     }))
 
     it("returns an array of characters when given a string" fn(~{
@@ -391,7 +391,7 @@ describe("core" fn(~{
   describe("false?" fn(~{
     it("returns true only when given false" fn(~{
       assert(false?(false) true)
-      .equal(assert true?(null) false)
+      .equal(assert true?(nil) false)
     }))
   }))
 
@@ -409,7 +409,7 @@ describe("core" fn(~{
 
     it("returns false when given a falsey value" fn(~{
       .equal(assert truthy?(false) false)
-      .equal(assert truthy?(null) false)
+      .equal(assert truthy?(nil) false)
       .equal(assert truthy?(undefined) false)
     }))
   }))
@@ -417,7 +417,7 @@ describe("core" fn(~{
   describe("falsey?" fn(~{
     it("returns true when given a falsey value" fn(~{
       assert(falsey?(false) true)
-      assert(falsey?(null) true)
+      assert(falsey?(nil) true)
       assert(falsey?(undefined) true)
     }))
 
@@ -436,7 +436,7 @@ describe("core" fn(~{
   describe("not" fn(~{
     it("returns true when given a falsey value" fn(~{
       assert(not(false) true)
-      assert(not(null) true)
+      assert(not(nil) true)
       assert(not(undefined) true)
     }))
 

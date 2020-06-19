@@ -7,7 +7,7 @@ def(zero? fn(a ~{=(a 0)}))
 def(count fn!(coll ~{.-length(coll)}))
 
 def(empty? fn(coll ~{
-  if(=(coll null)
+  if(=(coll nil)
     ~{true}
     ~{zero?(count(coll))})}))
 
@@ -27,19 +27,19 @@ def(last fn(coll ~{
 def(butlast fn(coll ~{
   if(next(coll)
     ~{cons(first(coll) butlast(rest(coll)))}
-    ~{null})}))
+    ~{nil})}))
 
 def(rest fn(coll ~{
-  if(=(coll null)
+  if(=(coll nil)
     ~{[]}
     ~{.slice(coll 1)})}))
 
 def(next fn(coll ~{
   let([r rest(coll)] ~{
-    if(empty?(r) ~{null} ~{r})})}))
+    if(empty?(r) ~{nil} ~{r})})}))
 
 def(cons fn(el coll ~{
-  if(=(coll null)
+  if(=(coll nil)
     ~{[el]}
     ~{[el ...coll]})}))
 
@@ -47,13 +47,13 @@ def(string? fn(a ~{=(invoke-operator("typeof" a) "string")}))
 def(number? fn(a ~{=(invoke-operator("typeof" a) "number")}))
 def(keyword? fn(a ~{=(invoke-operator("typeof" a) "symbol")}))
 def(boolean? fn(a ~{=(invoke-operator("typeof" a) "boolean")}))
-def(null? fn(a ~{=(a null)}))
+def(nil? fn(a ~{=(a nil)}))
 def(set? fn(a ~{invoke-operator("instanceof" a Set)}))
 def(map? fn(a ~{invoke-operator("instanceof" a Map)}))
 def(array? fn(a ~{.isArray(Array a)}))
 
 def(arr fn(a ~{
-  if(=(a null)
+  if(=(a nil)
     ~{[]}
     ~{if(string?(a)
       ~{.split(a "")}
@@ -86,7 +86,7 @@ def(false? fn(a ~{=(a false)}))
 def(truthy? fn(a ~{
   if(=(a false)
     ~{false}
-    ~{if(=(a null)
+    ~{if(=(a nil)
         ~{false}
         ~{if(=(a undefined)
             ~{false}
@@ -106,7 +106,7 @@ def(apply fn(f ...args ~{
   let([additionalArgs arr(butlast(args))
        argsArray last(args)
        args [...additionalArgs ...argsArray]]
-    ~{f.apply(null args)})}))
+    ~{f.apply(nil args)})}))
 
 def(map fn(f coll ~{
   if(empty?(coll)
@@ -167,7 +167,7 @@ set(exp "string?" string?)
 set(exp "number?" number?)
 set(exp "keyword?" keyword?)
 set(exp "boolean?" boolean?)
-set(exp "null?" null?)
+set(exp "nil?" nil?)
 set(exp "set?" set?)
 set(exp "map?" map?)
 set(exp "array?" array?)
