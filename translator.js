@@ -1,26 +1,26 @@
 let safe_symbol = symbol => {
-  let replacements = {
-    "-": "__MINUS__",
-    "+": "__PLUS__",
-    "!": "__BANG__",
-    "@": "__AT__",
-    "#": "__POUND__",
-    "$": "__DOLLAR__",
-    "%": "__PERCENT__",
-    "^": "__CARET__",
-    "&": "__AMPERSAND__",
-    "*": "__ASTERISK__",
-    "=": "__EQUALS__",
-    "'": "__QUOTE__",
-    "?": "__QUESTION_MARK__",
-    "/": "__FORWARD_SLASH__",
-    "\\": "__BACKSLASH__",
-    "<": "__LESS_THAN__",
-    ">": "__GREATER_THAN__"
-  };
+  let replacements = [
+    [/-/, "__MINUS__"],
+    [/\+/, "__PLUS__"],
+    [/!/, "__BANG__"],
+    [/@/, "__AT__"],
+    [/#/, "__POUND__"],
+    [/\$/, "__DOLLAR__"],
+    [/%/, "__PERCENT__"],
+    [/\^/, "__CARET__"],
+    [/&/, "__AMPERSAND__"],
+    [/\*/, "__ASTERISK__"],
+    [/=/, "__EQUALS__"],
+    [/'/, "__QUOTE__"],
+    [/\?/, "__QUESTION_MARK__"],
+    [/\//, "__FORWARD_SLASH__"],
+    [/\\/, "__BACKSLASH__"],
+    [/</, "__LESS_THAN__"],
+    [/>/, "__GREATER_THAN__"]
+  ];
 
-  return Object.keys(replacements).reduce((acc, curr) => {
-    return acc.replace(curr, replacements[curr]);
+  return replacements.reduce((acc, [pattern, replacement]) => {
+    return acc.replace(new RegExp(pattern, "g"), replacement);
   }, symbol);
 };
 

@@ -612,17 +612,30 @@ return ...c;
 
   describe("symbols", () => {
     describe("with special characters", () => {
-      let ast = [["symbol", "foo-+!@#$%^&*='?/\\<>bar"]];
-      let result = translate(ast);
+      describe("all of them", () => {
+        let ast = [["symbol", "foo-+!@#$%^&*='?/\\<>bar"]];
+        let result = translate(ast);
 
-      it("replaces each special character with the corresponding replacement", () => {
-        assert.equal(
-          result,
-          "foo__MINUS____PLUS____BANG____AT__" +
-          "__POUND____DOLLAR____PERCENT____CARET__" +
-          "__AMPERSAND____ASTERISK____EQUALS____QUOTE__" +
-          "__QUESTION_MARK____FORWARD_SLASH____BACKSLASH__" +
-          "__LESS_THAN____GREATER_THAN__bar;\n");
+        it("replaces each special character with the corresponding replacement", () => {
+          assert.equal(
+            result,
+            "foo__MINUS____PLUS____BANG____AT__" +
+            "__POUND____DOLLAR____PERCENT____CARET__" +
+            "__AMPERSAND____ASTERISK____EQUALS____QUOTE__" +
+            "__QUESTION_MARK____FORWARD_SLASH____BACKSLASH__" +
+            "__LESS_THAN____GREATER_THAN__bar;\n");
+        });
+      });
+
+      describe("twice in a row", () => {
+        let ast = [["symbol", "->>"]];
+        let result = translate(ast);
+
+        it("makes *global* replacements", () => {
+          assert.equal(
+            result,
+            "__MINUS____GREATER_THAN____GREATER_THAN__;\n");
+        });
       });
     });
 
