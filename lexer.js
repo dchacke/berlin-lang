@@ -193,8 +193,8 @@ module.exports = { lex };
 // Special forms (which look like function calls, and
 // maybe they can just *be* function calls (or macro calls), at least
 // as far as the consumer of the language is concerned):
-// - def
-// - let (this should be achievable solely in terms of a
+// ✓ - def
+// ✓ - let (this should be achievable solely in terms of a
 // function inside a macro:
 // let([a 1
 //      b (+ a 2)])
@@ -203,7 +203,7 @@ module.exports = { lex };
 //   ((fn [b]) (+ a 2))) 1)
 // ...and so on, ever more deeply nested.
 // ✓ - fn
-// (- maybe later: fn! for functions that can only access
+// ✓ (- maybe later: fn! for functions that can only access
 //  the values of symbols they are explicitly given in the
 //  form of arguments)
 // ✓ Blocks
