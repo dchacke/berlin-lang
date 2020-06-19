@@ -826,7 +826,7 @@ return ...c;
         let result = translate(ast);
 
         it("invokes the given operator with the given argument", () => {
-          assert.equal(result, "(typeof 1 );\n");
+          assert.equal(result, "typeof 1 ;\n");
         });
       });
 
