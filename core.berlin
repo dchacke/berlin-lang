@@ -1,6 +1,32 @@
 def(= fn!(a b invoke-operator("===" a b)))
 
-def(or fn!(a b invoke-operator("||" a b)))
+def(identity fn!(a a))
+
+def(or fn(...args
+  if(empty?(args)
+    nil
+    if(=(count(args) 1)
+      first(args)
+      if(=(count(args) 2)
+        if(truthy?(first(args))
+          first(args)
+          last(args))
+        if(truthy?(first(args))
+          first(args)
+          apply(or rest(args))))))))
+
+def(and fn(...args
+  if(empty?(args)
+    true
+    if(=(count(args) 1)
+      first(args)
+      if(=(count(args) 2)
+        if(truthy?(first(args))
+          last(args)
+          first(args))
+        if(truthy?(first(args))
+          apply(and rest(args))
+          first(args)))))))
 
 def(zero? fn(a =(a 0)))
 
@@ -174,6 +200,9 @@ def(raise fn(msg invoke-operator("throw" msg)))
 ; Export the above functions
 def(exp Object.())
 set(exp "=" =)
+set(exp "identity" identity)
+set(exp "or" or)
+set(exp "and" and)
 set(exp "zero?" zero?)
 set(exp "count" count)
 set(exp "empty?" empty?)

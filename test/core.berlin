@@ -3,6 +3,9 @@ def(_ require("lodash"))
 def(core require("../core"))
 
 def(= .-=(core))
+def(identity .-identity(core))
+def(or .-or(core))
+def(and .-and(core))
 def(zero? .-zero?(core))
 def(count .-count(core))
 def(empty? .-empty?(core))
@@ -57,6 +60,57 @@ describe("core" fn({
 
     it("returns false for unequal things" fn({
       .equal(assert =(1 2) false)
+    }))
+  }))
+
+  describe("identity" fn({
+    it("returns the given argument" fn({
+      .equal(assert identity(1) 1)
+    }))
+  }))
+
+  describe("or" fn({
+    it("returns the first truthy argument" fn({
+      assert(=(or(1 2) 1))
+      assert(or(false true))
+    }))
+
+    it("returns the last falsey argument when all arguments are falsey" fn({
+      assert(comp(nil? or)(false nil))
+    }))
+
+    it("works for more than two args" fn({
+      assert(comp(true? or)(false true false))
+    }))
+
+    it("works for a single argument" fn({
+      assert(comp(false? or)(false))
+    }))
+
+    it("returns nil when given no arguments" fn({
+      assert(nil?(or()))
+    }))
+  }))
+
+  describe("and" fn({
+    it("returns the last truthy argument when all arguments are truthy" fn({
+      assert(=(and(1 2) 2))
+    }))
+
+    it("returns the first falsey argument" fn({
+      assert(comp(nil? and)(nil 1))
+    }))
+
+    it("works for more than two args" fn({
+      assert(comp(true? and)(true 1 true))
+    }))
+
+    it("works for a single argument" fn({
+      assert(comp(false? and)(false))
+    }))
+
+    it("returns true when given no arguments" fn({
+      assert(true?(and()))
     }))
   }))
 
