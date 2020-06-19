@@ -376,6 +376,18 @@ describe("core" fn({
     it("works for negative numbers, too" fn({
       .equal(assert +(-1 -2) -3)
     }))
+
+    it("works for more than two argumetns" fn({
+      .equal(assert +(1 2 3) 6)
+    }))
+
+    it("returns the given single argument" fn({
+      .equal(assert +(1) 1)
+    }))
+
+    it("returns 0 when when no arguments given" fn({
+      assert(zero?(+()))
+    }))
   }))
 
   describe("-" fn({
@@ -385,6 +397,18 @@ describe("core" fn({
 
     it("works for negative numbers, too" fn({
       .equal(assert -(-1 -2) 1)
+    }))
+
+    it("subtracts multiple additional arguments from the first one" fn({
+      .equal(assert -(1 2 3) -4)
+    }))
+
+    it("returns the negation of the given single argument" fn({
+      .equal(assert -(1) -1)
+    }))
+
+    it("throws without arguments" fn({
+      .throws(assert fn(-()) RegExp.("- requires at least one argument"))
     }))
   }))
 
@@ -396,6 +420,18 @@ describe("core" fn({
     it("works for negative numbers, too" fn({
       .equal(assert *(-1 -2) 2)
     }))
+
+    it("works for more than two argumetns" fn({
+      .equal(assert *(1 2 4) 8)
+    }))
+
+    it("returns the given single argument" fn({
+      .equal(assert *(2) 2)
+    }))
+
+    it("returns 1 when when no arguments given" fn({
+      assert(=(*() 1))
+    }))
   }))
 
   describe("/" fn({
@@ -405,6 +441,18 @@ describe("core" fn({
 
     it("works for negative numbers, too" fn({
       .equal(assert /(-1 -2) 0.5)
+    }))
+
+    it("divides the first argument by the product of all additional arguments" fn({
+      .equal(assert /(1 2 5) 0.1)
+    }))
+
+    it("returns 1 divided by the single given argument" fn({
+      .equal(assert /(2) 0.5)
+    }))
+
+    it("throws without arguments" fn({
+      .throws(assert fn(/()) RegExp.("/ requires at least one argument"))
     }))
   }))
 

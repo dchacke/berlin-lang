@@ -91,13 +91,33 @@ def(arr fn(a
 
 def(log fn(...args .log(console ...args)))
 
-def(+ fn!(a b invoke-operator("+" a b)))
+def(+ fn(...args
+  if(empty?(args)
+    0
+    if(=(count(args) 1)
+      first(args)
+      invoke-operator("+" first(args) apply(+ rest(args)))))))
 
-def(- fn!(a b invoke-operator("-" a b)))
+def(- fn(...args
+  if(empty?(args)
+    raise("- requires at least one argument")
+    if(=(count(args) 1)
+      invoke-operator("-" 0 first(args))
+      invoke-operator("-" first(args) apply(+ rest(args)))))))
 
-def(* fn!(a b invoke-operator("*" a b)))
+def(* fn(...args
+  if(empty?(args)
+    1
+    if(=(count(args) 1)
+      first(args)
+      invoke-operator("*" first(args) apply(* rest(args)))))))
 
-def(/ fn!(a b invoke-operator("/" a b)))
+def(/ fn(...args
+  if(empty?(args)
+    raise("/ requires at least one argument")
+    if(=(count(args) 1)
+      invoke-operator("/" 1 first(args))
+      invoke-operator("/" first(args) apply(* rest(args)))))))
 
 def(% fn!(a b invoke-operator("%" a b)))
 
