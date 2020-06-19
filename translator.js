@@ -85,6 +85,10 @@ let translate = (ast, depth = 0, parentType = null, symbolWhitelist = new Set())
         result = children;
         break;
       }
+      case "null-literal": {
+        result = "null";
+        break;
+      }
       case "string": {
         result = "`" + children + "`";
         break;

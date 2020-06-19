@@ -111,6 +111,8 @@ let parse = (tokens, mode) => {
         tree.push(["boolean-literal", "true"]);
       } else if (value === "false") {
         tree.push(["boolean-literal", "false"]);
+      } else if (value === "nil") {
+        tree.push(["null-literal", "nil"]);
       } else {
         tree.push(tokens[i]);
       }

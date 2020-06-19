@@ -648,6 +648,17 @@ return ...c;
     });
   });
 
+  describe("nil", () => {
+    let ast = [
+      ["null-literal", "nil"]
+    ];
+    let result = translate(ast);
+
+    it("translates nil to null", () => {
+      assert.equal(result, "null;\n")
+    });
+  });
+
   describe("strings", () => {
     let ast = [["string", "foo_bar"]];
     let result = translate(ast);

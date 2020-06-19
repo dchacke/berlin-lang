@@ -176,6 +176,17 @@ describe("Parser", () => {
     });
   });
 
+  describe("null literal", () => {
+    let tokens = [["symbol", "nil"]];
+    let result = parse(tokens)[0];
+
+    it("parses null literals from their corresponding symbols", () => {
+      assert(_.isEqual(result, [
+        ["null-literal", "nil"]
+      ]));
+    });
+  });
+
   describe("blocks", () => {
     let tokens = [
       ["keyword", "foo"],
