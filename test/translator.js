@@ -805,51 +805,103 @@ return ...c;
   });
 
   describe("special forms (other than function declarations)", () => {
-    describe("typeof", () => {
-      let ast = [
-        [
-          "function-call",
-          [
-            "invocable",
-            ["symbol", "typeof"]
-          ],
-          [
-            "argument-list",
-            [
-              ["symbol", "a"]
-            ]
-          ]
-        ]
-      ];
-      let result = translate(ast);
-
-      it("invokes the typeof keyword with the given arguments", () => {
-        assert.equal(result, "(typeof a );\n");
-      });
-    });
-
     describe("invoke-operator", () => {
-      let ast = [
-        [
-          "function-call",
+      describe("one argument", () => {
+        let ast = [
           [
-            "invocable",
-            ["symbol", "invoke-operator"]
-          ],
-          [
-            "argument-list",
+            "function-call",
             [
-              ["symbol", "==="],
-              ["number", "1"],
-              ["number", "2"]
+              "invocable",
+              ["symbol", "invoke-operator"]
+            ],
+            [
+              "argument-list",
+              [
+                ["symbol", "typeof"],
+                ["number", "1"]
+              ]
             ]
           ]
-        ]
-      ];
-      let result = translate(ast);
+        ];
+        let result = translate(ast);
 
-      it("invokes the given operator with the given arguments", () => {
-        assert.equal(result, "(1  === 2 );\n");
+        it("invokes the given operator with the given argument", () => {
+          assert.equal(result, "(typeof 1 );\n");
+        });
+      });
+
+      describe("two arguments", () => {
+        let ast = [
+          [
+            "function-call",
+            [
+              "invocable",
+              ["symbol", "invoke-operator"]
+            ],
+            [
+              "argument-list",
+              [
+                ["symbol", "==="],
+                ["number", "1"],
+                ["number", "2"]
+              ]
+            ]
+          ]
+        ];
+        let result = translate(ast);
+
+        it("invokes the given operator by surrounding it with the given arguments", () => {
+          assert.equal(result, "(1  === 2 );\n");
+        });
+      });
+
+      describe("neither one nor two arguments", () => {
+        let ast1 = [
+          [
+            "function-call",
+            [
+              "invocable",
+              ["symbol", "invoke-operator"]
+            ],
+            [
+              "argument-list",
+              [
+                ["symbol", "==="]
+              ]
+            ]
+          ]
+        ];
+
+        let ast2 = [
+          [
+            "function-call",
+            [
+              "invocable",
+              ["symbol", "invoke-operator"]
+            ],
+            [
+              "argument-list",
+              [
+                ["symbol", "==="],
+                ["number", "1"],
+                ["number", "2"],
+                ["number", "3"]
+              ]
+            ]
+          ]
+        ];
+
+        it("throws for no arguments", () => {
+          assert.throws(() => {
+            translate(ast1);
+          }, /^Operators require exactly one or two arguments. 0 given$/);
+        });
+
+        it("throws for three arguments", () => {
+          assert.throws(() => {
+            translate(ast2);
+          }, /^Operators require exactly one or two arguments. 3 given$/);
+        });
       });
     });
 
