@@ -1,6 +1,6 @@
 {
   "name": "berlin-lang",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "The Berlin programming language",
   "main": "index.js",
   "scripts": {
