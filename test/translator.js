@@ -805,6 +805,29 @@ return ...c;
   });
 
   describe("special forms (other than function declarations)", () => {
+    describe("typeof", () => {
+      let ast = [
+        [
+          "function-call",
+          [
+            "invocable",
+            ["symbol", "typeof"]
+          ],
+          [
+            "argument-list",
+            [
+              ["symbol", "a"]
+            ]
+          ]
+        ]
+      ];
+      let result = translate(ast);
+
+      it("invokes the typeof keyword with the given arguments", () => {
+        assert.equal(result, "(typeof a );\n");
+      });
+    });
+
     describe("invoke-operator", () => {
       let ast = [
         [

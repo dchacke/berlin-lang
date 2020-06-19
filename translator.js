@@ -159,6 +159,9 @@ let translate = (ast, depth = 0, parentType = null, symbolWhitelist = new Set())
           // We want to invoke an operator
           if (invocable[1] === "invoke-operator") {
             result = `(${translate([fnArgs[1]], depth + 1, null, symbolWhitelist)} ${fnArgs[0][1]} ${translate([fnArgs[2]], depth + 1, null, symbolWhitelist)})`;
+          // We want to apply the typeof keyword
+          } else if (invocable[1] === "typeof") {
+            result = `(typeof ${translate([fnArgs[0]], depth + 1, null, symbolWhitelist)})`;
           // We want to declare a variable
           } else if (invocable[1] === "def") {
             let varName = fnArgs[0];
