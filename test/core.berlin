@@ -46,6 +46,7 @@ def(reverse .-reverse(core))
 def(comp .-comp(core))
 def(-> .-->(core))
 def(->> .-->>(core))
+def(raise .-raise(core))
 
 describe("core" fn({
   describe("=" fn({
@@ -541,6 +542,12 @@ describe("core" fn({
     it("invokes the given fns and places each intermediate result
         as the last argument at every step" fn({
       .equal(assert ->>([1 2 3 4] [map inc] [filter even?] [reduce +]) 6)
+    }))
+  }))
+
+  describe("raise" fn({
+    it("throws the given exception" fn({
+      .throws(assert fn({raise("foo")}) RegExp.("foo"))
     }))
   }))
 }))

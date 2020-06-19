@@ -61,7 +61,7 @@ def(arr fn(a {
         {.from(Array a)}
         {if(array?(a)
           {a}
-          {invoke-operator("throw" "Given item not iterable")})})})})}))
+          {raise("Given item not iterable")})})})})}))
 
 def(log fn(...args {.log(console ...args)}))
 
@@ -158,12 +158,13 @@ def(thread fn(type {
             apply(f acc args)} {
             if(=(type "last") {
               f(...args acc)} {
-              invoke-operator("throw" "Unknown thread type")})})})} {
+              raise("Unknown thread type")})})})} {
         curr(acc)})})
       val exprs)})}))
 
 def(-> thread("first"))
 def(->> thread("last"))
+def(raise fn(msg {invoke-operator("throw" msg)}))
 
 ; Export the above functions
 def(exp Object.())
@@ -212,5 +213,6 @@ set(exp "reverse" reverse)
 set(exp "comp" comp)
 set(exp "->" ->)
 set(exp "->>" ->>)
+set(exp "raise" raise)
 
 set(module "exports" exp)
