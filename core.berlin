@@ -31,9 +31,11 @@ def(/ fn!(a b ~{invoke-operator("/" a b)}))
 def(% fn!(a b ~{invoke-operator("%" a b)}))
 
 def(inc fn(a ~{+(a 1)}))
+
 def(dec fn(a ~{-(a 1)}))
 
 def(true? fn(a ~{=(a true)}))
+
 def(false? fn(a ~{=(a false)}))
 
 def(truthy? fn(a ~{
@@ -52,6 +54,7 @@ def(falsey? fn(a ~{if(truthy?(a)
 def(not falsey?)
 
 def(even? fn(a ~{zero?(%(a 2))}))
+
 def(odd? fn(a ~{not(even?(a))})) ; TODO: Use comp instead
 
 def(map fn(f coll ~{
