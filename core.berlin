@@ -1,170 +1,172 @@
-def(= fn!(a b {invoke-operator("===" a b)}))
+def(= fn!(a b invoke-operator("===" a b)))
 
-def(or fn!(a b {invoke-operator("||" a b)}))
+def(or fn!(a b invoke-operator("||" a b)))
 
-def(zero? fn(a {=(a 0)}))
+def(zero? fn(a =(a 0)))
 
-def(count fn!(coll {.-length(coll)}))
+def(count fn!(coll .-length(coll)))
 
-def(empty? fn(coll {
+def(empty? fn(coll
   if(nil?(coll)
-    {true}
-    {zero?(count(coll))})}))
+    true
+    zero?(count(coll)))))
 
-def(first fn!(coll {.-0(coll)}))
+def(first fn!(coll .-0(coll)))
 
-def(ffirst fn(coll {first(first(coll))}))
+def(ffirst fn(coll first(first(coll))))
 
-def(second fn!(coll {.-1(coll)}))
+def(second fn!(coll .-1(coll)))
 
-def(third fn!(coll {.-2(coll)}))
+def(third fn!(coll .-2(coll)))
 
-def(last fn(coll {
+def(last fn(coll
   if(next(coll)
-    {last(rest(coll))}
-    {first(coll)})}))
+    last(rest(coll))
+    first(coll))))
 
-def(butlast fn(coll {
+def(butlast fn(coll
   if(next(coll)
-    {cons(first(coll) butlast(rest(coll)))}
-    {nil})}))
+    cons(first(coll) butlast(rest(coll)))
+    nil)))
 
-def(rest fn(coll {
+def(rest fn(coll
   if(nil?(coll)
-    {[]}
-    {.slice(coll 1)})}))
+    []
+    .slice(coll 1))))
 
-def(next fn(coll {
-  let([r rest(coll)] {
-    if(empty?(r) {nil} {r})})}))
+def(next fn(coll
+  let([r rest(coll)]
+    if(empty?(r)
+      nil
+      r))))
 
-def(cons fn(el coll {
+def(cons fn(el coll
   if(nil?(coll)
-    {[el]}
-    {[el ...coll]})}))
+    [el]
+    [el ...coll])))
 
-def(string? fn(a {=(invoke-operator("typeof" a) "string")}))
-def(number? fn(a {=(invoke-operator("typeof" a) "number")}))
-def(keyword? fn(a {=(invoke-operator("typeof" a) "symbol")}))
-def(boolean? fn(a {=(invoke-operator("typeof" a) "boolean")}))
-def(nil? fn(a {=(a nil)}))
-def(set? fn(a {invoke-operator("instanceof" a Set)}))
-def(map? fn(a {invoke-operator("instanceof" a Map)}))
-def(array? fn(a {.isArray(Array a)}))
+def(string? fn(a =(invoke-operator("typeof" a) "string")))
+def(number? fn(a =(invoke-operator("typeof" a) "number")))
+def(keyword? fn(a =(invoke-operator("typeof" a) "symbol")))
+def(boolean? fn(a =(invoke-operator("typeof" a) "boolean")))
+def(nil? fn(a =(a nil)))
+def(set? fn(a invoke-operator("instanceof" a Set)))
+def(map? fn(a invoke-operator("instanceof" a Map)))
+def(array? fn(a .isArray(Array a)))
 
-def(arr fn(a {
+def(arr fn(a
   if(nil?(a)
-    {[]}
-    {if(string?(a)
-      {.split(a "")}
-      {if(or(set?(a) map?(a))
-        {.from(Array a)}
-        {if(array?(a)
-          {a}
-          {raise("Given item not iterable")})})})})}))
+    []
+    if(string?(a)
+      .split(a "")
+      if(or(set?(a) map?(a))
+        .from(Array a)
+        if(array?(a)
+          a
+          raise("Given item not iterable")))))))
 
-def(log fn(...args {.log(console ...args)}))
+def(log fn(...args .log(console ...args)))
 
-def(+ fn!(a b {invoke-operator("+" a b)}))
+def(+ fn!(a b invoke-operator("+" a b)))
 
-def(- fn!(a b {invoke-operator("-" a b)}))
+def(- fn!(a b invoke-operator("-" a b)))
 
-def(* fn!(a b {invoke-operator("*" a b)}))
+def(* fn!(a b invoke-operator("*" a b)))
 
-def(/ fn!(a b {invoke-operator("/" a b)}))
+def(/ fn!(a b invoke-operator("/" a b)))
 
-def(% fn!(a b {invoke-operator("%" a b)}))
+def(% fn!(a b invoke-operator("%" a b)))
 
-def(inc fn(a {+(a 1)}))
+def(inc fn(a +(a 1)))
 
-def(dec fn(a {-(a 1)}))
+def(dec fn(a -(a 1)))
 
-def(true? fn(a {=(a true)}))
+def(true? fn(a =(a true)))
 
-def(false? fn(a {=(a false)}))
+def(false? fn(a =(a false)))
 
-def(truthy? fn(a {
+def(truthy? fn(a
   if(=(a false)
-    {false}
-    {if(nil?(a)
-        {false}
-        {if(=(a undefined)
-            {false}
-            {true})})})}))
+    false
+    if(nil?(a)
+      false
+      if(=(a undefined)
+        false
+        true)))))
 
-def(falsey? fn(a {if(truthy?(a)
-                    {false}
-                    {true})}))
+def(falsey? fn(a if(truthy?(a)
+                   false
+                   true)))
 
 def(not falsey?)
 
-def(even? fn(a {zero?(%(a 2))}))
+def(even? fn(a zero?(%(a 2))))
 
-def(odd? fn(a {comp(not even?)(a)}))
+def(odd? fn(a comp(not even?)(a)))
 
-def(apply fn(f ...args {
+def(apply fn(f ...args
   let([additionalArgs arr(butlast(args))
        argsArray last(args)
        args [...additionalArgs ...argsArray]]
-    {f.apply(nil args)})}))
+    f.apply(nil args))))
 
-def(map fn(f coll {
+def(map fn(f coll
   if(empty?(coll)
-    {[]}
-    {let([el first(coll)] {
-      cons(f(el) map(f rest(coll)))})})}))
+    []
+    let([el first(coll)]
+      cons(f(el) map(f rest(coll)))))))
 
-def(filter fn(f coll {
+def(filter fn(f coll
   if(empty?(coll)
-    {[]}
-    {let([el first(coll)]
-      {if(f(el)
-        {cons(el filter(f rest(coll)))}
-        {filter(f rest(coll))})})})}))
+    []
+    let([el first(coll)]
+      if(f(el)
+        cons(el filter(f rest(coll)))
+        filter(f rest(coll)))))))
 
 ; Takes either [f coll] or [f val coll]
-def(reduce fn(...args {
+def(reduce fn(...args
   if(=(count(args) 2)
-    {reduce(first(args) first(second(args)) rest(second(args)))}
-    {let([f first(args)
+    reduce(first(args) first(second(args)) rest(second(args)))
+    let([f first(args)
            val second(args)
            coll third(args)]
-      {if(empty?(coll)
-        {val}
-        {let([item first(coll)
+      if(empty?(coll)
+        val
+        let([item first(coll)
                result f(val item)]
-          {reduce(f result rest(coll))})})})})}))
+          reduce(f result rest(coll))))))))
 
-def(reverse fn(coll {
+def(reverse fn(coll
   if(empty?(coll)
-    {[]}
-    {let([r reverse(rest(coll))]
-      {[...r first(coll)]})})}))
+    []
+    let([r reverse(rest(coll))]
+      [...r first(coll)]))))
 
-def(comp fn(...fns {
-  let([fns reverse(fns)] {
-    fn(...args {
-      reduce(fn(acc curr {curr(acc)})
+def(comp fn(...fns
+  let([fns reverse(fns)]
+    fn(...args
+      reduce(fn(acc curr curr(acc))
              apply(first(fns) args)
-             rest(fns))})})}))
+             rest(fns))))))
 
-def(thread fn(type {
-  fn(val ...exprs {
-    reduce(fn(acc curr {
-      if(array?(curr) {
+def(thread fn(type
+  fn(val ...exprs
+    reduce(fn(acc curr
+      if(array?(curr)
         let([f first(curr)
-             args rest(curr)] {
-          if(=(type "first") {
-            apply(f acc args)} {
-            if(=(type "last") {
-              f(...args acc)} {
-              raise("Unknown thread type")})})})} {
-        curr(acc)})})
-      val exprs)})}))
+             args rest(curr)]
+          if(=(type "first")
+            apply(f acc args)
+            if(=(type "last")
+              f(...args acc)
+              raise("Unknown thread type"))))
+        curr(acc)))
+      val exprs))))
 
 def(-> thread("first"))
 def(->> thread("last"))
-def(raise fn(msg {invoke-operator("throw" msg)}))
+def(raise fn(msg invoke-operator("throw" msg)))
 
 ; Export the above functions
 def(exp Object.())
