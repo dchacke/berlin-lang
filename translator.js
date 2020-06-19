@@ -182,6 +182,12 @@ let translate = (ast, depth = 0, parentType = null, symbolWhitelist = new Set())
 
             result = `((${translate([settable], depth + 1, null, symbolWhitelist)})[(${translate([field], depth + 1, null, symbolWhitelist)})] = (${translate([val], depth + 1, null, symbolWhitelist)}))`;
           // We are declaring a conditional
+          // TODO: Use the truthy? fn from core
+          // to evaluate the if condition; otherwise,
+          // empty strings and 0 will evaluate to false here,
+          // even though they don't anywhere else using the
+          // core fns, which would get very confusing for
+          // consumders of this language.
           } else if (invocable[1] === "if") {
             if (fnArgs.length < 2) {
               throw "If form requires at least two arguments";

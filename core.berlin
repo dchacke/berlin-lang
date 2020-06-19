@@ -2,9 +2,17 @@ def(= fn!(a b ~{invoke-operator("===" a b)}))
 
 def(zero? fn(a ~{=(a 0)}))
 
-def(empty? fn(coll ~{zero?(.-length(coll))}))
+def(count fn!(coll ~{.-length(coll)}))
+
+def(empty? fn(coll ~{zero?(count(coll))}))
 
 def(first fn!(coll ~{.-0(coll)}))
+
+def(ffirst fn(coll ~{first(first(coll))}))
+
+def(second fn!(coll ~{.-1(coll)}))
+
+def(third fn!(coll ~{.-2(coll)}))
 
 def(rest fn!(coll ~{.slice(coll 1)}))
 
@@ -23,13 +31,66 @@ def(/ fn!(a b ~{invoke-operator("/" a b)}))
 def(% fn!(a b ~{invoke-operator("%" a b)}))
 
 def(inc fn(a ~{+(a 1)}))
+def(dec fn(a ~{-(a 1)}))
+
+def(true? fn(a ~{=(a true)}))
+def(false? fn(a ~{=(a false)}))
+
+def(truthy? fn(a ~{
+  if(=(a false)
+    ~{false}
+    ~{if(=(a null)
+        ~{false}
+        ~{if(=(a undefined)
+            ~{false}
+            ~{true})})})}))
+
+def(falsey? fn(a ~{if(truthy?(a)
+                    ~{false}
+                    ~{true})}))
+
+def(not falsey?)
+
+def(even? fn(a ~{zero?(%(a 2))}))
+def(odd? fn(a ~{not(even?(a))})) ; TODO: Use comp instead
+
+def(map fn(f coll ~{
+  if(empty?(coll)
+    ~{[]}
+    ~{let([el first(coll)] ~{
+      cons(f(el) map(f rest(coll)))})})}))
+
+def(filter fn(f coll ~{
+  if(empty?(coll)
+    ~{[]}
+    ~{let([el first(coll)]
+      ~{if(f(el)
+        ~{cons(el filter(f rest(coll)))}
+        ~{filter(f rest(coll))})})})}))
+
+; Takes either [f coll] or [f val coll]
+def(reduce fn(...args ~{
+  if(=(count(args) 2)
+    ~{reduce(first(args) first(second(args)) rest(second(args)))}
+    ~{let([f first(args)
+           val second(args)
+           coll third(args)]
+      ~{if(empty?(coll)
+        ~{val}
+        ~{let([item first(coll)
+               result f(val item)]
+          ~{.log(console coll) reduce(f result rest(coll))})})})})}))
 
 ; Export the above functions
 def(exp Object.())
 set(exp "=" =)
 set(exp "zero?" zero?)
+set(exp "count" count)
 set(exp "empty?" empty?)
 set(exp "first" first)
+set(exp "ffirst" ffirst)
+set(exp "second" second)
+set(exp "third" third)
 set(exp "rest" rest)
 set(exp "cons" cons)
 set(exp "log" log)
@@ -39,8 +100,21 @@ set(exp "*" *)
 set(exp "/" /)
 set(exp "%" %)
 set(exp "inc" inc)
+set(exp "dec" dec)
+set(exp "true?" true?)
+set(exp "false?" false?)
+set(exp "truthy?" truthy?)
+set(exp "falsey?" falsey?)
+set(exp "not" not)
+set(exp "even?" even?)
+set(exp "odd?" odd?)
+set(exp "map" map)
+set(exp "filter" filter)
+set(exp "reduce" reduce)
 
 set(module "exports" exp)
+
+
 
 ; def(map fn(f coll ~{if(empty(coll)
 ;                        ~{[]}
