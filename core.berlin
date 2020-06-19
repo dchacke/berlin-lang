@@ -1,10 +1,15 @@
 def(= fn!(a b ~{invoke-operator("===" a b)}))
 
+def(or fn!(a b ~{invoke-operator("||" a b)}))
+
 def(zero? fn(a ~{=(a 0)}))
 
 def(count fn!(coll ~{.-length(coll)}))
 
-def(empty? fn(coll ~{zero?(count(coll))}))
+def(empty? fn(coll ~{
+  if(=(coll null)
+    ~{true}
+    ~{zero?(count(coll))})}))
 
 def(first fn!(coll ~{.-0(coll)}))
 
@@ -14,9 +19,49 @@ def(second fn!(coll ~{.-1(coll)}))
 
 def(third fn!(coll ~{.-2(coll)}))
 
-def(rest fn!(coll ~{.slice(coll 1)}))
+def(last fn(coll ~{
+  if(next(coll)
+    ~{last(rest(coll))}
+    ~{first(coll)})}))
 
-def(cons fn!(el coll ~{[el ...coll]}))
+def(butlast fn(coll ~{
+  if(next(coll)
+    ~{cons(first(coll) butlast(rest(coll)))}
+    ~{null})}))
+
+def(rest fn(coll ~{
+  if(=(coll null)
+    ~{[]}
+    ~{.slice(coll 1)})}))
+
+def(next fn(coll ~{
+  let([r rest(coll)] ~{
+    if(empty?(r) ~{null} ~{r})})}))
+
+def(cons fn(el coll ~{
+  if(=(coll null)
+    ~{[el]}
+    ~{[el ...coll]})}))
+
+def(string? fn(a ~{=(invoke-operator("typeof" a) "string")}))
+def(number? fn(a ~{=(invoke-operator("typeof" a) "number")}))
+def(keyword? fn(a ~{=(invoke-operator("typeof" a) "symbol")}))
+def(boolean? fn(a ~{=(invoke-operator("typeof" a) "boolean")}))
+def(null? fn(a ~{=(a null)}))
+def(set? fn(a ~{invoke-operator("instanceof" a Set)}))
+def(map? fn(a ~{invoke-operator("instanceof" a Map)}))
+def(array? fn(a ~{.isArray(Array a)}))
+
+def(arr fn(a ~{
+  if(=(a null)
+    ~{[]}
+    ~{if(string?(a)
+      ~{.split(a "")}
+      ~{if(or(set?(a) map?(a))
+        ~{.from(Array a)}
+        ~{if(array?(a)
+          ~{a}
+          ~{invoke-operator("throw" "Given item not iterable")})})})})}))
 
 def(log fn(...args ~{.log(console ...args)}))
 
@@ -57,6 +102,12 @@ def(even? fn(a ~{zero?(%(a 2))}))
 
 def(odd? fn(a ~{not(even?(a))})) ; TODO: Use comp instead
 
+def(apply fn(f ...args ~{
+  let([additionalArgs arr(butlast(args))
+       argsArray last(args)
+       args [...additionalArgs ...argsArray]]
+    ~{f.apply(null args)})}))
+
 def(map fn(f coll ~{
   if(empty?(coll)
     ~{[]}
@@ -82,7 +133,13 @@ def(reduce fn(...args ~{
         ~{val}
         ~{let([item first(coll)
                result f(val item)]
-          ~{.log(console coll) reduce(f result rest(coll))})})})})}))
+          ~{reduce(f result rest(coll))})})})})}))
+
+def(comp fn(...args ~{
+  let([val last(args)
+       fns butlast(args)]
+    ~{reduce(fn(acc curr ~{
+              curr(acc)}) val fns)})}))
 
 ; Export the above functions
 def(exp Object.())
@@ -94,8 +151,20 @@ set(exp "first" first)
 set(exp "ffirst" ffirst)
 set(exp "second" second)
 set(exp "third" third)
+set(exp "last" last)
+set(exp "butlast" butlast)
 set(exp "rest" rest)
+set(exp "next" next)
 set(exp "cons" cons)
+set(exp "string?" string?)
+set(exp "number?" number?)
+set(exp "keyword?" keyword?)
+set(exp "boolean?" boolean?)
+set(exp "null?" null?)
+set(exp "set?" set?)
+set(exp "map?" map?)
+set(exp "array?" array?)
+set(exp "arr" arr)
 set(exp "log" log)
 set(exp "+" +)
 set(exp "-" -)
@@ -111,8 +180,10 @@ set(exp "falsey?" falsey?)
 set(exp "not" not)
 set(exp "even?" even?)
 set(exp "odd?" odd?)
+set(exp "apply" apply)
 set(exp "map" map)
 set(exp "filter" filter)
 set(exp "reduce" reduce)
+set(exp "comp" comp)
 
 set(module "exports" exp)

@@ -10,8 +10,20 @@ def(first .-first(core))
 def(ffirst .-ffirst(core))
 def(second .-second(core))
 def(third .-third(core))
+def(last .-last(core))
+def(butlast .-butlast(core))
 def(rest .-rest(core))
+def(next .-next(core))
 def(cons .-cons(core))
+def(string? .-string?(core))
+def(number? .-number?(core))
+def(keyword? .-keyword?(core))
+def(boolean? .-boolean?(core))
+def(null? .-null?(core))
+def(set? .-set?(core))
+def(map? .-map?(core))
+def(array? .-array?(core))
+def(arr .-arr(core))
 def(+ .-+(core))
 def(- .--(core))
 def(* .-*(core))
@@ -26,9 +38,11 @@ def(falsey? .-falsey?(core))
 def(not .-not(core))
 def(even? .-even?(core))
 def(odd? .-odd?(core))
+def(apply .-apply(core))
 def(map .-map(core))
 def(filter .-filter(core))
 def(reduce .-reduce(core))
+def(comp .-comp(core))
 
 describe("core" fn(~{
   describe("=" fn(~{
@@ -65,6 +79,10 @@ describe("core" fn(~{
     it("returns false for non-empty arrays" fn(~{
       .equal(assert empty?([1]) false)
     }))
+
+    it("returns true for null" fn(~{
+      .equal(assert empty?(null) true)
+    }))
   }))
 
   describe("first" fn(~{
@@ -91,15 +109,204 @@ describe("core" fn(~{
     }))
   }))
 
+  describe("last" fn(~{
+    it("returns the last element in an array" fn(~{
+      .equal(assert last([1 2 3 5]) 5)
+    }))
+
+    it("returns null when given an empty array" fn(~{
+      .equal(assert last([]) null)
+    }))
+  }))
+
+  describe("last" fn(~{
+    it("returns all but the last element in an array" fn(~{
+      assert(.isEqual(_ butlast([1 2 3]) [1 2]))
+    }))
+
+    it("returns null when given an empty array" fn(~{
+      assert(.isEqual(_ butlast([]) null))
+    }))
+  }))
+
   describe("rest" fn(~{
     it("returns all but the first element in an array" fn(~{
       assert(.isEqual(_ rest([1 2 3]) [2 3]))
+    }))
+
+    it("returns an empty array when given an empty array" fn(~{
+      assert(.isEqual(_ rest([]) []))
+    }))
+
+    it("returns an empty array when given null" fn(~{
+      assert(.isEqual(_ rest(null) []))
+    }))
+  }))
+
+  describe("next" fn(~{
+    it("returns all but the first element in an array" fn(~{
+      assert(.isEqual(_ next([1 2 3]) [2 3]))
+    }))
+
+    it("returns null when given an empty array" fn(~{
+      assert(.isEqual(_ next([]) null))
+    }))
+
+    it("returns null when given null" fn(~{
+      assert(.isEqual(_ next(null) null))
     }))
   }))
 
   describe("cons" fn(~{
     it("constructs a new array with the given element at the beginning" fn(~{
       assert(.isEqual(_ cons(1 [2 3]) [1 2 3]))
+    }))
+
+    it("treats null as an empty array" fn(~{
+      assert(.isEqual(_ cons(1 null) [1]))
+    }))
+  }))
+
+  describe("string?" fn(~{
+    it("returns true for strings" fn(~{
+      assert(string?("foo"))
+    }))
+
+    it("returns false for non-strings" fn(~{
+      assert(not(string?(1)))
+      assert(not(string?(:foo)))
+      assert(not(string?([])))
+      assert(not(string?({})))
+      assert(not(string?(false)))
+    }))
+  }))
+
+  describe("number?" fn(~{
+    it("returns true for numbers" fn(~{
+      assert(number?(1))
+      assert(number?(1.5))
+      assert(number?(-1.5))
+    }))
+
+    it("returns false for non-numbers" fn(~{
+      assert(not(number?("1")))
+      assert(not(number?(:foo)))
+      assert(not(number?([])))
+      assert(not(number?({})))
+      assert(not(number?(false)))
+    }))
+  }))
+
+  describe("keyword?" fn(~{
+    it("returns true for keywords" fn(~{
+      assert(keyword?(:foo))
+    }))
+
+    it("returns false for non-keywords" fn(~{
+      assert(not(keyword?(1)))
+      assert(not(keyword?("foo")))
+      assert(not(keyword?([])))
+      assert(not(keyword?({})))
+      assert(not(keyword?(false)))
+    }))
+  }))
+
+  describe("boolean?" fn(~{
+    it("returns true for booleans" fn(~{
+      assert(boolean?(true))
+      assert(boolean?(false))
+    }))
+
+    it("returns false for non-booleans" fn(~{
+      assert(not(boolean?(1)))
+      assert(not(boolean?("foo")))
+      assert(not(boolean?([])))
+      assert(not(boolean?({})))
+    }))
+  }))
+
+  describe("null?" fn(~{
+    it("returns true for null" fn(~{
+      assert(null?(null))
+    }))
+
+    it("returns false for non-null values" fn(~{
+      assert(not(null?(1)))
+      assert(not(null?("foo")))
+      assert(not(null?([])))
+      assert(not(null?({})))
+      assert(not(null?(false)))
+    }))
+  }))
+
+  describe("set?" fn(~{
+    it("returns true for sets" fn(~{
+      assert(set?(#{}))
+    }))
+
+    it("returns false for non-set values" fn(~{
+      assert(not(set?(1)))
+      assert(not(set?("foo")))
+      assert(not(set?([])))
+      assert(not(set?({})))
+      assert(not(set?(false)))
+    }))
+  }))
+
+  describe("map?" fn(~{
+    it("returns true for maps" fn(~{
+      assert(map?({}))
+    }))
+
+    it("returns false for non-set values" fn(~{
+      assert(not(map?(1)))
+      assert(not(map?("foo")))
+      assert(not(map?([])))
+      assert(not(map?(#{})))
+      assert(not(map?(false)))
+    }))
+  }))
+
+  describe("array?" fn(~{
+    it("returns true for arrays" fn(~{
+      assert(array?([]))
+    }))
+
+    it("returns false for non-set values" fn(~{
+      assert(not(array?(1)))
+      assert(not(array?("foo")))
+      assert(not(array?({})))
+      assert(not(array?(#{})))
+      assert(not(array?(false)))
+    }))
+  }))
+
+  describe("arr" fn(~{
+    it("returns the given array" fn(~{
+      assert(.isEqual(_ arr([1 2 3]) [1 2 3]))
+    }))
+
+    it("returns an empty array when given null" fn(~{
+      assert(.isEqual(_ arr(null) []))
+    }))
+
+    it("returns an array of characters when given a string" fn(~{
+      console.log(arr("foo"))
+      assert(.isEqual(_ arr("foo") ["f" "o" "o"]))
+    }))
+
+    it("returns an array of the given set's elements" fn(~{
+      assert(.isEqual(_ arr(#{1 2 3}) [1 2 3]))
+    }))
+
+    it("returns an array of the given map's tuples" fn(~{
+      assert(.isEqual(_ arr({1 2 3 4}) [[1 2] [3 4]]))
+    }))
+
+    it("throws for non-iterable items" fn(~{
+      assert.throws(fn(~{
+        arr(1)
+      }) RegExp.("^Given item not iterable$"))
     }))
   }))
 
@@ -264,6 +471,16 @@ describe("core" fn(~{
     }))
   }))
 
+  describe("apply" fn(~{
+    it("invokes the given fn with the given arguments" fn(~{
+      .equal(assert apply(+ [1 2]) 3)
+    }))
+
+    it("appends intermediate arguments to the last argument" fn(~{
+      .equal(assert apply(+ 1 [2]) 3)
+    }))
+  }))
+
   describe("map" fn(~{
     it("maps a the given fn over the given array" fn(~{
       assert(.isEqual(_ map(inc [1 2 3]) [2 3 4]))
@@ -295,6 +512,12 @@ describe("core" fn(~{
 
     it("returns the starting point when the given array is empty" fn(~{
       .equal(assert reduce(+ 10 []) 10)
+    }))
+  }))
+
+  describe("comp" fn(~{
+    it("applies the given functions to the given value from right to left" fn(~{
+      .equal(assert comp(not even? 1) true)
     }))
   }))
 }))
