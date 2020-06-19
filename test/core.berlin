@@ -44,6 +44,7 @@ def(filter .-filter(core))
 def(reduce .-reduce(core))
 def(reverse .-reverse(core))
 def(comp .-comp(core))
+def(partial .-partial(core))
 def(-> .-->(core))
 def(->> .-->>(core))
 def(raise .-raise(core))
@@ -527,6 +528,13 @@ describe("core" fn({
   describe("comp" fn({
     it("applies the given functions to the given value from right to left" fn({
       .equal(assert comp(not even?)(1) true)
+    }))
+  }))
+
+  describe("comp" fn({
+    it("prepares a function to be invoked with the given arguments
+        plus any additional arguments" fn({
+      .equal(assert partial(+ 1)(1) 2)
     }))
   }))
 
