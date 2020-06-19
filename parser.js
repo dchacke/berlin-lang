@@ -33,12 +33,12 @@ let parse = (tokens, mode) => {
         if (tokens[i - 1][0] === "#") {
           mode = "set";
         } else if (tokens[i - 1][0] === "~") {
-          mode = "block";
-        } else {
           mode = "map";
+        } else {
+          mode = "block";
         }
       } else {
-        mode = "map";
+        mode = "block";
       }
 
       let [subTree, newlyConsumedTokens] = parse(tokens.slice(i + 1), mode);

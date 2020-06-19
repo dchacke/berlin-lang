@@ -57,9 +57,11 @@ describe("Parser", () => {
   describe("maps", () => {
     describe("well formed", () => {
       let tokens = [
+        ["~", "~"],
         ["{", "{"],
         ["number", "1"],
         ["number", "2"],
+        ["~", "~"],
         ["{", "{"],
         ["number", "3"],
         ["number", "4"],
@@ -93,6 +95,7 @@ describe("Parser", () => {
     describe("malformed", () => {
       describe("unmatched closing curly brace", () => {
         let tokens = [
+          ["~", "~"],
           ["{", "{"],
           ["number", "1"],
           ["number", "2"],
@@ -109,6 +112,7 @@ describe("Parser", () => {
 
       describe("uneven number of elements", () => {
         let tokens = [
+          ["~", "~"],
           ["{", "{"],
           ["number", "1"],
           ["}", "}"]
@@ -190,7 +194,6 @@ describe("Parser", () => {
   describe("blocks", () => {
     let tokens = [
       ["keyword", "foo"],
-      ["~", "~"],
       ["{", "{"],
       ["symbol", "foo"],
       ["number", "1"],
@@ -200,7 +203,7 @@ describe("Parser", () => {
     ];
     let result = parse(tokens)[0];
 
-    it("parses the block signified by ~{}", () => {
+    it("parses the block signified by {}", () => {
       assert(_.isEqual(result, [
         ["keyword", "foo"],
         [
