@@ -295,7 +295,6 @@ describe("core" fn({
     }))
 
     it("returns an array of characters when given a string" fn({
-      console.log(arr("foo"))
       assert(.isEqual(_ arr("foo") ["f" "o" "o"]))
     }))
 
