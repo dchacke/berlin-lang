@@ -212,8 +212,8 @@ module.exports = { lex };
 // Destructuring
 // ✓ JS interop with .fn, .-attr, fn. for constructors, and set! like in ClojureScript
 // ✓ How to use JS operators like +, -, etc?
-// var (as a single statement, no block)
-// if (takes at least one block, optionally a second one)
+// ✓ def (as a single statement, no block)
+// ✓ if (takes at least one block, optionally a second one)
 //
 // No statements, no expressions. Only functions.
 //
@@ -227,7 +227,7 @@ module.exports = { lex };
 //
 // ✓ Assume that opening parenthesis means we are invoking
 // a function.
-// Special functions that are guaranteed to be pure because
+// ✓ Special functions that are guaranteed to be pure because
 // the compiler raises an exception when the function body
 // accesses a symbol the function wasn't explicitly passed
 // (I got this idea from Brian Will, he briefly mentioned it

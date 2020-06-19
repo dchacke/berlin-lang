@@ -139,6 +139,12 @@ let translate = (ast, depth = 0, parentType = null, symbolWhitelist = new Set())
 
           let whitelist;
 
+          // fn! designated a special function that is virtually guaranteed
+          // to be pure because the compiler raises an exception when the
+          // function body accesses a symbol the function wasn't explicitly
+          // passed (I got this idea from Brian Will, he briefly mentioned it
+          // in one of his videos, but I can't remember which one:
+          // https://www.youtube.com/user/briantwill/)
           if (invocable[1] === "fn!" || symbolWhitelist.size) {
             let standardSymbols = ["fn", "fn!", "let", "def", "if"];
 
