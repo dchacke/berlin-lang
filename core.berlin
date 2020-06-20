@@ -1,6 +1,7 @@
 def(lib require("./lib"))
+def(_ require("lodash"))
 
-def(= fn!(a b invoke-operator("===" a b)))
+def(= fn(a b _.isEqual(a b)))
 
 def(identity fn!(a a))
 

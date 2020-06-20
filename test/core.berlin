@@ -59,15 +59,26 @@ def(->> .-->>(core))
 def(raise .-raise(core))
 def(get .-get(core))
 def(get-in .-get-in(core))
+def(contains? .-contains?(core))
 
 describe("core" fn({
   describe("=" fn({
     it("returns true for equal things" fn({
-      .equal(assert =(1 1) true)
+      assert(=(1 1))
+      assert(=("foo" "foo"))
+      assert(=(:foo :foo))
+      assert(=([1 2 3] [1 2 3]))
+      assert(=(~{1 2 3 4} ~{3 4 1 2}))
+      assert(=(#{1 2 3} #{3 2 1}))
     }))
 
     it("returns false for unequal things" fn({
-      .equal(assert =(1 2) false)
+      assert(false?(=(1 2)))
+      assert(false?(=("foo" "bar")))
+      assert(false?(=(:foo :bar)))
+      assert(false?(=([1 2 3] [4 5 6])))
+      assert(false?(=(~{1 2 3 4} ~{5 6 7 8})))
+      assert(false?(=(#{1 2 3} #{4 5 6})))
     }))
   }))
 
