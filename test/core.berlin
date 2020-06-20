@@ -42,6 +42,8 @@ def(true? .-true?(core))
 def(false? .-false?(core))
 def(truthy? .-truthy?(core))
 def(falsey? .-falsey?(core))
+def(defined? .-defined?(core))
+def(undefined? .-undefined?(core))
 def(not .-not(core))
 def(even? .-even?(core))
 def(odd? .-odd?(core))
@@ -613,6 +615,36 @@ describe("core" fn({
       .equal(assert falsey?(:foo) false)
       .equal(assert falsey?([]) false)
       .equal(assert falsey?(~{}) false)
+    }))
+  }))
+
+  describe("defined?" fn({
+    it("returns true for defined values" fn({
+      assert(defined?(1))
+      assert(defined?(""))
+      assert(defined?(:foo))
+      assert(defined?(~{}))
+      assert(defined?(#{}))
+      assert(defined?([]))
+    }))
+
+    it("returns false for undefined" fn({
+      assert(comp(false? defined?)(undefined))
+    }))
+  }))
+
+  describe("undefined?" fn({
+    it("returns true for undefined" fn({
+      assert(undefined?(undefined))
+    }))
+
+    it("returns false for defined values" fn({
+      assert(comp(false? undefined?)(1))
+      assert(comp(false? undefined?)(""))
+      assert(comp(false? undefined?)(:foo))
+      assert(comp(false? undefined?)(~{}))
+      assert(comp(false? undefined?)(#{}))
+      assert(comp(false? undefined?)([]))
     }))
   }))
 

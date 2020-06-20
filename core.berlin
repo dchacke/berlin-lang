@@ -184,6 +184,10 @@ def(falsey? fn(a if(truthy?(a)
                    false
                    true)))
 
+def(defined? fn(a not(=(a undefined))))
+
+def(undefined? fn(a =(undefined a)))
+
 def(not falsey?)
 
 def(even? fn(a zero?(%(a 2))))
@@ -300,6 +304,8 @@ set(exp "true?" true?)
 set(exp "false?" false?)
 set(exp "truthy?" truthy?)
 set(exp "falsey?" falsey?)
+set(exp "defined?" defined?)
+set(exp "undefined?" undefined?)
 set(exp "not" not)
 set(exp "even?" even?)
 set(exp "odd?" odd?)
