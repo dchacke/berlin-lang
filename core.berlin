@@ -31,7 +31,18 @@ def(and fn(...args
 
 def(zero? fn(a =(a 0)))
 
-def(count fn!(coll .-length(coll)))
+; Do not use fn "or" in here as it
+; will lead to a circular dependency
+def(count fn(coll
+  if(array?(coll)
+    .-length(coll)
+    if(map?(coll)
+      .-size(coll)
+      if(set?(coll)
+        .-size(coll)
+        if(nil?(coll)
+          0
+          raise("count only works for arrays, maps, sets, and nil")))))))
 
 def(empty? fn(coll
   if(nil?(coll)
@@ -70,7 +81,7 @@ def(next fn(coll
 def(cons fn(el coll
   if(nil?(coll)
     [el]
-    [el ...coll])))
+    apply(conj [el] coll))))
 
 def(string? fn(a =(invoke-operator("typeof" a) "string")))
 def(number? fn(a =(invoke-operator("typeof" a) "number")))
@@ -234,7 +245,7 @@ def(reverse fn(coll
   if(empty?(coll)
     []
     let([r reverse(rest(coll))]
-      [...r first(coll)]))))
+      conj(r first(coll))))))
 
 def(comp fn(...fns
   let([fns reverse(fns)]
@@ -244,7 +255,7 @@ def(comp fn(...fns
              rest(fns))))))
 
 def(partial fn(f ...args {
-  fn(...more f(...args ...more))}))
+  fn(...more apply(f ...args more))}))
 
 def(thread fn(type
   fn(val ...exprs
@@ -282,6 +293,35 @@ def(get-in fn(m ks
     let([k first(ks)
          val get(m k)]
       get-in(val rest(ks))))))
+
+def(contains? fn(coll key
+  if(array?(coll)
+    <(key count(coll))
+    if(or(map?(coll) set?(coll))
+      .has(coll key)
+      if(nil?(coll)
+        false
+        raise("Can only use contain? on arrays, maps, sets, and nil"))))))
+
+def(every? fn(pred coll
+  if(empty?(coll)
+    true
+    let([coll arr(coll)]
+      and(->(coll first pred)
+          every?(pred rest(coll)))))))
+
+def(conj fn(coll ...vals
+  if(array?(coll)
+    [...coll ...vals]
+    if(set?(coll)
+      Set.([...coll ...vals])
+      if(map?(coll)
+        if(every? (fn(v and(array?(v) =(count(v) 2))) vals)
+          Map.([...coll ...vals])
+          raise("Values conj'ed onto map must be two-valued arrays"))
+        if(nil?(coll)
+          [...vals]
+          raise("Can only conj onto arrays, maps, sets, and nil")))))))
 
 ; Export the above functions
 def(exp Object.())
@@ -343,5 +383,8 @@ set(exp "->>" ->>)
 set(exp "raise" raise)
 set(exp "get" get)
 set(exp "get-in" get-in)
+set(exp "contains?" contains?)
+set(exp "every?" every?)
+set(exp "conj" conj)
 
 set(module "exports" exp)

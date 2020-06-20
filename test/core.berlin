@@ -60,6 +60,8 @@ def(raise .-raise(core))
 def(get .-get(core))
 def(get-in .-get-in(core))
 def(contains? .-contains?(core))
+def(every? .-every?(core))
+def(conj .-conj(core))
 
 describe("core" fn({
   describe("=" fn({
@@ -146,6 +148,22 @@ describe("core" fn({
   describe("count" fn({
     it("returns the size of the given array" fn({
       .equal(assert count([1 2 1]) 3)
+    }))
+
+    it("returns the size of the given set" fn({
+      .equal(assert count(#{1 2 3}) 3)
+    }))
+
+    it("returns the size of the given map" fn({
+      .equal(assert count(~{1 2 3 4}) 2)
+    }))
+
+    it("returns the size of the given map" fn({
+      assert(zero?(count(nil)))
+    }))
+
+    it("throws for other data types" fn({
+      .throws(assert fn(count(1)) RegExp.("count only works for arrays, maps, sets, and nil"))
     }))
   }))
 
@@ -812,6 +830,103 @@ describe("core" fn({
 
     it("returns nil when the given deeply-nested field does not exist on the given map" fn({
       assert(->(~{} [get-in [:foo :bar :baz]] nil?))
+    }))
+  }))
+
+  describe("contains?" fn({
+    describe("maps" fn({
+      it("returns true for an existing field" fn({
+        assert(contains?(~{:foo "bar"} :foo))
+      }));
+
+      it("returns false for missing fields" fn({
+        assert(false?(contains?(~{} :foo)))
+      }))
+    }));
+
+    describe("arrays" fn({
+      it("returns true for an existing index" fn({
+        assert(contains?([1 2 3] 0))
+      }))
+
+      it("returns false for missing indices" fn({
+        assert(false?(contains?([1 2 3] 10)))
+      }))
+    }));
+
+    describe("sets" fn({
+      it("returns true for an existing value" fn({
+        assert(contains?(#{1 2 3} 1))
+      }))
+
+      it("returns false for missing values" fn({
+        assert(false?(contains?(#{1 2 3} 10)))
+      }))
+    }));
+
+    describe("nil" fn({
+      it("always returns false" fn({
+        assert(false?(contains?(nil 1)))
+      }))
+    }))
+
+    describe("other data types" fn({
+      it("throws" fn({
+        .throws(assert fn(contains?(1 "foo")) RegExp.("Can only use contain\\? on arrays, maps, sets, and nil"))
+      }))
+    }))
+  }))
+
+  describe("every?" fn({
+    it("checks if the given predicate fn returns true
+        for every element in the given collection" fn({
+      assert(every?(even? [2 4 6]))
+      assert(every?(even? #{2 4 6}))
+      assert(every?(fn(kv-pair =(apply(+ kv-pair) 4)) ~{1 3 2 2}))
+      assert(false?(every?(even? [1 2 4 6])))
+    }))
+
+    it("returns true for empty collections" fn({
+      assert(every?(even? []))
+      assert(every?(even? #{}))
+      assert(every?(even? ~{}))
+    }))
+  }))
+
+  describe("conj" fn({
+    describe("sets" fn({
+      it("adds the given values to the given set" fn({
+        assert(=(conj(#{} 1 2 3) #{1 2 3}))
+      }))
+    }))
+
+    describe("arrays" fn({
+      it("adds the given values to the given array" fn({
+        assert(=(conj([] 1 2 3) [1 2 3]))
+      }))
+    }))
+
+    describe("maps" fn({
+      it("adds the given values to the given map" fn({
+        assert(=(conj(~{} [1 2] [3 4]) ~{1 2 3 4}))
+      }))
+
+      it("only accepts two-value arrays" fn({
+        .throws(assert fn(conj(~{} [1])) RegExp.("Values conj'ed onto map must be two-valued arrays"))
+        .throws(assert fn(conj(~{} [1 2 3])) RegExp.("Values conj'ed onto map must be two-valued arrays"))
+      }))
+    }))
+
+    describe("nil" fn({
+      it("returns an array consisting of the given values" fn({
+        assert(=(conj(nil 1 2 3 4) [1 2 3 4]))
+      }))
+    }))
+
+    describe("other data types" fn({
+      it("throws" fn({
+        .throws(assert fn(conj(1 1)) RegExp.("Can only conj onto arrays, maps, sets, and nil"))
+      }))
     }))
   }))
 }))
