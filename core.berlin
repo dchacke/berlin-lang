@@ -1,3 +1,5 @@
+def(lib require("./lib"))
+
 def(= fn!(a b invoke-operator("===" a b)))
 
 def(identity fn!(a a))
@@ -261,6 +263,25 @@ def(-> thread("first"))
 def(->> thread("last"))
 def(raise fn(msg invoke-operator("throw" msg)))
 
+def(get fn(m k
+  let([val if(array?(m)
+            lib.get(m k)
+            if(map?(m)
+              .get(m k)
+              if(nil?(m)
+                nil
+                raise("Can only get from array, map, or nil"))))]
+    if(defined?(val)
+      val
+      nil))))
+
+def(get-in fn(m ks
+  if(empty?(ks)
+    m
+    let([k first(ks)
+         val get(m k)]
+      get-in(val rest(ks))))))
+
 ; Export the above functions
 def(exp Object.())
 set(exp "=" =)
@@ -319,5 +340,7 @@ set(exp "partial" partial)
 set(exp "->" ->)
 set(exp "->>" ->>)
 set(exp "raise" raise)
+set(exp "get" get)
+set(exp "get-in" get-in)
 
 set(module "exports" exp)

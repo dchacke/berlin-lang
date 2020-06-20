@@ -57,6 +57,8 @@ def(partial .-partial(core))
 def(-> .-->(core))
 def(->> .-->>(core))
 def(raise .-raise(core))
+def(get .-get(core))
+def(get-in .-get-in(core))
 
 describe("core" fn({
   describe("=" fn({
@@ -767,6 +769,38 @@ describe("core" fn({
   describe("raise" fn({
     it("throws the given exception" fn({
       .throws(assert fn({raise("foo")}) RegExp.("foo"))
+    }))
+  }))
+
+  describe("get" fn({
+    it("reads the given field off the given map" fn({
+      .equal(assert get(~{:foo "bar"} :foo) "bar")
+    }))
+
+    it("reads the given index off the given array" fn({
+      .equal(assert get([1 2 3] 0) 1)
+    }))
+
+    it("returns nil when the given field does not exist on the given map" fn({
+      assert(->(~{} [get :foo] nil?))
+    }))
+
+    it("returns nil when trying to read off nil" fn({
+      assert(->(nil [get :foo] nil?))
+    }))
+
+    it("throws when trying to read off a plain JS object" fn({
+      .throws(assert fn(get(Object.() "foo")) RegExp.("Can only get from array, map, or nil"))
+    }))
+  }))
+
+  describe("get-in" fn({
+    it("reads the given deeply-nested field off the given map" fn({
+      .equal(assert get-in(~{:foo [~{:bar "baz"}]} [:foo 0 :bar]) "baz")
+    }))
+
+    it("returns nil when the given deeply-nested field does not exist on the given map" fn({
+      assert(->(~{} [get-in [:foo :bar :baz]] nil?))
     }))
   }))
 }))
