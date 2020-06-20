@@ -32,6 +32,10 @@ def(- .--(core))
 def(* .-*(core))
 def(/ .-/(core))
 def(% .-%(core))
+def(< .-<(core))
+def(<= .-<=(core))
+def(> .->(core))
+def(>= .->=(core))
 def(inc .-inc(core))
 def(dec .-dec(core))
 def(true? .-true?(core))
@@ -463,6 +467,80 @@ describe("core" fn({
 
     it("works for negative numbers, too" fn({
       .equal(assert %(-6 -4) -2)
+    }))
+  }))
+
+  describe("<" fn({
+    it("returns true for the single given argument" fn({
+      assert(<(1))
+    }))
+
+    it("throws without arguments" fn({
+      .throws(assert fn(<()) RegExp.("< requires at least one argument"))
+    }))
+
+    it("returns true when all given arguments are in ascending order" fn({
+      assert(<(1 2 3 4))
+    }))
+
+    it("returns false when not all given arguments are in ascending order" fn({
+      assert(false?(<(1 3 2)))
+      assert(false?(<(1 3 3)))
+    }))
+  }))
+
+  describe("<=" fn({
+    it("returns true for the single given argument" fn({
+      assert(<=(1))
+    }))
+
+    it("throws without arguments" fn({
+      .throws(assert fn(<=()) RegExp.("<= requires at least one argument"))
+    }))
+
+    it("returns true when all given arguments are in ascending order" fn({
+      assert(<=(1 2 2 3))
+    }))
+
+    it("returns false when not all given arguments are in ascending order" fn({
+      assert(false?(<=(1 3 2)))
+    }))
+  }))
+
+  describe(">" fn({
+    it("returns true for the single given argument" fn({
+      assert(>(1))
+    }))
+
+    it("throws without arguments" fn({
+      .throws(assert fn(>()) RegExp.("> requires at least one argument"))
+    }))
+
+    it("returns true when all given arguments are in descending order" fn({
+      assert(>(3 2 1 0))
+    }))
+
+    it("returns false when not all given arguments are in descending order" fn({
+      assert(false?(>(3 1 2)))
+      assert(false?(>(3 2 2)))
+    }))
+  }))
+
+  describe(">=" fn({
+    it("returns true for the single given argument" fn({
+      assert(>=(1))
+    }))
+
+    it("throws without arguments" fn({
+      .throws(assert fn(>=()) RegExp.(">= requires at least one argument"))
+    }))
+
+    it("returns true when all given arguments are in descending order" fn({
+      assert(>=(3 2 2 1))
+    }))
+
+    it("returns false when not all given arguments are in descending order" fn({
+      assert(false?(>=(3 2 4)))
     }))
   }))
 

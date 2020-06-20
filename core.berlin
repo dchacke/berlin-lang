@@ -121,6 +121,48 @@ def(/ fn(...args
 
 def(% fn!(a b invoke-operator("%" a b)))
 
+; How can I make the following comparing
+; fns less repetitive?
+def(< fn(...args
+  if(empty?(args)
+    raise("< requires at least one argument")
+    if(=(count(args) 1)
+      true
+      if(=(count(args) 2)
+        invoke-operator("<" first(args) second(args))
+        and(invoke-operator("<" first(args) second(args))
+            apply(< second(args) rest(rest(args)))))))))
+
+def(<= fn(...args
+  if(empty?(args)
+    raise("<= requires at least one argument")
+    if(=(count(args) 1)
+      true
+      if(=(count(args) 2)
+        invoke-operator("<=" first(args) second(args))
+        and(invoke-operator("<=" first(args) second(args))
+            apply(<= second(args) rest(rest(args)))))))))
+
+def(> fn(...args
+  if(empty?(args)
+    raise("> requires at least one argument")
+    if(=(count(args) 1)
+      true
+      if(=(count(args) 2)
+        invoke-operator(">" first(args) second(args))
+        and(invoke-operator(">" first(args) second(args))
+            apply(> second(args) rest(rest(args)))))))))
+
+def(>= fn(...args
+  if(empty?(args)
+    raise(">= requires at least one argument")
+    if(=(count(args) 1)
+      true
+      if(=(count(args) 2)
+        invoke-operator(">=" first(args) second(args))
+        and(invoke-operator(">=" first(args) second(args))
+            apply(>= second(args) rest(rest(args)))))))))
+
 def(inc fn(a +(a 1)))
 
 def(dec fn(a -(a 1)))
@@ -248,6 +290,10 @@ set(exp "-" -)
 set(exp "*" *)
 set(exp "/" /)
 set(exp "%" %)
+set(exp "<" <)
+set(exp "<=" <=)
+set(exp ">" >)
+set(exp ">=" >=)
 set(exp "inc" inc)
 set(exp "dec" dec)
 set(exp "true?" true?)
