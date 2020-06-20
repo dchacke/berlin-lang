@@ -172,7 +172,7 @@ def(true? fn(a =(a true)))
 def(false? fn(a =(a false)))
 
 def(truthy? fn(a
-  if(=(a false)
+  if(false?(a)
     false
     if(nil?(a)
       false
