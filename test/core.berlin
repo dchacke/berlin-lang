@@ -71,6 +71,7 @@ def(assoc .-assoc(core))
 def(assoc-in .-assoc-in(core))
 def(update .-update(core))
 def(update-in .-update-in(core))
+def(str .-str(core))
 
 describe("core" fn({
   describe("=" fn({
@@ -1151,6 +1152,17 @@ describe("core" fn({
       it("works the same" fn({
         assert(=(update-in(~{:foo [~{:bar 1}]} [:foo 0 :bar] * 3) ~{:foo [~{:bar 3}]}))
       }))
+    }))
+  }))
+
+  describe("str" fn({
+    it("concatenates the given arguments" fn({
+      console.log("restult is" str("foo" "bar" 1 2))
+      assert(=(str("foo" "bar" 1 2) "foobar12"))
+    }))
+
+    it("returns an empty string when given no arguments" fn({
+      assert(=(str() ""))
     }))
   }))
 }))

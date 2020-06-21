@@ -400,6 +400,14 @@ def(update-in fn(m path f ...args
            result apply(update-in next-item rest(path) f args)]
         assoc(m first(path) result))))))
 
+def(str fn(...args
+  let([start ""]
+    if(empty?(args)
+      start
+      if(->(args count [= 1])
+        .concat(start first(args))
+        .concat(.concat(start first(args)) apply(str rest(args))))))))
+
 ; Export the above functions
 def(exp Object.())
 set(exp "=" =)
@@ -472,5 +480,6 @@ set(exp "assoc" assoc)
 set(exp "assoc-in" assoc-in)
 set(exp "update" update)
 set(exp "update-in" update-in)
+set(exp "str" str)
 
 set(module "exports" exp)
