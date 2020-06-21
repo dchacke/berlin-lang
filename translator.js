@@ -204,7 +204,7 @@ let translate = (ast, depth = 0, parentType = null, symbolWhitelist = new Set())
 
             result = `let ${translate([varName], depth + 1)} = ${translate([val], depth + 1, null, symbolWhitelist)}`;
           // We want to set a field
-          } else if (invocable[1] === "set") {
+          } else if (invocable[1] === "set-property") {
             let settable = fnArgs[0];
             let field = fnArgs[1];
             let val = fnArgs[2];

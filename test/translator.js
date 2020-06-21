@@ -954,13 +954,13 @@ return ...c;
       });
     });
 
-    describe("set", () => {
+    describe("set-property", () => {
       let ast = [
         [
           "function-call",
           [
             "invocable",
-            ["symbol", "set"]
+            ["symbol", "set-property"]
           ],
           [
             "argument-list",
@@ -974,7 +974,7 @@ return ...c;
       ];
       let result = translate(ast);
 
-      it("translates the call to set into an assignment", () => {
+      it("translates the call to set-property into an assignment", () => {
         assert.equal(result, `((a )[(1 )] = (3 ));\n`);
       });
     });
