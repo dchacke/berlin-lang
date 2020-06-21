@@ -103,15 +103,30 @@ def(arr fn(a
           a
           raise("Given item not iterable")))))))
 
+def(array fn(...args
+  args))
+
+def(set fn(a
+  Set.(arr(a))))
+
+def(hash-set fn(...args
+  Set.(args)))
+
+def(hash-map fn(...kvs
+  Map.(apply(pairwise kvs))))
+
+def(keys fn(m
+  ->>(m arr [map first])))
+
+def(vals fn(m
+  ->>(m arr [map second])))
+
 def(pairwise fn(...args
   if(->(args count even?)
     if(empty?(args)
       []
       cons([first(args) second(args)] apply(pairwise rest(rest(args)))))
     raise("expected an even number of arguments"))))
-
-def(hash-map fn(...kvs
-  Map.(apply(pairwise kvs))))
 
 def(log fn(...args .log(console ...args)))
 
@@ -408,78 +423,140 @@ def(str fn(...args
         .concat(start first(args))
         .concat(.concat(start first(args)) apply(str rest(args))))))))
 
+def(max fn(...args
+  if(empty?(args)
+    raise("max requires at least one argument")
+    apply(Math.max args))))
+
+def(min fn(...args
+  if(empty?(args)
+    raise("min requires at least one argument")
+    apply(Math.min args))))
+
+def(int? fn(n
+  Number.isInteger(n)))
+
+def(float? fn(n
+  and(number?(n)
+      not(->(n [% 1] zero?)))))
+
+def(neg? fn(n
+  <(n 0)))
+
+def(pos? fn(n
+  >(n 0)))
+
+def(rand Math.random)
+
+def(rand-int fn(i
+  ->(i Math.floor [* rand()] Math.floor)))
+
+def(repeat fn(a b
+  if(>=(a 1)
+    cons(b repeat(dec(a) b))
+    [])))
+
+def(repeatedly fn(a f ...args
+  if(>=(a 1)
+    cons(apply(f args) apply(repeatedly dec(a) f args))
+    [])))
+
 ; Export the above functions
 def(exp Object.())
-set(exp "=" =)
-set(exp "identity" identity)
-set(exp "or" or)
-set(exp "and" and)
-set(exp "zero?" zero?)
-set(exp "count" count)
-set(exp "empty?" empty?)
-set(exp "first" first)
-set(exp "ffirst" ffirst)
-set(exp "second" second)
-set(exp "third" third)
-set(exp "last" last)
-set(exp "butlast" butlast)
-set(exp "rest" rest)
-set(exp "next" next)
-set(exp "cons" cons)
-set(exp "string?" string?)
-set(exp "number?" number?)
-set(exp "keyword?" keyword?)
-set(exp "boolean?" boolean?)
-set(exp "nil?" nil?)
-set(exp "set?" set?)
-set(exp "map?" map?)
-set(exp "array?" array?)
-set(exp "arr" arr)
-set(exp "pairwise" pairwise)
-set(exp "hash-map" hash-map)
-set(exp "log" log)
-set(exp "+" +)
-set(exp "-" -)
-set(exp "*" *)
-set(exp "/" /)
-set(exp "%" %)
-set(exp "<" <)
-set(exp "<=" <=)
-set(exp ">" >)
-set(exp ">=" >=)
-set(exp "inc" inc)
-set(exp "dec" dec)
-set(exp "true?" true?)
-set(exp "false?" false?)
-set(exp "truthy?" truthy?)
-set(exp "falsey?" falsey?)
-set(exp "defined?" defined?)
-set(exp "undefined?" undefined?)
-set(exp "not" not)
-set(exp "even?" even?)
-set(exp "odd?" odd?)
-set(exp "apply" apply)
-set(exp "map" map)
-set(exp "filter" filter)
-set(exp "reduce" reduce)
-set(exp "reverse" reverse)
-set(exp "comp" comp)
-set(exp "partial" partial)
-set(exp "->" ->)
-set(exp "->>" ->>)
-set(exp "raise" raise)
-set(exp "get" get)
-set(exp "get-in" get-in)
-set(exp "contains?" contains?)
-set(exp "every?" every?)
-set(exp "conj" conj)
-set(exp "drop" drop)
-set(exp "take" take)
-set(exp "flatten-1" flatten-1)
-set(exp "assoc" assoc)
-set(exp "assoc-in" assoc-in)
-set(exp "update" update)
-set(exp "update-in" update-in)
-set(exp "str" str)
+set-property(exp "=" =)
+set-property(exp "identity" identity)
+set-property(exp "or" or)
+set-property(exp "and" and)
+set-property(exp "zero?" zero?)
+set-property(exp "count" count)
+set-property(exp "empty?" empty?)
+set-property(exp "first" first)
+set-property(exp "ffirst" ffirst)
+set-property(exp "second" second)
+set-property(exp "third" third)
+set-property(exp "last" last)
+set-property(exp "butlast" butlast)
+set-property(exp "rest" rest)
+set-property(exp "next" next)
+set-property(exp "cons" cons)
+set-property(exp "string?" string?)
+set-property(exp "number?" number?)
+set-property(exp "keyword?" keyword?)
+set-property(exp "boolean?" boolean?)
+set-property(exp "nil?" nil?)
+set-property(exp "set?" set?)
+set-property(exp "map?" map?)
+set-property(exp "array?" array?)
+set-property(exp "arr" arr)
+set-property(exp "array" array)
+set-property(exp "set" set)
+set-property(exp "hash-set" hash-set)
+set-property(exp "hash-map" hash-map)
+set-property(exp "keys" keys)
+set-property(exp "vals" vals)
+set-property(exp "pairwise" pairwise)
+set-property(exp "log" log)
+set-property(exp "+" +)
+set-property(exp "-" -)
+set-property(exp "*" *)
+set-property(exp "/" /)
+set-property(exp "%" %)
+set-property(exp "<" <)
+set-property(exp "<=" <=)
+set-property(exp ">" >)
+set-property(exp ">=" >=)
+set-property(exp "inc" inc)
+set-property(exp "dec" dec)
+set-property(exp "true?" true?)
+set-property(exp "false?" false?)
+set-property(exp "truthy?" truthy?)
+set-property(exp "falsey?" falsey?)
+set-property(exp "defined?" defined?)
+set-property(exp "undefined?" undefined?)
+set-property(exp "not" not)
+set-property(exp "even?" even?)
+set-property(exp "odd?" odd?)
+set-property(exp "apply" apply)
+set-property(exp "map" map)
+set-property(exp "filter" filter)
+set-property(exp "reduce" reduce)
+set-property(exp "reverse" reverse)
+set-property(exp "comp" comp)
+set-property(exp "partial" partial)
+set-property(exp "->" ->)
+set-property(exp "->>" ->>)
+set-property(exp "raise" raise)
+set-property(exp "get" get)
+set-property(exp "get-in" get-in)
+set-property(exp "contains?" contains?)
+set-property(exp "every?" every?)
+set-property(exp "conj" conj)
+set-property(exp "drop" drop)
+set-property(exp "take" take)
+set-property(exp "flatten-1" flatten-1)
+set-property(exp "assoc" assoc)
+set-property(exp "assoc-in" assoc-in)
+set-property(exp "update" update)
+set-property(exp "update-in" update-in)
+set-property(exp "str" str)
+set-property(exp "max" max)
+set-property(exp "min" min)
+set-property(exp "int?" int?)
+set-property(exp "float?" float?)
+set-property(exp "neg?" neg?)
+set-property(exp "pos?" pos?)
+set-property(exp "rand" rand)
+set-property(exp "rand-int" rand-int)
+set-property(exp "repeat" repeat)
+set-property(exp "repeatedly" repeatedly)
 
-set(module "exports" exp)
+set-property(module "exports" exp)
+
+; how about a feature that lets you assign structures without evaluating them?
+; e.g. def~(x [a 1 b console.log("foo")])
+; the transpiler would treat this as
+; def(x fn([a 1 b console.log("foo")]))
+; another idea:
+; I could have no map literal and simply have users use the hash-map fn instead.
+; Same for arrays and sets, maybe. That would free up a lot of symbols to use for
+; the compiler, but on the other hand, it would be a lot more typing for users.
