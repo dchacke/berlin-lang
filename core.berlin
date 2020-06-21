@@ -103,6 +103,16 @@ def(arr fn(a
           a
           raise("Given item not iterable")))))))
 
+def(pairwise fn(...args
+  if(->(args count even?)
+    if(empty?(args)
+      []
+      cons([first(args) second(args)] apply(pairwise rest(rest(args)))))
+    raise("expected an even number of arguments"))))
+
+def(hash-map fn(...kvs
+  Map.(apply(pairwise kvs))))
+
 def(log fn(...args .log(console ...args)))
 
 def(+ fn(...args
@@ -323,6 +333,59 @@ def(conj fn(coll ...vals
           [...vals]
           raise("Can only conj onto arrays, maps, sets, and nil")))))))
 
+def(drop fn(n coll
+  if(or(empty?(coll) <=(n 0))
+    coll
+    drop(dec(n) rest(coll)))))
+
+def(take fn(n coll
+  if(or(empty?(coll) <=(n 0))
+    []
+    cons(first(coll) take(dec(n) rest(coll))))))
+
+def(flatten-1 fn(coll
+  if(array?(coll)
+    if(empty?(coll)
+      coll
+      let([curr first(coll)]
+        if(array?(curr)
+          apply(conj curr flatten-1(rest(coll)))
+          cons(curr flatten-1(rest(coll))))))
+    [])))
+
+def(assoc fn(m ...kvs
+  if(empty?(kvs)
+    m
+    if(->(kvs count even?)
+      let([k first(kvs)
+           v second(kvs)]
+        if(array?(m)
+          if(number?(k)
+            if(and(<=(k count(m)) >=(k 0))
+              let([beginning take(k m)
+                   end drop(inc(k) m)
+                   result apply(conj [] ...beginning v end)]
+                apply(assoc result rest(rest(kvs))))
+              raise("Index out of bounds"))
+            raise("Index must be a number"))
+          if(map?(m)
+            let([entries ->(m arr flatten-1 [conj k v])
+                 result apply(hash-map entries)]
+              apply(assoc result rest(rest(kvs))))
+            if(nil?(m)
+              apply(assoc ~{} kvs)
+              raise("Expected one of array, map, or nil")))))
+      raise("Even number of keys and values required")))))
+
+def(assoc-in fn(m path v
+  if(empty?(path)
+    m
+    if(->(path count [= 1])
+      assoc(m first(path) v)
+      let([next-item get(m first(path))
+           result assoc-in(next-item rest(path) v)]
+        assoc(m first(path) result))))))
+
 ; Export the above functions
 def(exp Object.())
 set(exp "=" =)
@@ -350,6 +413,8 @@ set(exp "set?" set?)
 set(exp "map?" map?)
 set(exp "array?" array?)
 set(exp "arr" arr)
+set(exp "pairwise" pairwise)
+set(exp "hash-map" hash-map)
 set(exp "log" log)
 set(exp "+" +)
 set(exp "-" -)
@@ -386,5 +451,10 @@ set(exp "get-in" get-in)
 set(exp "contains?" contains?)
 set(exp "every?" every?)
 set(exp "conj" conj)
+set(exp "drop" drop)
+set(exp "take" take)
+set(exp "flatten-1" flatten-1)
+set(exp "assoc" assoc)
+set(exp "assoc-in" assoc-in)
 
 set(module "exports" exp)

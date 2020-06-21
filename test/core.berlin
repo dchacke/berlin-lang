@@ -27,6 +27,8 @@ def(set? .-set?(core))
 def(map? .-map?(core))
 def(array? .-array?(core))
 def(arr .-arr(core))
+def(pairwise .-pairwise(core))
+def(hash-map .-hash-map(core))
 def(+ .-+(core))
 def(- .--(core))
 def(* .-*(core))
@@ -62,6 +64,11 @@ def(get-in .-get-in(core))
 def(contains? .-contains?(core))
 def(every? .-every?(core))
 def(conj .-conj(core))
+def(drop .-drop(core))
+def(take .-take(core))
+def(flatten-1 .-flatten-1(core))
+def(assoc .-assoc(core))
+def(assoc-in .-assoc-in(core))
 
 describe("core" fn({
   describe("=" fn({
@@ -402,6 +409,34 @@ describe("core" fn({
       assert.throws(fn({
         arr(1)
       }) RegExp.("^Given item not iterable$"))
+    }))
+  }))
+
+  describe("pairwise" fn({
+    it("pairs up the given elements" fn({
+      assert(=(pairwise(1 2 3 4) [[1 2] [3 4]]))
+    }))
+
+    it("returns an empty array when given no elements" fn({
+      assert(=(pairwise() []))
+    }))
+
+    it("throws when given an odd number of arguments" fn({
+      .throws(assert fn(pairwise(1)) RegExp.("expected an even number of arguments"))
+    }))
+  }))
+
+  describe("hash-map" fn({
+    it("creates a map with the given arguments" fn({
+      assert(=(hash-map(1 2 3 4) ~{1 2 3 4}))
+    }))
+
+    it("returns an empty hash map when given no keys or values" fn({
+      assert(=(hash-map() ~{}))
+    }))
+
+    it("throws when given an odd number of keys and values" fn({
+      .throws(assert fn(hash-map(1 2 3)) RegExp.("expected an even number of arguments"))
     }))
   }))
 
@@ -926,6 +961,143 @@ describe("core" fn({
     describe("other data types" fn({
       it("throws" fn({
         .throws(assert fn(conj(1 1)) RegExp.("Can only conj onto arrays, maps, sets, and nil"))
+      }))
+    }))
+  }))
+
+  describe("drop" fn({
+    it("drops the given number of elements from the given array" fn({
+      assert(=(drop(2 [1 2 3]) [3]))
+    }))
+
+    it("can drop more elements than the array has" fn({
+      assert(=(drop(2 [1]) []))
+    }))
+
+    it("returns the same array for negative amounts" fn({
+      assert(=(drop(-1 [1 2]) [1 2]))
+    }))
+  }))
+
+  describe("take" fn({
+    it("takes the given number of elements from the given array" fn({
+      assert(=(take(2 [1 2 3]) [1 2]))
+    }))
+
+    it("can take more elements than the array has" fn({
+      assert(=(take(2 [1]) [1]))
+    }))
+
+    it("returns an empty array for negative amounts" fn({
+      assert(=(take(-1 [1 2]) []))
+    }))
+  }))
+
+  describe("flatten-1" fn({
+    it("flattens the given structure and turns it
+        into an array if it isn't one already" fn({
+      assert(=(flatten-1([1 [2 3] #{4 5} ~{6 7 8 9}]) [1 2 3 #{4 5} ~{6 7 8 9}]))
+    }))
+
+    it("returns an empty array when given a non-array" fn({
+      assert(=(flatten-1(#{1 2 3}) []))
+      assert(=(flatten-1(~{1 2 3 4}) []))
+      assert(=(flatten-1(nil) []))
+      assert(=(flatten-1(1) []))
+      assert(=(flatten-1("foo") []))
+      assert(=(flatten-1(:foo) []))
+    }))
+
+    it("only flattens a single level deep" fn({
+      assert(=(flatten-1([[[1]]]) [[1]]))
+    }))
+  }))
+
+  describe("assoc" fn({
+    describe("arrays" fn({
+      it("returns an array with the given field set to the given value" fn({
+        assert(=(assoc([1 2 3] 1 4) [1 4 3]))
+      }))
+
+      it("can set the index that is equal to the array's length" fn({
+        assert(=(assoc([1 2 3] 3 4) [1 2 3 4]))
+      }))
+
+      it("can take multiple field-value pairs" fn({
+        assert(=(assoc([1 2 3] 0 0 1 1 2 2) [0 1 2]))
+      }))
+
+      it("throws when passing incomplete field-value pairs" fn({
+        .throws(assert fn(assoc([1 2 3] 1 2 0)) RegExp.("Even number of keys and values required"))
+      }))
+
+      it("throws when trying to set an index that's greater than the array's length" fn({
+        .throws(assert fn(assoc([1 2 3] 4 10)) RegExp.("Index out of bounds"))
+      }))
+
+      it("throws when trying to set a negative index" fn({
+        .throws(assert fn(assoc([1 2 3] -1 10)) RegExp.("Index out of bounds"))
+      }))
+
+      it("throws when passing a non-number as index" fn({
+        .throws(assert fn(assoc([] :foo 1)) RegExp.("Index must be a number"))
+      }))
+    }))
+
+    describe("maps" fn({
+      it("returns a map with the given field set to the given value" fn({
+        assert(=(assoc(~{:foo "bar"} :bar "foo") ~{:foo "bar" :bar "foo"}))
+      }))
+
+      it("can take multiple field-value pairs" fn({
+        assert(=(assoc(~{} :foo "bar" :bar "foo") ~{:foo "bar" :bar "foo"}))
+      }))
+
+      it("throws when passing incomplete field-value pairs" fn({
+        .throws(assert fn(assoc(~{} :foo "bar" :bar)) RegExp.("Even number of keys and values required"))
+      }))
+    }))
+
+    describe("nil" fn({
+      it("treats nil as an empty map" fn({
+        assert(=(assoc(nil :bar "foo") ~{:bar "foo"}))
+      }))
+    }))
+
+    describe("other data types" fn({
+      it("throws" fn({
+        .throws(assert fn(assoc(1 :foo :bar)) RegExp.("Expected one of array, map, or nil"))
+        .throws(assert fn(assoc("" :foo :bar)) RegExp.("Expected one of array, map, or nil"))
+        .throws(assert fn(assoc(:foo :foo :bar)) RegExp.("Expected one of array, map, or nil"))
+        .throws(assert fn(assoc(#{} :foo :bar)) RegExp.("Expected one of array, map, or nil"))
+        .throws(assert fn(assoc(true :foo :bar)) RegExp.("Expected one of array, map, or nil"))
+        .throws(assert fn(assoc(undefined :foo :bar)) RegExp.("Expected one of array, map, or nil"))
+      }))
+    }))
+  }))
+
+  describe("assoc-in" fn({
+    it("returns the given item when the path is empty" fn({
+      assert(=(assoc-in([1 2 3] [] 1) [1 2 3]))
+    }))
+
+    describe("array" fn({
+      it("returns an array with the given deeply-nested field set to the given value" fn({
+        assert(=(assoc-in([[1] 2 3] [0 0] 0) [[0] 2 3]))
+      }))
+
+      it("fills in missing paths with maps" fn({
+        assert(=(assoc-in([] [0 :foo] 1) [~{:foo 1}]))
+      }))
+    }))
+
+    describe("maps" fn({
+      it("returns a map with the given deeply-nested field set to the given value" fn({
+        assert(=(assoc-in(~{:foo ~{:bar "foo"}} [:foo :bar] "baz") ~{:foo ~{:bar "baz"}}))
+      }))
+
+      it("fills in missing paths with maps" fn({
+        assert(=(assoc-in(~{} [:foo :bar] 1) ~{:foo ~{:bar 1}}))
       }))
     }))
   }))
