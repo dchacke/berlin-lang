@@ -256,6 +256,9 @@ def(filter fn(f coll
         cons(el filter(f rest(coll)))
         filter(f rest(coll))))))))
 
+def(remove fn(f coll
+  filter(complement(f) coll)))
+
 ; Takes either [f coll] or [f val coll]
 def(reduce fn(...args
   if(=(count(args) 2)
@@ -464,6 +467,9 @@ def(repeatedly fn(a f ...args
     cons(apply(f args) apply(repeatedly dec(a) f args))
     [])))
 
+def(complement fn(f
+  fn(...args not(apply(f args)))))
+
 ; Export the above functions
 def(exp Object.())
 set-property(exp "=" =)
@@ -522,6 +528,7 @@ set-property(exp "odd?" odd?)
 set-property(exp "apply" apply)
 set-property(exp "map" map)
 set-property(exp "filter" filter)
+set-property(exp "remove" remove)
 set-property(exp "reduce" reduce)
 set-property(exp "reverse" reverse)
 set-property(exp "comp" comp)
@@ -552,6 +559,7 @@ set-property(exp "rand" rand)
 set-property(exp "rand-int" rand-int)
 set-property(exp "repeat" repeat)
 set-property(exp "repeatedly" repeatedly)
+set-property(exp "complement" complement)
 
 set-property(module "exports" exp)
 
