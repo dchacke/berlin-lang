@@ -69,6 +69,8 @@ def(take .-take(core))
 def(flatten-1 .-flatten-1(core))
 def(assoc .-assoc(core))
 def(assoc-in .-assoc-in(core))
+def(update .-update(core))
+def(update-in .-update-in(core))
 
 describe("core" fn({
   describe("=" fn({
@@ -1058,9 +1060,10 @@ describe("core" fn({
       }))
     }))
 
-    describe("nil" fn({
-      it("treats nil as an empty map" fn({
+    describe("nil and undefined" fn({
+      it("treats nil and undefined as empty maps" fn({
         assert(=(assoc(nil :bar "foo") ~{:bar "foo"}))
+        assert(=(assoc(undefined :bar "foo") ~{:bar "foo"}))
       }))
     }))
 
@@ -1071,7 +1074,6 @@ describe("core" fn({
         .throws(assert fn(assoc(:foo :foo :bar)) RegExp.("Expected one of array, map, or nil"))
         .throws(assert fn(assoc(#{} :foo :bar)) RegExp.("Expected one of array, map, or nil"))
         .throws(assert fn(assoc(true :foo :bar)) RegExp.("Expected one of array, map, or nil"))
-        .throws(assert fn(assoc(undefined :foo :bar)) RegExp.("Expected one of array, map, or nil"))
       }))
     }))
   }))
@@ -1098,6 +1100,56 @@ describe("core" fn({
 
       it("fills in missing paths with maps" fn({
         assert(=(assoc-in(~{} [:foo :bar] 1) ~{:foo ~{:bar 1}}))
+      }))
+    }))
+
+    describe("mixed" fn({
+      it("works the same" fn({
+        assert(=(assoc-in(~{:foo [~{:bar 1}]} [:foo 0 :baz] 2) ~{:foo [~{:bar 1 :baz 2}]}))
+      }))
+    }))
+  }))
+
+  describe("update" fn({
+    describe("arrays" fn({
+      it("updates the array at the given position by invoking the given function
+          with the element at the given position and the given arguments (if any)" fn({
+        assert(=(update([1 2 3] 1 inc) [1 3 3]))
+        assert(=(update([1 2 3] 0 * 3) [3 2 3]))
+      }))
+    }))
+
+    describe("maps" fn({
+      it("updates the map at the given position by invoking the given function
+          with the element at the given position and the given arguments (if any)" fn({
+        assert(=(update(~{:foo 1} :foo inc) ~{:foo 2}))
+        assert(=(update(~{:foo 1} :foo * 3) ~{:foo 3}))
+      }))
+    }))
+  }))
+
+  describe("update-in" fn({
+    describe("arrays" fn({
+      it("updates the array at the given deeply-nested position by invoking the
+          given function with the element at the given deeply-nested position
+          and the given arguments (if any)" fn({
+        assert(=(update-in([1 [2 3]] [1 0] inc) [1 [3 3]]))
+        assert(=(update-in([1 [2 3]] [1 1] * 3) [1 [2 9]]))
+      }))
+    }))
+
+    describe("maps" fn({
+      it("updates the map at the given deeply-nested position by invoking the
+          given function with the element at the given deeply-nested position
+          and the given arguments (if any)" fn({
+        assert(=(update-in(~{:foo ~{:bar 1}} [:foo :bar] inc) ~{:foo ~{:bar 2}}))
+        assert(=(update-in(~{:foo ~{:bar 1}} [:foo :bar] * 3) ~{:foo ~{:bar 3}}))
+      }))
+    }))
+
+    describe("mixed" fn({
+      it("works the same" fn({
+        assert(=(update-in(~{:foo [~{:bar 1}]} [:foo 0 :bar] * 3) ~{:foo [~{:bar 3}]}))
       }))
     }))
   }))

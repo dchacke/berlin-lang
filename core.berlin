@@ -372,7 +372,7 @@ def(assoc fn(m ...kvs
             let([entries ->(m arr flatten-1 [conj k v])
                  result apply(hash-map entries)]
               apply(assoc result rest(rest(kvs))))
-            if(nil?(m)
+            if(or(nil?(m) undefined?(m))
               apply(assoc ~{} kvs)
               raise("Expected one of array, map, or nil")))))
       raise("Even number of keys and values required")))))
@@ -384,6 +384,20 @@ def(assoc-in fn(m path v
       assoc(m first(path) v)
       let([next-item get(m first(path))
            result assoc-in(next-item rest(path) v)]
+        assoc(m first(path) result))))))
+
+def(update fn(m k f ...args
+  let([v get(m k)
+       result apply(f v args)]
+    assoc(m k result))))
+
+def(update-in fn(m path f ...args
+  if(empty?(path)
+    m
+    if(->(path count [= 1])
+      apply(update m first(path) f args)
+      let([next-item get(m first(path))
+           result apply(update-in next-item rest(path) f args)]
         assoc(m first(path) result))))))
 
 ; Export the above functions
@@ -456,5 +470,7 @@ set(exp "take" take)
 set(exp "flatten-1" flatten-1)
 set(exp "assoc" assoc)
 set(exp "assoc-in" assoc-in)
+set(exp "update" update)
+set(exp "update-in" update-in)
 
 set(module "exports" exp)
