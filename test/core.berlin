@@ -208,7 +208,15 @@ describe("core" fn({
 
   describe("first" fn({
     it("returns the first element in an array" fn({
-      .equal(assert first([1 2 3]) 1)
+      assert(=(first([1 2 3]) 1))
+    }))
+
+    it("works for sets" fn({
+      assert(=(first(#{1 2 3}) 1))
+    }))
+
+    it("works for maps" fn({
+      assert(=(first(~{1 2 3 4}) [1 2]))
     }))
   }))
 
@@ -222,11 +230,27 @@ describe("core" fn({
     it("returns the second element in an array" fn({
       .equal(assert second([1 2 3]) 2)
     }))
+
+    it("works for sets" fn({
+      assert(=(second(#{1 2 3}) 2))
+    }))
+
+    it("works for maps" fn({
+      assert(=(second(~{1 2 3 4}) [3 4]))
+    }))
   }))
 
   describe("third" fn({
     it("returns the third element in an array" fn({
       .equal(assert third([1 2 3]) 3)
+    }))
+
+    it("works for sets" fn({
+      assert(=(third(#{1 2 3}) 3))
+    }))
+
+    it("works for maps" fn({
+      assert(=(third(~{1 2 3 4 5 6}) [5 6]))
     }))
   }))
 
@@ -237,6 +261,14 @@ describe("core" fn({
 
     it("returns nil when given an empty array" fn({
       .equal(assert last([]) nil)
+    }))
+
+    it("works for sets" fn({
+      assert(=(last(#{1 2 3}) 3))
+    }))
+
+    it("works for maps" fn({
+      assert(=(last(~{1 2 3 4}) [3 4]))
     }))
   }))
 
@@ -261,6 +293,14 @@ describe("core" fn({
 
     it("returns an empty array when given nil" fn({
       assert(.isEqual(_ rest(nil) []))
+    }))
+
+    it("works for sets" fn({
+      assert(=(rest(#{1 2 3}) [2 3]))
+    }))
+
+    it("works for maps" fn({
+      assert(=(rest(~{1 2 3 4}) [[3 4]]))
     }))
   }))
 
@@ -847,6 +887,14 @@ describe("core" fn({
     it("returns an emtpy array when given one" fn({
       assert(.isEqual(_ map(inc []) []))
     }))
+
+    it("works for maps" fn({
+      assert(=(map(partial(apply +) ~{1 2 3 4}) [3 7]))
+    }))
+
+    it("works for sets" fn({
+      assert(=(map(inc #{1 2 3}) [2 3 4]))
+    }))
   }))
 
   describe("filter" fn({
@@ -856,6 +904,14 @@ describe("core" fn({
 
     it("returns an emtpy array when given one" fn({
       assert(.isEqual(_ filter(even? []) []))
+    }))
+
+    it("works for maps" fn({
+      assert(=(filter(comp(even? first) ~{1 2 2 3}) [[2 3]]))
+    }))
+
+    it("works for sets" fn({
+      assert(=(filter(even? #{1 2 3 4}) [2 4]))
     }))
   }))
 
@@ -871,11 +927,27 @@ describe("core" fn({
     it("returns the starting point when the given array is empty" fn({
       .equal(assert reduce(+ 10 []) 10)
     }))
+
+    it("works for maps" fn({
+      assert(=(reduce(fn(acc curr +(acc second(curr))) 0 ~{1 2 2 3}) 5))
+    }))
+
+    it("works for sets" fn({
+      assert(=(reduce(+ #{1 2 3 4}) 10))
+    }))
   }))
 
   describe("reverse" fn({
     it("reverses the given array" fn({
       assert(.isEqual(_ reverse([1 2 3]) [3 2 1]))
+    }))
+
+    it("works for maps" fn({
+      assert(=(reverse(~{1 2 2 3}) [[2 3] [1 2]]))
+    }))
+
+    it("works for sets" fn({
+      assert(=(reverse(#{1 2 3 4}) [4 3 2 1]))
     }))
   }))
 

@@ -49,13 +49,13 @@ def(empty? fn(coll
     true
     zero?(count(coll)))))
 
-def(first fn!(coll .-0(coll)))
+def(first fn(coll .-0(arr(coll))))
 
 def(ffirst fn(coll first(first(coll))))
 
-def(second fn!(coll .-1(coll)))
+def(second fn(coll .-1(arr(coll))))
 
-def(third fn!(coll .-2(coll)))
+def(third fn(coll .-2(arr(coll))))
 
 def(last fn(coll
   if(next(coll)
@@ -70,7 +70,7 @@ def(butlast fn(coll
 def(rest fn(coll
   if(nil?(coll)
     []
-    .slice(coll 1))))
+    .slice(arr(coll) 1))))
 
 def(next fn(coll
   let([r rest(coll)]
@@ -97,11 +97,13 @@ def(arr fn(a
     []
     if(string?(a)
       .split(a "")
-      if(or(set?(a) map?(a))
+      if(set?(a)
         .from(Array a)
-        if(array?(a)
-          a
-          raise("Given item not iterable")))))))
+        if(map?(a)
+          .from(Array a)
+          if(array?(a)
+            a
+            raise("Given item not iterable"))))))))
 
 def(array fn(...args
   args))
@@ -246,12 +248,13 @@ def(map fn(f coll
       cons(f(el) map(f rest(coll)))))))
 
 def(filter fn(f coll
-  if(empty?(coll)
+  let([coll arr(coll)]
+    if(empty?(coll)
     []
     let([el first(coll)]
       if(f(el)
         cons(el filter(f rest(coll)))
-        filter(f rest(coll)))))))
+        filter(f rest(coll))))))))
 
 ; Takes either [f coll] or [f val coll]
 def(reduce fn(...args
@@ -259,11 +262,11 @@ def(reduce fn(...args
     reduce(first(args) first(second(args)) rest(second(args)))
     let([f first(args)
            val second(args)
-           coll third(args)]
+           coll arr(third(args))]
       if(empty?(coll)
         val
         let([item first(coll)
-               result f(val item)]
+             result f(val item)]
           reduce(f result rest(coll))))))))
 
 def(reverse fn(coll
