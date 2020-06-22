@@ -245,7 +245,7 @@ Berlin is currently in an alpha phase and you should expect to run into bugs. Th
 
 ## Credit
 
-The core functions of the Berlin language are mostly a subset of Clojure's core, with a few additional functions added. Berlin also adopts several of Clojure's design patterns.
+The core functions of the Berlin language are mostly a subset of Clojure's core, with a few additional functions. Berlin also adopts several of Clojure's design patterns.
 
 References to each specific Clojure feature that has inspired the Berlin language would be too numerous to mention individually and every time, but you will see Clojure's influence in many of Berlin's functions and special forms, particularly `def`, `let`, and `fn`. If a Berlin function or special form exists by the same name in Clojure, it was probably inspired by that Clojure counterpart.
 
