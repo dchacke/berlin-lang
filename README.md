@@ -8,7 +8,7 @@ Berlin is a small, functional programming language that lives at the intersectio
 
 ## Example Syntax
 
-```clojure
+```ruby
 def(filter fn(f coll
   let([coll arr(coll)]
     if(empty?(coll)
@@ -25,7 +25,7 @@ The above code declares a function called `filter`. It takes a function and a co
 
 Berlin makes JavaScript development more enjoyable by reducing JavaScript to its best parts. There are no classes, prototypes, wacky equalities, operators, expressions, or semicolons--not even commas. There are only functions and data.
 
-Additionally, Berlin is meant to be a gateway to programming in Clojure. Directly jumping from JavaScript to Clojure can be difficult because one has to learn many new concepts *and* a new syntax at the same time. Berlin syntax has elements from both languages with some changes mixed in and uses some but not all Clojure concepts, which should make for a smooth transition from JavaScript to Berlin, and then, optionally, from Berlin to Clojure.
+Additionally, Berlin is meant to be a gateway to programming in Clojure. Directly jumping from JavaScript to Clojure can be difficult because one has to learn many new concepts *and* a new syntax at the same time. Berlin syntax has elements from both languages with some changes mixed in and uses some but not all Clojure concepts. Both of these characteristics should make for a smooth transition from JavaScript to Berlin, and then, optionally, from Berlin to Clojure.
 
 That being said, Berlin is meant to stand and provide value on its own. Even if you don't intend ever to use Clojure, I hope you will find Berlin useful.
 
@@ -57,7 +57,7 @@ Overall, Berlin is a much simpler language than JavaScript because it doesn't ha
 
 ### Literals
 
-Berlin introduces a keyword literal. Keywords begin with a colon: `:foo`. They work well as keys in maps. Under the hood, keyword literals create a call to `Symbol.for("foo")`.
+Berlin introduces a keyword literal. Keywords begin with a colon: `:foo`. Under the hood, keyword literals create a call to `Symbol.for`. So, `:foo` results in `Symbol.for("foo")`. Keywords work well as keys in maps.
 
 Speaking of maps, Berlin's map literal looks like this: `~{:foo "bar"}`. Map literals do not create JS objects, but [maps](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map), allowing you to use not only strings and numbers as keys, but anything at all.
 
@@ -65,11 +65,11 @@ Berlin also has a set literal: `#{1 2 3}`. These literals create JS [sets](https
 
 While JavaScript has three (!) different types of strings--single-quote, double-quote, and backtick strings--Berlin only offers double-quote strings. They support line breaks.
 
-Berlin used `nil` in place of `null`. Otherwise, Berlin uses all the same data types as JavaScript: numbers, arrays, booleans, and undefined.
+Berlin uses `nil` in place of `null`. Otherwise, Berlin uses all the same data types as JavaScript: numbers, arrays, booleans, and `undefined`.
 
 ### Mutation
 
-Berlin avoids mutation. None of the core functions mutate data. Mutation can still be achieved through JavaScript interop.
+Berlin avoids mutation. None of the core functions mutate data. Mutation can still be achieved through JavaScript interop, but is discouraged.
 
 ### Support for Special Characters
 
@@ -86,7 +86,9 @@ These are all valid Berlin symbols.
 
 ### Operators
 
-There are no operators in Berlin. Instead of using `=`, `+`, `-`, `||`, `&&`, etc., you use the corresponding functions and special forms.
+There are no operators in Berlin. Instead of using `=`, `==`, `===`, `+`, `-`, `||`, `&&`, etc., you use the corresponding functions and special forms.
+
+For example, where in JS you'd write `let x = 1 + (a || b)`, in Berlin you write `def(x +(1 or(a b))`.
 
 ### Implicit Return Statements
 
@@ -94,13 +96,13 @@ There are no return statements in Berlin. A function's or form's last value is i
 
 ### Special Forms
 
-Several special forms exist in Berlin. The most important are `def`, `let`, `if`. You use `def` to declare variables at the top-level scope. These are variables you need available in an entire file, say.
+Several special forms exist in Berlin. The most important are `def`, `let`, and `if`. You use `def` to declare variables at the top-level scope. These are variables you need to access across an entire file, say.
 
 ```clojure
 def(x 1)
 def(y 2)
 
-(+ x y) ; => 3
++(x y) ; => 3
 ```
 
 Variables declared using `let` are only available in the scope of the `let` form's block:
@@ -108,14 +110,18 @@ Variables declared using `let` are only available in the scope of the `let` form
 ```clojure
 let([x 1
      y 2]
-  (+ x y))
+  +(x y))
 
 ; => the whole let block returns 3
+
+; Trying to access x outside the let block:
+x
+; => ReferenceError: x is not defined
 ```
 
 ### Strict Functions
 
-Berlin introduces a new feature called "strict functions." They are based on an idea by [Brian Will](https://www.youtube.com/user/briantwill). Strict functions can only access state explicitly passed as parameters. They cannot even access core functions unless they are passed.
+Berlin introduces a new feature called "strict functions." They are based on an idea [Brian Will](https://www.youtube.com/user/briantwill) mentioned in one of his videos. Strict functions can only access state explicitly passed as parameters. They cannot even access core functions unless they are passed.
 
 Here is an example of a regular function called `foo`:
 
@@ -141,13 +147,13 @@ foo!("foo")
 ; The transpiler throws: "Cannot access symbol b in strict function. Pass b in fn! declaration instead or declare it using let block"
 ```
 
-To make this example work, `b` needs to be passed explicitly:
+To make this example work, `b` needs to be passed in explicitly:
 
 ```
-def(foo! fn!(a b
+def(foo! fn!(a b ; b is now a parameter
   log(a b))
 
-foo("foo" b)
+foo("foo" b) ; b is now passed in explicitly
 ; prints foo bar
 ```
 
@@ -157,7 +163,7 @@ As a naming convention, strict functions' names should end with a `!`.
 
 ### Miscellaneous
 
-There are no commas or semicolons. Commas are treated as whitespace. Semicolons are used for comments.
+There are no commas or semicolons--at least not how they're used in JS. Commas are treated as whitespace and discouraged. Semicolons are used for comments.
 
 Berlin borrows a feature from Ruby that allows you to use underscores as thousands separator: `1_000_000`. These underscores are optional, can be placed anywhere inside a number, and won't alter the number's value in any way.
 
@@ -165,7 +171,7 @@ Berlin borrows a feature from Ruby that allows you to use underscores as thousan
 
 It depends. If there is nothing standing in the way of your using Clojure, go with Clojure. Berlin has only a small feature set compared to Clojure. It does not have mulit-arity functions, macros, atoms, homoiconicity, or even lists. On the other hand, if your team prefers JavaScript over Clojure(Script), Berlin may prove a promising middle ground.
 
-Those functions of Berlin that exist by the same name in Clojure almost all have roughly the same denotation as their Clojure counterparts, so if you do decide to use Berlin, you should feel right at home. Note that all of Berlin's functions were reimplemented from scratch, so they may differ structurally and performance wise from those in Clojure.
+Those functions of Berlin that exist by the same name in Clojure almost all have roughly the same denotation as their Clojure counterparts, so if you do decide to use Berlin, you should feel right at home. Note that all of Berlin's functions were reimplemented from scratch, so they may differ structurally and performance wise from those in Clojure. Arrays take the place of lists in Berlin, and functions like `cons`, `conj`, etc operate on arrays only.
 
 ## Is This Ready for Production?
 
@@ -177,7 +183,7 @@ Berlin is currently in an alpha phase and you should expect to run into bugs. Th
 
 The core functions of the Berlin language are mostly a subset of Clojure's core, with a few additional functions added. Berlin also adopts several of Clojure's design patterns.
 
-References to each specific Clojure feature that has inspired the Berlin language are too numerous to mention individually and every time, but you will see Clojure's influence in many of Berlin's functions and special forms, particularly `def`, `let`, and `fn`. If a Berlin function or special form exists by the same name in Clojure, it was probably inspired by that Clojure counterpart.
+References to each specific Clojure feature that has inspired the Berlin language would be too numerous to mention individually and every time, but you will see Clojure's influence in many of Berlin's functions and special forms, particularly `def`, `let`, and `fn`. If a Berlin function or special form exists by the same name in Clojure, it was probably inspired by that Clojure counterpart.
 
 ## ISC License
 
