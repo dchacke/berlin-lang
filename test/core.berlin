@@ -116,7 +116,7 @@ describe("core" fn({
 
   describe("identity" fn({
     it("returns the given argument" fn({
-      .equal(assert identity(1) 1)
+      assert(=(identity(1) 1))
     }))
   }))
 
@@ -167,25 +167,25 @@ describe("core" fn({
 
   describe("zero?" fn({
     it("returns true for 0" fn({
-      .equal(assert zero?(0) true)
+      assert(=(zero?(0) true))
     }))
 
     it("returns false for non-0" fn({
-      .equal(assert zero?(1) false)
+      assert(=(zero?(1) false))
     }))
   }))
 
   describe("count" fn({
     it("returns the size of the given array" fn({
-      .equal(assert count([1 2 1]) 3)
+      assert(=(count([1 2 1]) 3))
     }))
 
     it("returns the size of the given set" fn({
-      .equal(assert count(#{1 2 3}) 3)
+      assert(=(count(#{1 2 3}) 3))
     }))
 
     it("returns the size of the given map" fn({
-      .equal(assert count(~{1 2 3 4}) 2)
+      assert(=(count(~{1 2 3 4}) 2))
     }))
 
     it("returns the size of the given map" fn({
@@ -199,15 +199,15 @@ describe("core" fn({
 
   describe("empty?" fn({
     it("returns true for empty arrays" fn({
-      .equal(assert empty?([]) true)
+      assert(=(empty?([]) true))
     }))
 
     it("returns false for non-empty arrays" fn({
-      .equal(assert empty?([1]) false)
+      assert(=(empty?([1]) false))
     }))
 
     it("returns true for nil" fn({
-      .equal(assert empty?(nil) true)
+      assert(=(empty?(nil) true))
     }))
   }))
 
@@ -223,17 +223,25 @@ describe("core" fn({
     it("works for maps" fn({
       assert(=(first(~{1 2 3 4}) [1 2]))
     }))
+
+    it("returns nil for empty collections" fn({
+      assert(nil?(first([])))
+    }))
+
+    it("returns nil for nil" fn({
+      assert(nil?(first(nil)))
+    }))
   }))
 
   describe("ffirst" fn({
     it("is the same as first(first(coll))" fn({
-      .equal(assert ffirst([[1] 2 3]) 1)
+      assert(=(ffirst([[1] 2 3]) 1))
     }))
   }))
 
   describe("second" fn({
     it("returns the second element in an array" fn({
-      .equal(assert second([1 2 3]) 2)
+      assert(=(second([1 2 3]) 2))
     }))
 
     it("works for sets" fn({
@@ -243,11 +251,19 @@ describe("core" fn({
     it("works for maps" fn({
       assert(=(second(~{1 2 3 4}) [3 4]))
     }))
+
+    it("returns nil for empty collections" fn({
+      assert(nil?(second([])))
+    }))
+
+    it("returns nil for nil" fn({
+      assert(nil?(second(nil)))
+    }))
   }))
 
   describe("third" fn({
     it("returns the third element in an array" fn({
-      .equal(assert third([1 2 3]) 3)
+      assert(=(third([1 2 3]) 3))
     }))
 
     it("works for sets" fn({
@@ -257,15 +273,23 @@ describe("core" fn({
     it("works for maps" fn({
       assert(=(third(~{1 2 3 4 5 6}) [5 6]))
     }))
+
+    it("returns nil for empty collections" fn({
+      assert(nil?(third([])))
+    }))
+
+    it("returns nil for nil" fn({
+      assert(nil?(third(nil)))
+    }))
   }))
 
   describe("last" fn({
     it("returns the last element in an array" fn({
-      .equal(assert last([1 2 3 5]) 5)
+      assert(=(last([1 2 3 5]) 5))
     }))
 
     it("returns nil when given an empty array" fn({
-      .equal(assert last([]) nil)
+      assert(=(last([]) nil))
     }))
 
     it("works for sets" fn({
@@ -275,29 +299,41 @@ describe("core" fn({
     it("works for maps" fn({
       assert(=(last(~{1 2 3 4}) [3 4]))
     }))
+
+    it("returns nil for empty collections" fn({
+      assert(nil?(last([])))
+    }))
+
+    it("returns nil for nil" fn({
+      assert(nil?(last(nil)))
+    }))
   }))
 
-  describe("last" fn({
+  describe("butlast" fn({
     it("returns all but the last element in an array" fn({
-      assert(.isEqual(_ butlast([1 2 3]) [1 2]))
+      assert(=(butlast([1 2 3]) [1 2]))
     }))
 
     it("returns nil when given an empty array" fn({
-      assert(.isEqual(_ butlast([]) nil))
+      assert(=(butlast([]) nil))
+    }))
+
+    it("returns nil for nil" fn({
+      assert(nil?(butlast(nil)))
     }))
   }))
 
   describe("rest" fn({
     it("returns all but the first element in an array" fn({
-      assert(.isEqual(_ rest([1 2 3]) [2 3]))
+      assert(=(rest([1 2 3]) [2 3]))
     }))
 
     it("returns an empty array when given an empty array" fn({
-      assert(.isEqual(_ rest([]) []))
+      assert(=(rest([]) []))
     }))
 
     it("returns an empty array when given nil" fn({
-      assert(.isEqual(_ rest(nil) []))
+      assert(=(rest(nil) []))
     }))
 
     it("works for sets" fn({
@@ -311,25 +347,25 @@ describe("core" fn({
 
   describe("next" fn({
     it("returns all but the first element in an array" fn({
-      assert(.isEqual(_ next([1 2 3]) [2 3]))
+      assert(=(next([1 2 3]) [2 3]))
     }))
 
     it("returns nil when given an empty array" fn({
-      assert(.isEqual(_ next([]) nil))
+      assert(=(next([]) nil))
     }))
 
     it("returns nil when given nil" fn({
-      assert(.isEqual(_ next(nil) nil))
+      assert(=(next(nil) nil))
     }))
   }))
 
   describe("cons" fn({
     it("constructs a new array with the given element at the beginning" fn({
-      assert(.isEqual(_ cons(1 [2 3]) [1 2 3]))
+      assert(=(cons(1 [2 3]) [1 2 3]))
     }))
 
     it("treats nil as an empty array" fn({
-      assert(.isEqual(_ cons(1 nil) [1]))
+      assert(=(cons(1 nil) [1]))
     }))
   }))
 
@@ -449,23 +485,23 @@ describe("core" fn({
 
   describe("arr" fn({
     it("returns the given array" fn({
-      assert(.isEqual(_ arr([1 2 3]) [1 2 3]))
+      assert(=(arr([1 2 3]) [1 2 3]))
     }))
 
     it("returns an empty array when given nil" fn({
-      assert(.isEqual(_ arr(nil) []))
+      assert(=(arr(nil) []))
     }))
 
     it("returns an array of characters when given a string" fn({
-      assert(.isEqual(_ arr("foo") ["f" "o" "o"]))
+      assert(=(arr("foo") ["f" "o" "o"]))
     }))
 
     it("returns an array of the given set's elements" fn({
-      assert(.isEqual(_ arr(#{1 2 3}) [1 2 3]))
+      assert(=(arr(#{1 2 3}) [1 2 3]))
     }))
 
     it("returns an array of the given map's tuples" fn({
-      assert(.isEqual(_ arr(~{1 2 3 4}) [[1 2] [3 4]]))
+      assert(=(arr(~{1 2 3 4}) [[1 2] [3 4]]))
     }))
 
     it("throws for non-iterable items" fn({
@@ -569,19 +605,19 @@ describe("core" fn({
 
   describe("+" fn({
     it("adds two given numbers" fn({
-      .equal(assert +(1 2) 3)
+      assert(=(+(1 2) 3))
     }))
 
     it("works for negative numbers, too" fn({
-      .equal(assert +(-1 -2) -3)
+      assert(=(+(-1 -2) -3))
     }))
 
     it("works for more than two argumetns" fn({
-      .equal(assert +(1 2 3) 6)
+      assert(=(+(1 2 3) 6))
     }))
 
     it("returns the given single argument" fn({
-      .equal(assert +(1) 1)
+      assert(=(+(1) 1))
     }))
 
     it("returns 0 when when no arguments given" fn({
@@ -591,19 +627,19 @@ describe("core" fn({
 
   describe("-" fn({
     it("subtracts two given numbers" fn({
-      .equal(assert -(1 2) -1)
+      assert(=(-(1 2) -1))
     }))
 
     it("works for negative numbers, too" fn({
-      .equal(assert -(-1 -2) 1)
+      assert(=(-(-1 -2) 1))
     }))
 
     it("subtracts multiple additional arguments from the first one" fn({
-      .equal(assert -(1 2 3) -4)
+      assert(=(-(1 2 3) -4))
     }))
 
     it("returns the negation of the given single argument" fn({
-      .equal(assert -(1) -1)
+      assert(=(-(1) -1))
     }))
 
     it("throws without arguments" fn({
@@ -613,19 +649,19 @@ describe("core" fn({
 
   describe("*" fn({
     it("multiplies two given numbers" fn({
-      .equal(assert *(1 2) 2)
+      assert(=(*(1 2) 2))
     }))
 
     it("works for negative numbers, too" fn({
-      .equal(assert *(-1 -2) 2)
+      assert(=(*(-1 -2) 2))
     }))
 
     it("works for more than two argumetns" fn({
-      .equal(assert *(1 2 4) 8)
+      assert(=(*(1 2 4) 8))
     }))
 
     it("returns the given single argument" fn({
-      .equal(assert *(2) 2)
+      assert(=(*(2) 2))
     }))
 
     it("returns 1 when when no arguments given" fn({
@@ -635,19 +671,19 @@ describe("core" fn({
 
   describe("/" fn({
     it("divides two given numbers" fn({
-      .equal(assert /(1 2) 0.5)
+      assert(=(/(1 2) 0.5))
     }))
 
     it("works for negative numbers, too" fn({
-      .equal(assert /(-1 -2) 0.5)
+      assert(=(/(-1 -2) 0.5))
     }))
 
     it("divides the first argument by the product of all additional arguments" fn({
-      .equal(assert /(1 2 5) 0.1)
+      assert(=(/(1 2 5) 0.1))
     }))
 
     it("returns 1 divided by the single given argument" fn({
-      .equal(assert /(2) 0.5)
+      assert(=(/(2) 0.5))
     }))
 
     it("throws without arguments" fn({
@@ -657,11 +693,11 @@ describe("core" fn({
 
   describe("%" fn({
     it("calculates the modulo" fn({
-      .equal(assert %(6 4) 2)
+      assert(=(%(6 4) 2))
     }))
 
     it("works for negative numbers, too" fn({
-      .equal(assert %(-6 -4) -2)
+      assert(=(%(-6 -4) -2))
     }))
   }))
 
@@ -741,35 +777,35 @@ describe("core" fn({
 
   describe("inc" fn({
     it("adds one to the given number" fn({
-      .equal(assert inc(5) 6)
+      assert(=(inc(5) 6))
     }))
 
     it("works with a negative number, too" fn({
-      .equal(assert inc(-5) -4)
+      assert(=(inc(-5) -4))
     }))
   }))
 
   describe("dec" fn({
     it("substracts one from the given number" fn({
-      .equal(assert dec(5) 4)
+      assert(=(dec(5) 4))
     }))
 
     it("works with a negative number, too" fn({
-      .equal(assert dec(-5) -6)
+      assert(=(dec(-5) -6))
     }))
   }))
 
   describe("true?" fn({
     it("returns true only when given true" fn({
       assert(true?(true))
-      .equal(assert true?("123") false)
+      assert(=(true?("123") false))
     }))
   }))
 
   describe("false?" fn({
     it("returns true only when given false" fn({
       assert(false?(false) true)
-      .equal(assert true?(nil) false)
+      assert(=(true?(nil) false))
     }))
   }))
 
@@ -786,9 +822,9 @@ describe("core" fn({
     }))
 
     it("returns false when given a falsey value" fn({
-      .equal(assert truthy?(false) false)
-      .equal(assert truthy?(nil) false)
-      .equal(assert truthy?(undefined) false)
+      assert(=(truthy?(false) false))
+      assert(=(truthy?(nil) false))
+      assert(=(truthy?(undefined) false))
     }))
   }))
 
@@ -800,14 +836,14 @@ describe("core" fn({
     }))
 
     it("returns false when given a truthy value" fn({
-      .equal(assert falsey?(true) false)
-      .equal(assert falsey?(1) false)
-      .equal(assert falsey?(0) false) ; !
-      .equal(assert falsey?("") false) ; !
-      .equal(assert falsey?("foo") false)
-      .equal(assert falsey?(:foo) false)
-      .equal(assert falsey?([]) false)
-      .equal(assert falsey?(~{}) false)
+      assert(=(falsey?(true) false))
+      assert(=(falsey?(1) false))
+      assert(=(falsey?(0) false)) ; !
+      assert(=(falsey?("") false)) ; !
+      assert(=(falsey?("foo") false))
+      assert(=(falsey?(:foo) false))
+      assert(=(falsey?([]) false))
+      assert(=(falsey?(~{}) false))
     }))
   }))
 
@@ -849,14 +885,14 @@ describe("core" fn({
     }))
 
     it("returns false when given a truthy value" fn({
-      .equal(assert not(true) false)
-      .equal(assert not(1) false)
-      .equal(assert not(0) false) ; !
-      .equal(assert not("") false) ; !
-      .equal(assert not("foo") false)
-      .equal(assert not(:foo) false)
-      .equal(assert not([]) false)
-      .equal(assert not(~{}) false)
+      assert(=(not(true) false))
+      assert(=(not(1) false))
+      assert(=(not(0) false)) ; !
+      assert(=(not("") false)) ; !
+      assert(=(not("foo") false))
+      assert(=(not(:foo) false))
+      assert(=(not([]) false))
+      assert(=(not(~{}) false))
     }))
   }))
 
@@ -866,7 +902,7 @@ describe("core" fn({
     }))
 
     it("returns false for odd numbers" fn({
-      .equal(assert even?(3) false)
+      assert(=(even?(3) false))
     }))
   }))
 
@@ -876,27 +912,27 @@ describe("core" fn({
     }))
 
     it("returns false for even numbers" fn({
-      .equal(assert odd?(2) false)
+      assert(=(odd?(2) false))
     }))
   }))
 
   describe("apply" fn({
     it("invokes the given fn with the given arguments" fn({
-      .equal(assert apply(+ [1 2]) 3)
+      assert(=(apply(+ [1 2]) 3))
     }))
 
     it("appends intermediate arguments to the last argument" fn({
-      .equal(assert apply(+ 1 [2]) 3)
+      assert(=(apply(+ 1 [2]) 3))
     }))
   }))
 
   describe("map" fn({
     it("maps a the given fn over the given array" fn({
-      assert(.isEqual(_ map(inc [1 2 3]) [2 3 4]))
+      assert(=(map(inc [1 2 3]) [2 3 4]))
     }))
 
     it("returns an emtpy array when given one" fn({
-      assert(.isEqual(_ map(inc []) []))
+      assert(=(map(inc []) []))
     }))
 
     it("works for maps" fn({
@@ -910,11 +946,11 @@ describe("core" fn({
 
   describe("filter" fn({
     it("filters a given array using the given predicate fn" fn({
-      assert(.isEqual(_ filter(even? [1 2 3 4]) [2 4]))
+      assert(=(filter(even? [1 2 3 4]) [2 4]))
     }))
 
     it("returns an emtpy array when given one" fn({
-      assert(.isEqual(_ filter(even? []) []))
+      assert(=(filter(even? []) []))
     }))
 
     it("works for maps" fn({
@@ -946,15 +982,15 @@ describe("core" fn({
 
   describe("reduce" fn({
     it("reduces a given array using the given fn" fn({
-      .equal(assert reduce(+ [1 2 3]) 6)
+      assert(=(reduce(+ [1 2 3]) 6))
     }))
 
     it("takes an optional starting point" fn({
-      .equal(assert reduce(+ 10 [1 2 3]) 16)
+      assert(=(reduce(+ 10 [1 2 3]) 16))
     }))
 
     it("returns the starting point when the given array is empty" fn({
-      .equal(assert reduce(+ 10 []) 10)
+      assert(=(reduce(+ 10 []) 10))
     }))
 
     it("works for maps" fn({
@@ -968,7 +1004,7 @@ describe("core" fn({
 
   describe("reverse" fn({
     it("reverses the given array" fn({
-      assert(.isEqual(_ reverse([1 2 3]) [3 2 1]))
+      assert(=(reverse([1 2 3]) [3 2 1]))
     }))
 
     it("works for maps" fn({
@@ -982,28 +1018,28 @@ describe("core" fn({
 
   describe("comp" fn({
     it("applies the given functions to the given value from right to left" fn({
-      .equal(assert comp(not even?)(1) true)
+      assert(=(comp(not even?)(1) true))
     }))
   }))
 
   describe("comp" fn({
     it("prepares a function to be invoked with the given arguments
         plus any additional arguments" fn({
-      .equal(assert partial(+ 1)(1) 2)
+      assert(=(partial(+ 1)(1) 2))
     }))
   }))
 
   describe("thread first (->)" fn({
     it("invokes the given fns and places each intermediate result
         as the first argument at every step" fn({
-      .equal(assert ->(1 [+ 2] [- 4] [* 4]) -4)
+      assert(=(->(1 [+ 2] [- 4] [* 4]) -4))
     }))
   }))
 
   describe("thread last (->>)" fn({
     it("invokes the given fns and places each intermediate result
         as the last argument at every step" fn({
-      .equal(assert ->>([1 2 3 4] [map inc] [filter even?] [reduce +]) 6)
+      assert(=(->>([1 2 3 4] [map inc] [filter even?] [reduce +]) 6))
     }))
   }))
 
@@ -1015,11 +1051,11 @@ describe("core" fn({
 
   describe("get" fn({
     it("reads the given field off the given map" fn({
-      .equal(assert get(~{:foo "bar"} :foo) "bar")
+      assert(=(get(~{:foo "bar"} :foo) "bar"))
     }))
 
     it("reads the given index off the given array" fn({
-      .equal(assert get([1 2 3] 0) 1)
+      assert(=(get([1 2 3] 0) 1))
     }))
 
     it("returns nil when the given field does not exist on the given map" fn({
@@ -1037,7 +1073,7 @@ describe("core" fn({
 
   describe("get-in" fn({
     it("reads the given deeply-nested field off the given map" fn({
-      .equal(assert get-in(~{:foo [~{:bar "baz"}]} [:foo 0 :bar]) "baz")
+      assert(=(get-in(~{:foo [~{:bar "baz"}]} [:foo 0 :bar]) "baz"))
     }))
 
     it("returns nil when the given deeply-nested field does not exist on the given map" fn({

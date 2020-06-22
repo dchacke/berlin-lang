@@ -49,13 +49,15 @@ def(empty? fn(coll
     true
     zero?(count(coll)))))
 
-def(first fn(coll .-0(arr(coll))))
+def(->?nil fn(n if(undefined?(n) nil n)))
+
+def(first fn(coll ->?nil(.-0(arr(coll)))))
 
 def(ffirst fn(coll first(first(coll))))
 
-def(second fn(coll .-1(arr(coll))))
+def(second fn(coll ->?nil(.-1(arr(coll)))))
 
-def(third fn(coll .-2(arr(coll))))
+def(third fn(coll ->?nil(.-2(arr(coll)))))
 
 def(last fn(coll
   if(next(coll)
