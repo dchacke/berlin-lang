@@ -360,4 +360,4 @@ let translate = (ast, depth = 0, parentType = null, symbolWhitelist = new Set())
   }, "");
 };
 
-module.exports = { translate };
+module.exports = { translate, safe_symbol };

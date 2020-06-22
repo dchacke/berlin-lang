@@ -1,5 +1,6 @@
 def(lib require("./lib"))
 def(_ require("lodash"))
+def(safe-symbol .-safe_symbol(require("./translator")))
 
 def(= fn(a b _.isEqual(a b)))
 
@@ -497,97 +498,102 @@ def(complement fn(f
 
 ; Export the above functions
 def(exp Object.())
-set-property(exp "=" =)
-set-property(exp "identity" identity)
-set-property(exp "or" or)
-set-property(exp "and" and)
-set-property(exp "zero?" zero?)
-set-property(exp "count" count)
-set-property(exp "empty?" empty?)
-set-property(exp "first" first)
-set-property(exp "ffirst" ffirst)
-set-property(exp "second" second)
-set-property(exp "third" third)
-set-property(exp "last" last)
-set-property(exp "butlast" butlast)
-set-property(exp "rest" rest)
-set-property(exp "next" next)
-set-property(exp "cons" cons)
-set-property(exp "string?" string?)
-set-property(exp "number?" number?)
-set-property(exp "keyword?" keyword?)
-set-property(exp "boolean?" boolean?)
-set-property(exp "nil?" nil?)
-set-property(exp "set?" set?)
-set-property(exp "map?" map?)
-set-property(exp "array?" array?)
-set-property(exp "arr" arr)
-set-property(exp "array" array)
-set-property(exp "set" set)
-set-property(exp "hash-set" hash-set)
-set-property(exp "hash-map" hash-map)
-set-property(exp "tuples->map" tuples->map)
-set-property(exp "keys" keys)
-set-property(exp "vals" vals)
-set-property(exp "pairwise" pairwise)
-set-property(exp "log" log)
-set-property(exp "+" +)
-set-property(exp "-" -)
-set-property(exp "*" *)
-set-property(exp "/" /)
-set-property(exp "%" %)
-set-property(exp "<" <)
-set-property(exp "<=" <=)
-set-property(exp ">" >)
-set-property(exp ">=" >=)
-set-property(exp "inc" inc)
-set-property(exp "dec" dec)
-set-property(exp "true?" true?)
-set-property(exp "false?" false?)
-set-property(exp "truthy?" truthy?)
-set-property(exp "falsey?" falsey?)
-set-property(exp "defined?" defined?)
-set-property(exp "undefined?" undefined?)
-set-property(exp "not" not)
-set-property(exp "even?" even?)
-set-property(exp "odd?" odd?)
-set-property(exp "apply" apply)
-set-property(exp "map" map)
-set-property(exp "filter" filter)
-set-property(exp "remove" remove)
-set-property(exp "reduce" reduce)
-set-property(exp "reverse" reverse)
-set-property(exp "comp" comp)
-set-property(exp "partial" partial)
-set-property(exp "->" ->)
-set-property(exp "->>" ->>)
-set-property(exp "raise" raise)
-set-property(exp "get" get)
-set-property(exp "get-in" get-in)
-set-property(exp "contains?" contains?)
-set-property(exp "every?" every?)
-set-property(exp "conj" conj)
-set-property(exp "disj" disj)
-set-property(exp "drop" drop)
-set-property(exp "take" take)
-set-property(exp "flatten-1" flatten-1)
-set-property(exp "assoc" assoc)
-set-property(exp "assoc-in" assoc-in)
-set-property(exp "dissoc" dissoc)
-set-property(exp "update" update)
-set-property(exp "update-in" update-in)
-set-property(exp "str" str)
-set-property(exp "max" max)
-set-property(exp "min" min)
-set-property(exp "int?" int?)
-set-property(exp "float?" float?)
-set-property(exp "neg?" neg?)
-set-property(exp "pos?" pos?)
-set-property(exp "rand" rand)
-set-property(exp "rand-int" rand-int)
-set-property(exp "repeat" repeat)
-set-property(exp "repeatedly" repeatedly)
-set-property(exp "complement" complement)
+
+map(
+  fn(curr {
+    set-property(exp curr eval(safe-symbol(curr)))
+    set-property(exp safe-symbol(curr) eval(safe-symbol(curr)))})
+  ["="
+   "identity"
+   "or"
+   "and"
+   "zero?"
+   "count"
+   "empty?"
+   "first"
+   "ffirst"
+   "second"
+   "third"
+   "last"
+   "butlast"
+   "rest"
+   "next"
+   "cons"
+   "string?"
+   "number?"
+   "keyword?"
+   "boolean?"
+   "nil?"
+   "set?"
+   "map?"
+   "array?"
+   "arr"
+   "array"
+   "set"
+   "hash-set"
+   "hash-map"
+   "tuples->map"
+   "keys"
+   "vals"
+   "pairwise"
+   "log"
+   "+"
+   "-"
+   "*"
+   "/"
+   "%"
+   "<"
+   "<="
+   ">"
+   ">="
+   "inc"
+   "dec"
+   "true?"
+   "false?"
+   "truthy?"
+   "falsey?"
+   "defined?"
+   "undefined?"
+   "not"
+   "even?"
+   "odd?"
+   "apply"
+   "map"
+   "filter"
+   "remove"
+   "reduce"
+   "reverse"
+   "comp"
+   "partial"
+   "->"
+   "->>"
+   "raise"
+   "get"
+   "get-in"
+   "contains?"
+   "every?"
+   "conj"
+   "disj"
+   "drop"
+   "take"
+   "flatten-1"
+   "assoc"
+   "assoc-in"
+   "dissoc"
+   "update"
+   "update-in"
+   "str"
+   "max"
+   "min"
+   "int?"
+   "float?"
+   "neg?"
+   "pos?"
+   "rand"
+   "rand-int"
+   "repeat"
+   "repeatedly"
+   "complement"])
 
 set-property(module "exports" exp)
 
