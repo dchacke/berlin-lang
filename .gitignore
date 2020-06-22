@@ -110,5 +110,5 @@ temp/
 
 # End of https://www.gitignore.io/api/node
 
-core.js
+
 test/core.js
