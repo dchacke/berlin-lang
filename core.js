@@ -4,7 +4,6 @@ let __EQUALS__  = ((a ,b ) => {return (_.isEqual )(a ,b );
 } ) ;
 let identity  = ((a ) => {return a;
 } ) ;
-x;
 let or  = ((...args ) => {return (((empty__QUESTION_MARK__ )(args ) ) ?
 (() => {return null;
 } )()
