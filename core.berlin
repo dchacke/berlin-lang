@@ -117,6 +117,9 @@ def(hash-set fn(...args
 def(hash-map fn(...kvs
   Map.(apply(pairwise kvs))))
 
+def(tuples->map fn(tuples
+  Map.(tuples)))
+
 def(keys fn(m
   ->>(m arr [map first])))
 
@@ -354,6 +357,16 @@ def(conj fn(coll ...vals
           [...vals]
           raise("Can only conj onto arrays, maps, sets, and nil")))))))
 
+def(disj fn(s v ...vs
+  if(nil?(s)
+    nil
+    if(set?(s)
+      let([result ->>(s arr [remove partial(= v)] set)]
+        if(empty?(vs)
+          result
+          apply(disj result first(vs) rest(vs))))
+      raise("disj expects a set or nil for the first argument")))))
+
 def(drop fn(n coll
   if(or(empty?(coll) <=(n 0))
     coll
@@ -406,6 +419,16 @@ def(assoc-in fn(m path v
       let([next-item get(m first(path))
            result assoc-in(next-item rest(path) v)]
         assoc(m first(path) result))))))
+
+def(dissoc fn(m k ...ks
+  if(map?(m)
+    let([result ->>(m arr [remove fn(tuple =(first(tuple) k))] tuples->map)]
+      if(empty?(ks)
+        result
+        apply(dissoc result first(ks) rest(ks))))
+    if(nil?(m)
+      nil
+      raise("Expected a map nor nil for the first argument")))))
 
 def(update fn(m k f ...args
   let([v get(m k)
@@ -501,6 +524,7 @@ set-property(exp "array" array)
 set-property(exp "set" set)
 set-property(exp "hash-set" hash-set)
 set-property(exp "hash-map" hash-map)
+set-property(exp "tuples->map" tuples->map)
 set-property(exp "keys" keys)
 set-property(exp "vals" vals)
 set-property(exp "pairwise" pairwise)
@@ -541,11 +565,13 @@ set-property(exp "get-in" get-in)
 set-property(exp "contains?" contains?)
 set-property(exp "every?" every?)
 set-property(exp "conj" conj)
+set-property(exp "disj" disj)
 set-property(exp "drop" drop)
 set-property(exp "take" take)
 set-property(exp "flatten-1" flatten-1)
 set-property(exp "assoc" assoc)
 set-property(exp "assoc-in" assoc-in)
+set-property(exp "dissoc" dissoc)
 set-property(exp "update" update)
 set-property(exp "update-in" update-in)
 set-property(exp "str" str)

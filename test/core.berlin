@@ -31,6 +31,7 @@ def(array .-array(core))
 def(set .-set(core))
 def(hash-set .-hash-set(core))
 def(hash-map .-hash-map(core))
+def(tuples->map .-tuples->map(core))
 def(keys .-keys(core))
 def(vals .-vals(core))
 def(pairwise .-pairwise(core))
@@ -70,11 +71,13 @@ def(get-in .-get-in(core))
 def(contains? .-contains?(core))
 def(every? .-every?(core))
 def(conj .-conj(core))
+def(disj .-disj(core))
 def(drop .-drop(core))
 def(take .-take(core))
 def(flatten-1 .-flatten-1(core))
 def(assoc .-assoc(core))
 def(assoc-in .-assoc-in(core))
+def(dissoc .-dissoc(core))
 def(update .-update(core))
 def(update-in .-update-in(core))
 def(str .-str(core))
@@ -529,6 +532,12 @@ describe("core" fn({
 
     it("throws when given an odd number of keys and values" fn({
       .throws(assert fn(hash-map(1 2 3)) RegExp.("expected an even number of arguments"))
+    }))
+  }))
+
+  describe("tuples->map" fn({
+    it("creates a map from the given tuples" fn({
+      assert(=(tuples->map([[1 2] [3 4]]) ~{1 2 3 4}))
     }))
   }))
 
@@ -1133,6 +1142,38 @@ describe("core" fn({
     }))
   }))
 
+  describe("disj" fn({
+    describe("sets" fn({
+      it("removes the given element from the set" fn({
+        assert(=(disj(#{1 2 3} 3) #{1 2}))
+      }))
+
+      it("has no effect if the given element does not exist" fn({
+        assert(=(disj(#{1 2 3} 4) #{1 2 3}))
+      }))
+
+      it("removes *all* given elements from the set" fn({
+        assert(=(disj(#{1 2 3} 1 3) #{2}))
+      }))
+    }))
+
+    describe("nil" fn({
+      it("returns nil" fn({
+        assert(nil?(disj(nil 1)))
+      }))
+    }))
+
+    describe("other data types" fn({
+      it("throws" fn({
+        .throws(assert fn(disj("" 1)) RegExp.("disj expects a set or nil for the first argument"))
+        .throws(assert fn(disj(1 1)) RegExp.("disj expects a set or nil for the first argument"))
+        .throws(assert fn(disj(~{} 1)) RegExp.("disj expects a set or nil for the first argument"))
+        .throws(assert fn(disj([] 1)) RegExp.("disj expects a set or nil for the first argument"))
+        .throws(assert fn(disj(false 1)) RegExp.("disj expects a set or nil for the first argument"))
+      }))
+    }))
+  }))
+
   describe("drop" fn({
     it("drops the given number of elements from the given array" fn({
       assert(=(drop(2 [1 2 3]) [3]))
@@ -1272,6 +1313,37 @@ describe("core" fn({
     describe("mixed" fn({
       it("works the same" fn({
         assert(=(assoc-in(~{:foo [~{:bar 1}]} [:foo 0 :baz] 2) ~{:foo [~{:bar 1 :baz 2}]}))
+      }))
+    }))
+  }))
+
+  describe("dissoc" fn({
+    describe("maps" fn({
+      it("removes the given fields from the given map" fn({
+        console.log(dissoc(~{:foo "bar" :bar "foo" :baz "foo"} :foo :bar))
+        assert(=(dissoc(~{:foo "bar" :bar "foo" :baz "foo"} :foo :bar) ~{:baz "foo"}))
+      }))
+
+      it("returns the given map without changes if it does not
+          contain the given keys" fn({
+        assert(=(dissoc(~{:foo "bar"} :bar) ~{:foo "bar"}))
+      }))
+    }))
+
+    describe("nil" fn({
+      it("returns nil" fn({
+        assert(nil?(dissoc(nil :foo)))
+      }))
+    }))
+
+    describe("other data types" fn({
+      it("throws" fn({
+        .throws(assert fn(dissoc(1 :foo :bar)) RegExp.("Expected a map nor nil for the first argument"))
+        .throws(assert fn(dissoc("" :foo :bar)) RegExp.("Expected a map nor nil for the first argument"))
+        .throws(assert fn(dissoc(:foo :foo :bar)) RegExp.("Expected a map nor nil for the first argument"))
+        .throws(assert fn(dissoc(#{} :foo :bar)) RegExp.("Expected a map nor nil for the first argument"))
+        .throws(assert fn(dissoc(true :foo :bar)) RegExp.("Expected a map nor nil for the first argument"))
+        .throws(assert fn(dissoc([] :foo :bar)) RegExp.("Expected a map nor nil for the first argument"))
       }))
     }))
   }))
