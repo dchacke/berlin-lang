@@ -119,6 +119,68 @@ x
 ; => ReferenceError: x is not defined
 ```
 
+### Functions
+
+While function invocations look--for the most part--the same as in JS, function declarations look quite a bit different:
+
+```ruby
+fn({})
+```
+
+This code declares a blank function. It takes no parameters and does nothing.
+
+```ruby
+fn({a})
+```
+
+This example declares a function that returns some variable `a`, which variable presumably exists in the context outside the function.
+
+Those curly braces are *blocks*. They allow you to write multi-line code. They can only be used in functions and special forms.
+
+Since the function body above uses only a single line, you can omit the braces:
+
+```ruby
+fn(a)
+```
+
+How do we declare function parameters?
+
+```ruby
+fn(a a)
+```
+
+This function is the identity function. It takes a parameter `a` and returns it. The last item in the parameter list is not a parameter at all but the function's body.
+
+Here's a more complex example:
+
+```ruby
+fn(a b +(a b))
+```
+
+This function takes parameters `a` and `b` and returns the addition of the two.
+
+If you need to do more than one thing in the function body, use curly braces:
+
+```ruby
+fn(a b {
+  log("Computing...")
+  +(a b)})
+```
+
+Note, however, that much code can be written without any curly braces at all, in particular because of special forms:
+
+```ruby
+fn(a b
+  let([c +(a b)
+       _ log("computing...")
+       result -(c 2)]
+    result))
+```
+
+Strictly speaking, the `let` block is the single last argument passed to the function declaration. This block's body could in turn be wrapped in curly braces, but there is no need to because it only contains one statement: the return of the `result` variable.
+
+As a rule of thumb--but not as a universal law--the fewer curly braces your code has, the better, as curly braces are indicative of imperative programming/side effects.
+
 ### Strict Functions
 
 Berlin introduces a new feature called "strict functions." They are based on an idea [Brian Will](https://www.youtube.com/user/briantwill) mentioned in one of his videos. Strict functions can only access state explicitly passed as parameters. They cannot even access core functions unless they are passed.
@@ -166,6 +228,8 @@ As a naming convention, strict functions' names should end with a `!`.
 There are no commas or semicolons--at least not how they're used in JS. Commas are treated as whitespace and discouraged. Semicolons are used for comments.
 
 Berlin borrows a feature from Ruby that allows you to use underscores as thousands separator: `1_000_000`. These underscores are optional, can be placed anywhere inside a number, and won't alter the number's value in any way.
+
+Parentheses are used exclusively for function invocations. There are no groupings in Berlin. Self-invoking functions don't need to be wrapped in parentheses, either: `fn(a a)(1)` is a self-invoking identity function.
 
 ## I Came Here from Clojure(Script)--Should I Use This?
 
