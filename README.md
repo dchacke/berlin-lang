@@ -23,7 +23,7 @@ The above code declares a function called `filter`. It takes a function and a co
 
 ## Rationale
 
-Berlin makes JavaScript development more enjoyable by reducing JavaScript to its best parts. There are no classes, prototypes, wacky equalities, operators, expressions, or semicolons--not even commas. There are only functions and data.
+Berlin makes JavaScript development more enjoyable by reducing JavaScript to its best parts. There are no classes, prototypes, wacky equalities, operators, or expressions. Semicolons and commas play a small role. There are really only functions and data.
 
 Additionally, Berlin is meant to be a gateway to programming in Clojure. Directly jumping from JavaScript to Clojure can be difficult because one has to learn many new concepts *and* a new syntax at the same time. Berlin syntax has elements from both languages with some changes mixed in and uses some but not all Clojure concepts. Both of these characteristics should make for a smooth transition from JavaScript to Berlin, and then, optionally, from Berlin to Clojure.
 
@@ -98,7 +98,7 @@ There are no return statements in Berlin. A function's or form's last value is i
 
 Several special forms exist in Berlin. The most important are `def`, `let`, and `if`. You use `def` to declare variables at the top-level scope. These are variables you need to access across an entire file, say.
 
-```clojure
+```ruby
 def(x 1)
 def(y 2)
 
@@ -107,7 +107,7 @@ def(y 2)
 
 Variables declared using `let` are only available in the scope of the `let` form's block:
 
-```clojure
+```ruby
 let([x 1
      y 2]
   +(x y))
@@ -125,7 +125,7 @@ Berlin introduces a new feature called "strict functions." They are based on an 
 
 Here is an example of a regular function called `foo`:
 
-```clojure
+```ruby
 def(b "bar")
 
 def(foo fn(a
@@ -137,7 +137,7 @@ foo("foo")
 
 Here is the same function, but declared as a strict function, as signified by the `!`:
 
-```clojure
+```ruby
 def(b "bar")
 
 def(foo! fn!(a ; <-- here it says fn! instead of fn
@@ -149,7 +149,7 @@ foo!("foo")
 
 To make this example work, `b` needs to be passed in explicitly:
 
-```
+```ruby
 def(foo! fn!(a b ; b is now a parameter
   log(a b))
 
