@@ -12,7 +12,9 @@ describe("Lexer", () => {
       assert(_.isEqual(result, [
         ["number", "123"],
         ["keyword", "foo"],
+        ["\"", "\""],
         ["string", "bar"],
+        ["\"", "\""],
         ["symbol", "baz"],
         ["number", "4.5"],
         ["number", "-1"],
@@ -83,7 +85,9 @@ describe("Lexer", () => {
           ["number", "1"],
           ["(", "("],
           ["~", "~"],
-          ["string", "foo"]
+          ["\"", "\""],
+          ["string", "foo"],
+          ["\"", "\""],
         ]));
       });
     });
@@ -130,7 +134,9 @@ describe("Lexer", () => {
         ["number", "3"],
         // It includes the comma here since it's part
         // of a string.
+        ["\"", "\""],
         ["string", "foo,bar"],
+        ["\"", "\""],
         ["symbol", "foo"],
         ["symbol", "bar"],
         ["keyword", "baz"],

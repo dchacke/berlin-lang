@@ -5,11 +5,21 @@ let _ = require("lodash");
 
 describe("Parser", () => {
   describe("primitives", () => {
-    let tokens = [["number", "1"], ["string", "foo"]];
+    let tokens = [
+      ["number", "1"],
+      ["\"", "\""],
+      ["string", "foo"],
+      ["\"", "\""],
+      ["keyword", "foo"]
+    ];
     let result = parse(tokens)[0];
 
-    it("leaves primitives untouched", () => {
-      assert(_.isEqual(result, tokens));
+    it("parses primitives", () => {
+      assert(_.isEqual(result, [
+        ["number", "1"],
+        ["string", "foo"],
+        ["keyword", "foo"]
+      ]));
     });
   });
 
@@ -265,7 +275,9 @@ describe("Parser", () => {
         ["symbol", "foo"],
         ["(", "("],
         ["symbol", "bar"],
+        ["\"", "\""],
         ["string", "baz"],
+        ["\"", "\""],
         [")", ")"]
       ];
       let result = parse(tokens)[0];

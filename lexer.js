@@ -86,6 +86,7 @@ let lex = source => {
           // We want to close the string
           if (curr === "\"") {
             acc.mode.pop();
+            acc.result.push(["\"", "\""]);
 
             return acc;
           // Consume the next character as part
@@ -130,6 +131,7 @@ let lex = source => {
         default: {
           // We want to open a string
           if (curr === "\"") {
+            acc.result.push(["\"", "\""]);
             acc.mode.push("string");
             acc.result.push(["string", ""]);
 

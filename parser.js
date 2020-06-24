@@ -116,7 +116,7 @@ let parse = (tokens, mode) => {
       } else {
         tree.push(tokens[i]);
       }
-    } else if (type !== "#" && type !== "~") {
+    } else if (type !== "#" && type !== "~" && type !== "\"") {
       tree.push(tokens[i]);
     }
 
