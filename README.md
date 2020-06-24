@@ -31,7 +31,9 @@ That being said, Berlin is meant to stand and provide value on its own. Even if 
 
 ## Usage
 
-To transpile a .berlin file, use the [Berlin CLI](https://github.com/dchacke/berlin-cli).
+To start a Berlin REPL, use the [Berlin CLI](https://github.com/dchacke/berlin-cli).
+
+You'll also need the CLI to transpile a .berlin file.
 
 For direct usage within JavaScript, do the following:
 
