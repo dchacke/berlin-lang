@@ -204,7 +204,7 @@ Here is the same function, but declared as a strict function, as signified by th
 ```ruby
 def(b "bar")
 
-def(foo! fn!(a ; <-- here it says fn! instead of fn
+def(foo! fn!(a ; <-- here we use fn! instead of fn
   log(a b)))
 
 foo!("foo")
