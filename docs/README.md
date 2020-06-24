@@ -57,7 +57,7 @@ identity([]) ; => []
 
 #### or
 
-Returns the first truthy or last falsey argument.
+Returns the first truthy or last falsey argument. All arguments are evaluated.
 
 ##### Arguments
 
@@ -66,26 +66,6 @@ Variable number of anything.
 ##### Returns
 
 The first truthy or last falsey argument.
-
-##### Examples
-
-```js
-or(1 2 3) ; => 1
-or(false 2) ; => 2
-or(false nil) ; => nil
-```
-
-#### or
-
-Returns the first truthy or last falsey argument (going from left to right). All arguments are evaluated.
-
-##### Arguments
-
-Variable number of anything.
-
-##### Returns
-
-The first truthy or last falsey argument. `or()` returns `nil`.
 
 ##### Examples
 
@@ -111,8 +91,8 @@ The first truthy or last falsey argument. `and()` returns `true`.
 
 ```js
 and(1 2 3) ; => 3
-or(false 2) ; => false
-or(false nil) ; => false
+and(false 2) ; => false
+and(false nil) ; => false
 ```
 
 ### Math
