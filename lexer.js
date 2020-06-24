@@ -11,6 +11,28 @@ let remove_comments = source => {
 let last = a => a[a.length - 1];
 
 let isNumber = a => /\d/.test(a);
+let isDelimiter = a => /[{}\[\]()""]/.test(a)
+
+let delimiterPairs = {
+  "{": "}",
+  "[": "]",
+  "(": ")",
+  "\"": "\""
+}
+
+let checkDelimiters = (tokenContainer) => {
+  let delimiters = [];
+
+  tokenContainer.result.forEach(token => {
+    if (isDelimiter(token[0])) {
+      if (token[0] === delimiterPairs[last(tokenContainer.unclosedDelimiters)]) {
+        tokenContainer.unclosedDelimiters.pop();
+      } else {
+        tokenContainer.unclosedDelimiters.push(token[0]);
+      }
+    }
+  });
+}
 
 // Takes a source string and turns
 // it into a sequence of tokens.
@@ -18,7 +40,7 @@ let lex = source => {
   // Remove comments
   source = remove_comments(source);
 
-  return source
+  let tokenContainer = source
     .split("")
     .reduce((acc, curr, i) => {
       switch (last(acc.mode)) {
@@ -178,8 +200,13 @@ let lex = source => {
       }
     }, {
       mode: [], // does this really need to be an array? I don't think tokens can be nested...
-      result: []
+      result: [],
+      unclosedDelimiters: []
     });
+
+  checkDelimiters(tokenContainer);
+
+  return tokenContainer;
 };
 
 // Next up: handle comments in lex fn instead of

@@ -144,4 +144,46 @@ describe("Lexer", () => {
       ]));
     });
   });
+
+  describe("completeness", () => {
+    describe("complete examples", () => {
+      let examples = [
+        `1 2 3`,
+        `"foo"`,
+        `"fo\"o"`,
+        `fn({})`,
+        `def(a 1)`,
+        `let([a 1] a)`,
+        `def(repeat fn(a b
+          if(>=(a 1)
+            cons(b repeat(dec(a) b))
+            [])))`
+      ];
+
+      examples.forEach(source => {
+        it(`"${source}" is complete`, () => {
+          assert(lex(source).unclosedDelimiters.length === 0);
+        });
+      });
+    });
+
+    describe("incomplete examples", () => {
+      let examples = {
+        "foo(": ["("],
+        "\"foo)": ["\""],
+        "fn({a)": ["(", "{", ")"],
+        "def(a": ["("],
+        "let([a 1]": ["("],
+        "let([a 1] {": ["(", "{"],
+        "1 foo() let([a 1] { bar()": ["(", "{"],
+        "def(repeat fn(a b\nif(>=(a": ["(", "(", "(", "("]
+      };
+
+      for (let key in examples) {
+        it(`"${key}" is incomplete`, () => {
+          assert(_.isEqual(lex(key).unclosedDelimiters, examples[key]));
+        });
+      };
+    });
+  });
 });
