@@ -47,8 +47,8 @@ Then, in your JavaScript file, write:
 
 ```js
 let { transpile } = require("berlin-lang/transpiler");
-transpile("def(foo 1)");
-// => "let foo = 1;"
+transpile("def(foo 1)"); // give it a string of Berlin code
+// => "let foo = 1;" // it spits out JavaScript
 ```
 
 The `transpile` function takes a string of Berlin source code and returns a string of the equivalent JavaScript source code. You may then `eval` that source code.
