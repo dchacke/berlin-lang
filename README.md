@@ -27,7 +27,7 @@ The above code declares a function called `filter`. It takes a function and a co
 
 ## Rationale
 
-Berlin makes JavaScript development more enjoyable by reducing JavaScript to its best parts. There are no classes, prototypes, wacky equalities, operators, or expressions. Semicolons and commas play a small role. There are really only functions and data.
+Berlin makes JavaScript development more enjoyable by reducing JavaScript to its best parts. There are no classes, prototypes, wacky equalities, syntactical inconsistencies, operators, or expressions. Semicolons and commas play a small role. There are really only functions and data.
 
 Additionally, Berlin is meant to be a gateway to programming in Clojure. Directly jumping from JavaScript to Clojure can be difficult because one has to learn many new concepts *and* a new syntax at the same time. Berlin syntax has elements from both languages with some changes mixed in and uses some but not all Clojure concepts. Both of these characteristics should make for a smooth transition from JavaScript to Berlin, and then, optionally, from Berlin to Clojure. Almost all of Berlin's core functions have the same name and roughly the same functionality as their Clojure namesakes, which should also make for a smooth transition.
 
