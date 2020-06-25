@@ -3,6 +3,7 @@ def(_ require("lodash"))
 def(core require("../core"))
 
 def(= .-=(core))
+def(identical?! .-identical?!(core))
 def(identity! .-identity!(core))
 def(or .-or(core))
 def(and .-and(core))
@@ -109,7 +110,47 @@ describe("core" fn({
       assert(false?(=(:foo :bar)))
       assert(false?(=([1 2 3] [4 5 6])))
       assert(false?(=(~{1 2 3 4} ~{5 6 7 8})))
-      assert(false?(=(#{1 2 3} #{4 5 6})))}))}))
+      assert(false?(=(#{1 2 3} #{4 5 6})))
+      assert(false?(=([1 2 3 ~{:foo [1]}] [1 2 3 ~{:foo [2]}])))}))}))
+
+  describe("identical?!" fn({
+    it("compares primitives correctly" fn({
+      assert(identical?!(true true))
+      assert(identical?!(false false))
+      assert(identical?!(nil nil))
+      assert(identical?!("foo" "foo"))
+      assert(identical?!(:foo :foo))
+      assert(identical?!(undefined undefined))
+      assert(identical?!(1 1))
+
+      assert(false?(identical?!(true false)))
+      assert(false?(identical?!("foo" 2)))
+      assert(false?(identical?!("foo" "bar")))
+      assert(false?(identical?!(:bar "foo")))
+      assert(false?(identical?!(undefined 2)))}))
+
+    it("compares collections correctly" fn({
+      let([a []
+           m ~{}
+           s #{}]
+        {assert(identical?!(a a))
+         assert(identical?!(m m))
+         assert(identical?!(s s))})
+
+      assert(false?(identical?!([] [])))
+      assert(false?(identical?!(~{} ~{})))
+      assert(false?(identical?!(#{} #{})))
+
+      assert(false?(identical?!([] ~{})))
+      assert(false?(identical?!([] #{})))
+      assert(false?(identical?!(~{} #{})))}))
+
+    it("compares collections and primitives correctly" fn({
+      assert(false?(identical?!(true [])))
+      assert(false?(identical?!(nil #{})))
+      assert(false?(identical?!("foo" ~{})))
+      assert(false?(identical?!(1 [])))
+      assert(false?(identical?!(undefined [])))}))}))
 
   describe("identity!" fn({
     it("returns the given argument" fn({

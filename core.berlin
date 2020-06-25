@@ -4,6 +4,8 @@ def(safe-symbol .-safe_symbol(require("./translator")))
 
 def(= fn(a b _.isEqual(a b)))
 
+def(identical?! fn(a b invoke-operator("===" a b)))
+
 def(identity! fn!(a a))
 
 def(or fn(...args
@@ -504,6 +506,7 @@ map(
     set-property(exp curr eval(safe-symbol(curr)))
     set-property(exp safe-symbol(curr) eval(safe-symbol(curr)))})
   ["="
+   "identical?!"
    "identity!"
    "or"
    "and"
