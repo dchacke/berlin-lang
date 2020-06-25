@@ -10,6 +10,132 @@ You can find the source code and the Readme with credits and license information
 
 ## API
 
+### Special Forms
+
+Special forms look--for the most part--just like function invocations, but they are not declared as functions anywhere. Instead, the transpiler treats recognizes them to apply special logic. That logic depends on the particular special form.
+
+Special forms take blocks, indicated by curly braces `{}`. When blocks only contain a single statement, the curly braces can be omitted. This applies to all special forms.
+
+Blocks can only be used in special forms.
+
+#### if
+
+Evaluates the given statement and, if truthy, executes the first branch, or, if falsey, the second branch (if given).
+
+##### Arguments
+
+- Anything
+- Block
+- Optional block
+
+##### Returns
+
+Anything
+
+##### Examples
+
+```js
+if (true 1 2) ; => 1
+if (false 1 2) ; => 2
+if (false 1) ; => undefined
+if (true {
+  log("computing...")
+  1} {
+  log("that didn't work.")
+  2}) ; => 1
+```
+
+#### fn
+
+Declares a function. It looks just like a function invocation, but takes only symbols (i.e., variable names) as arguments, and a block as the last argument.
+
+##### Arguments
+
+- Variable number of symbols
+- Block
+
+##### Returns
+
+Function
+
+##### Examples
+
+```js
+fn(a a)(1) ; => 1
+fn(a log(a))(1) ; prints "1" then returns undefined
+fn(a b {
+  log("computing")
+  +(a b)})(1 2) ; => 3
+```
+
+#### fn!
+
+Like `fn` but strict, meaning the declared function must only access the arguments it was given.
+
+The purpose of strict functions is to increase their referential transparency.
+
+As a convention, a strict function's name should end with `!`, e.g. `def(identity! fn!(a a))`.
+
+##### Arguments
+
+- Variable number of symbols
+- Block
+
+##### Returns
+
+Function
+
+##### Examples
+
+```js
+fn!(a a)(1) ; => 1
+
+def(a 1)
+fn!({
+  log("I want to return a...")
+  a}) ; transpiler throws: Cannot access symbol a in strict function. Pass a in fn! declaration instead or declare it using let block
+```
+
+#### def
+
+Used for top-level variable declaration. `def` should not be used for re-assignments.
+
+##### Arguments
+
+- Symbol
+- Anything
+
+##### Returns
+
+`undefined`
+
+##### Examples
+
+```js
+def(a 1) ; => 1
+```
+
+#### let
+
+Used for variable declaration. `let` takes an array of symbols and values for variable declaration and a block in which the declared variables are accessible.
+
+##### Arguments
+
+- Array
+- Block
+
+##### Returns
+
+Anything
+
+##### Examples
+
+```js
+let([a 1
+     b 2]
+  +(a b)) ; => 3
+```
+
 ### Basics
 
 #### defined?
