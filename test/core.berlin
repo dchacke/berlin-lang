@@ -1356,7 +1356,6 @@ describe("core" fn({
   describe("dissoc" fn({
     describe("maps" fn({
       it("removes the given fields from the given map" fn({
-        console.log(dissoc(~{:foo "bar" :bar "foo" :baz "foo"} :foo :bar))
         assert(=(dissoc(~{:foo "bar" :bar "foo" :baz "foo"} :foo :bar) ~{:baz "foo"}))
       }))
 
