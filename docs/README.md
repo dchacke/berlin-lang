@@ -12,9 +12,9 @@ To try out Berlin in a REPL, use the [CLI](https://github.com/dchacke/berlin-cli
 
 Berlin is currently in an unstable alpha phase. Expect rapid breaking changes. You are encouraged to contribute/alpha test.
 
-## Literals and Data Structures
+## Literals for Primitives and Data Structures
 
-Berlin comes with the following literals:
+Berlin comes with the following literals for primitives:
 
 - Strings: `"foo"`
 - Numbers: `1`, `2.5`, `-3`
@@ -25,7 +25,7 @@ Berlin comes with the following literals:
 
 Keywords implement JavaScript's [symbols](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol).
 
-Berlin further has the following data structures:
+Berlin further has the following literals for data structures:
 
 - Arrays: `[1 2 3]`
 - Maps: `~{:foo 1 :bar "hi"}`
