@@ -40,6 +40,21 @@ Map.([[1 2]])
 
 The first line is the same as saying `console.log("foo")` in JavaScript. The second line is the same as new `Map([[1 2]])`.
 
+## "Typography"
+
+Berlin treats commas as whitespace. Use of commas is discouraged.
+Semicolons are used to start a single-line comment:
+
+```js
+; this is a comment
+```
+
+Underscores can be used as optional thousands separators in numbers:
+
+```js
+1_000_000
+```
+
 ## API
 
 ### Special Forms
