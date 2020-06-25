@@ -6,7 +6,7 @@ Poor man's Clojure.
 
 Berlin is a small, functional programming language that lives at the intersection between JavaScript and Clojure. It comes with a transpiler that spits out JavaScript code.
 
-You can find the source code and the Readme with credits and license information [here](https://github.com/dchacke/berlin-lang).
+You can find the source code and the Readme with credits, license information, rationale and additional information [here](https://github.com/dchacke/berlin-lang).
 
 ## Literals and Data Structures
 
