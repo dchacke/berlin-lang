@@ -11,9 +11,9 @@ def(identity! fn!(a a))
 def(or fn(...args
   if(empty?(args)
     nil
-    if(=(count(args) 1)
+    if(identical?!(count(args) 1)
       first(args)
-      if(=(count(args) 2)
+      if(identical?!(count(args) 2)
         if(truthy?(first(args))
           first(args)
           last(args))
@@ -25,14 +25,14 @@ def(and fn(...args
   if(empty?(args)
     true
     if(truthy?(first(args))
-      if(=(count(args) 1)
+      if(identical?!(count(args) 1)
         first(args)
-        if(=(count(args) 2)
+        if(identical?!(count(args) 2)
           last(args)
           apply(and rest(args))))
       first(args)))))
 
-def(zero? fn(a =(a 0)))
+def(zero? fn(a identical?!(a 0)))
 
 ; Do not use fn "or" in here as it
 ; will lead to a circular dependency
@@ -88,11 +88,11 @@ def(cons fn(el coll
     [el]
     apply(conj [el] coll))))
 
-def(string? fn(a =(invoke-operator("typeof" a) "string")))
-def(number? fn(a =(invoke-operator("typeof" a) "number")))
-def(keyword? fn(a =(invoke-operator("typeof" a) "symbol")))
-def(boolean? fn(a =(invoke-operator("typeof" a) "boolean")))
-def(nil? fn(a =(a nil)))
+def(string? fn(a identical?!(invoke-operator("typeof" a) "string")))
+def(number? fn(a identical?!(invoke-operator("typeof" a) "number")))
+def(keyword? fn(a identical?!(invoke-operator("typeof" a) "symbol")))
+def(boolean? fn(a identical?!(invoke-operator("typeof" a) "boolean")))
+def(nil? fn(a identical?!(a nil)))
 def(set? fn(a invoke-operator("instanceof" a Set)))
 def(map? fn(a invoke-operator("instanceof" a Map)))
 def(array? fn(a .isArray(Array a)))
@@ -143,28 +143,28 @@ def(log fn(...args .log(console ...args)))
 def(+ fn(...args
   if(empty?(args)
     0
-    if(=(count(args) 1)
+    if(identical?!(count(args) 1)
       first(args)
       invoke-operator("+" first(args) apply(+ rest(args)))))))
 
 def(- fn(...args
   if(empty?(args)
     raise("- requires at least one argument")
-    if(=(count(args) 1)
+    if(identical?!(count(args) 1)
       invoke-operator("-" 0 first(args))
       invoke-operator("-" first(args) apply(+ rest(args)))))))
 
 def(* fn(...args
   if(empty?(args)
     1
-    if(=(count(args) 1)
+    if(identical?!(count(args) 1)
       first(args)
       invoke-operator("*" first(args) apply(* rest(args)))))))
 
 def(/ fn(...args
   if(empty?(args)
     raise("/ requires at least one argument")
-    if(=(count(args) 1)
+    if(identical?!(count(args) 1)
       invoke-operator("/" 1 first(args))
       invoke-operator("/" first(args) apply(* rest(args)))))))
 
@@ -175,9 +175,9 @@ def(% fn!(a b invoke-operator("%" a b)))
 def(< fn(...args
   if(empty?(args)
     raise("< requires at least one argument")
-    if(=(count(args) 1)
+    if(identical?!(count(args) 1)
       true
-      if(=(count(args) 2)
+      if(identical?!(count(args) 2)
         invoke-operator("<" first(args) second(args))
         and(invoke-operator("<" first(args) second(args))
             apply(< second(args) rest(rest(args)))))))))
@@ -185,9 +185,9 @@ def(< fn(...args
 def(<= fn(...args
   if(empty?(args)
     raise("<= requires at least one argument")
-    if(=(count(args) 1)
+    if(identical?!(count(args) 1)
       true
-      if(=(count(args) 2)
+      if(identical?!(count(args) 2)
         invoke-operator("<=" first(args) second(args))
         and(invoke-operator("<=" first(args) second(args))
             apply(<= second(args) rest(rest(args)))))))))
@@ -195,9 +195,9 @@ def(<= fn(...args
 def(> fn(...args
   if(empty?(args)
     raise("> requires at least one argument")
-    if(=(count(args) 1)
+    if(identical?!(count(args) 1)
       true
-      if(=(count(args) 2)
+      if(identical?!(count(args) 2)
         invoke-operator(">" first(args) second(args))
         and(invoke-operator(">" first(args) second(args))
             apply(> second(args) rest(rest(args)))))))))
@@ -205,9 +205,9 @@ def(> fn(...args
 def(>= fn(...args
   if(empty?(args)
     raise(">= requires at least one argument")
-    if(=(count(args) 1)
+    if(identical?!(count(args) 1)
       true
-      if(=(count(args) 2)
+      if(identical?!(count(args) 2)
         invoke-operator(">=" first(args) second(args))
         and(invoke-operator(">=" first(args) second(args))
             apply(>= second(args) rest(rest(args)))))))))
@@ -216,16 +216,16 @@ def(inc fn(a +(a 1)))
 
 def(dec fn(a -(a 1)))
 
-def(true? fn(a =(a true)))
+def(true? fn(a identical?!(a true)))
 
-def(false? fn(a =(a false)))
+def(false? fn(a identical?!(a false)))
 
 def(truthy? fn(a
   if(false?(a)
     false
     if(nil?(a)
       false
-      if(=(a undefined)
+      if(identical?!(a undefined)
         false
         true)))))
 
@@ -233,9 +233,9 @@ def(falsey? fn(a if(truthy?(a)
                    false
                    true)))
 
-def(defined? fn(a not(=(a undefined))))
+def(defined? fn(a not(identical?!(a undefined))))
 
-def(undefined? fn(a =(undefined a)))
+def(undefined? fn(a identical?!(undefined a)))
 
 def(not falsey?)
 
@@ -269,7 +269,7 @@ def(remove fn(f coll
 
 ; Takes either [f coll] or [f val coll]
 def(reduce fn(...args
-  if(=(count(args) 2)
+  if(identical?!(count(args) 2)
     reduce(first(args) first(second(args)) rest(second(args)))
     let([f first(args)
            val second(args)
@@ -302,9 +302,9 @@ def(thread fn(type
       if(array?(curr)
         let([f first(curr)
              args rest(curr)]
-          if(=(type "first")
+          if(identical?!(type "first")
             apply(f acc args)
-            if(=(type "last")
+            if(identical?!(type "last")
               f(...args acc)
               raise("Unknown thread type"))))
         curr(acc)))
@@ -355,7 +355,7 @@ def(conj fn(coll ...vals
     if(set?(coll)
       Set.([...coll ...vals])
       if(map?(coll)
-        if(every? (fn(v and(array?(v) =(count(v) 2))) vals)
+        if(every? (fn(v and(array?(v) identical?!(count(v) 2))) vals)
           Map.([...coll ...vals])
           raise("Values conj'ed onto map must be two-valued arrays"))
         if(nil?(coll)
@@ -427,7 +427,7 @@ def(assoc-in fn(m path v
 
 def(dissoc fn(m k ...ks
   if(map?(m)
-    let([result ->>(m arr [remove fn(tuple =(first(tuple) k))] tuples->map)]
+    let([result ->>(m arr [remove fn(tuple identical?!(first(tuple) k))] tuples->map)]
       if(empty?(ks)
         result
         apply(dissoc result first(ks) rest(ks))))

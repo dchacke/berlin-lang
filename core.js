@@ -11,11 +11,11 @@ let or  = ((...args ) => {return (((empty__QUESTION_MARK__ )(args ) ) ?
 (() => {return null;
 } )()
 :
-(() => {return (((__EQUALS__ )((count )(args ) ,1 ) ) ?
+(() => {return (((identical__QUESTION_MARK____BANG__ )((count )(args ) ,1 ) ) ?
 (() => {return (first )(args );
 } )()
 :
-(() => {return (((__EQUALS__ )((count )(args ) ,2 ) ) ?
+(() => {return (((identical__QUESTION_MARK____BANG__ )((count )(args ) ,2 ) ) ?
 (() => {return (((truthy__QUESTION_MARK__ )((first )(args ) ) ) ?
 (() => {return (first )(args );
 } )()
@@ -39,11 +39,11 @@ let and  = ((...args ) => {return (((empty__QUESTION_MARK__ )(args ) ) ?
 } )()
 :
 (() => {return (((truthy__QUESTION_MARK__ )((first )(args ) ) ) ?
-(() => {return (((__EQUALS__ )((count )(args ) ,1 ) ) ?
+(() => {return (((identical__QUESTION_MARK____BANG__ )((count )(args ) ,1 ) ) ?
 (() => {return (first )(args );
 } )()
 :
-(() => {return (((__EQUALS__ )((count )(args ) ,2 ) ) ?
+(() => {return (((identical__QUESTION_MARK____BANG__ )((count )(args ) ,2 ) ) ?
 (() => {return (last )(args );
 } )()
 :
@@ -56,7 +56,7 @@ let and  = ((...args ) => {return (((empty__QUESTION_MARK__ )(args ) ) ?
 } )());
 } )());
 } ) ;
-let zero__QUESTION_MARK__  = ((a ) => {return (__EQUALS__ )(a ,0 );
+let zero__QUESTION_MARK__  = ((a ) => {return (identical__QUESTION_MARK____BANG__ )(a ,0 );
 } ) ;
 let count  = ((coll ) => {return (((array__QUESTION_MARK__ )(coll ) ) ?
 (() => {return ((coll )[(`length` )]);
@@ -138,15 +138,15 @@ let cons  = ((el ,coll ) => {return (((nil__QUESTION_MARK__ )(coll ) ) ?
 (() => {return (apply )(conj ,[el ] ,coll );
 } )());
 } ) ;
-let string__QUESTION_MARK__  = ((a ) => {return (__EQUALS__ )(typeof a  ,`string` );
+let string__QUESTION_MARK__  = ((a ) => {return (identical__QUESTION_MARK____BANG__ )(typeof a  ,`string` );
 } ) ;
-let number__QUESTION_MARK__  = ((a ) => {return (__EQUALS__ )(typeof a  ,`number` );
+let number__QUESTION_MARK__  = ((a ) => {return (identical__QUESTION_MARK____BANG__ )(typeof a  ,`number` );
 } ) ;
-let keyword__QUESTION_MARK__  = ((a ) => {return (__EQUALS__ )(typeof a  ,`symbol` );
+let keyword__QUESTION_MARK__  = ((a ) => {return (identical__QUESTION_MARK____BANG__ )(typeof a  ,`symbol` );
 } ) ;
-let boolean__QUESTION_MARK__  = ((a ) => {return (__EQUALS__ )(typeof a  ,`boolean` );
+let boolean__QUESTION_MARK__  = ((a ) => {return (identical__QUESTION_MARK____BANG__ )(typeof a  ,`boolean` );
 } ) ;
-let nil__QUESTION_MARK__  = ((a ) => {return (__EQUALS__ )(a ,null );
+let nil__QUESTION_MARK__  = ((a ) => {return (identical__QUESTION_MARK____BANG__ )(a ,null );
 } ) ;
 let set__QUESTION_MARK__  = ((a ) => {return (a  instanceof Set );
 } ) ;
@@ -213,7 +213,7 @@ let __PLUS__  = ((...args ) => {return (((empty__QUESTION_MARK__ )(args ) ) ?
 (() => {return 0;
 } )()
 :
-(() => {return (((__EQUALS__ )((count )(args ) ,1 ) ) ?
+(() => {return (((identical__QUESTION_MARK____BANG__ )((count )(args ) ,1 ) ) ?
 (() => {return (first )(args );
 } )()
 :
@@ -225,7 +225,7 @@ let __MINUS__  = ((...args ) => {return (((empty__QUESTION_MARK__ )(args ) ) ?
 (() => {return (raise )(`- requires at least one argument` );
 } )()
 :
-(() => {return (((__EQUALS__ )((count )(args ) ,1 ) ) ?
+(() => {return (((identical__QUESTION_MARK____BANG__ )((count )(args ) ,1 ) ) ?
 (() => {return (0  - (first )(args ) );
 } )()
 :
@@ -237,7 +237,7 @@ let __ASTERISK__  = ((...args ) => {return (((empty__QUESTION_MARK__ )(args ) ) 
 (() => {return 1;
 } )()
 :
-(() => {return (((__EQUALS__ )((count )(args ) ,1 ) ) ?
+(() => {return (((identical__QUESTION_MARK____BANG__ )((count )(args ) ,1 ) ) ?
 (() => {return (first )(args );
 } )()
 :
@@ -249,7 +249,7 @@ let __FORWARD_SLASH__  = ((...args ) => {return (((empty__QUESTION_MARK__ )(args
 (() => {return (raise )(`/ requires at least one argument` );
 } )()
 :
-(() => {return (((__EQUALS__ )((count )(args ) ,1 ) ) ?
+(() => {return (((identical__QUESTION_MARK____BANG__ )((count )(args ) ,1 ) ) ?
 (() => {return (1  / (first )(args ) );
 } )()
 :
@@ -263,11 +263,11 @@ let __LESS_THAN__  = ((...args ) => {return (((empty__QUESTION_MARK__ )(args ) )
 (() => {return (raise )(`< requires at least one argument` );
 } )()
 :
-(() => {return (((__EQUALS__ )((count )(args ) ,1 ) ) ?
+(() => {return (((identical__QUESTION_MARK____BANG__ )((count )(args ) ,1 ) ) ?
 (() => {return true;
 } )()
 :
-(() => {return (((__EQUALS__ )((count )(args ) ,2 ) ) ?
+(() => {return (((identical__QUESTION_MARK____BANG__ )((count )(args ) ,2 ) ) ?
 (() => {return ((first )(args )  < (second )(args ) );
 } )()
 :
@@ -280,11 +280,11 @@ let __LESS_THAN____EQUALS__  = ((...args ) => {return (((empty__QUESTION_MARK__ 
 (() => {return (raise )(`<= requires at least one argument` );
 } )()
 :
-(() => {return (((__EQUALS__ )((count )(args ) ,1 ) ) ?
+(() => {return (((identical__QUESTION_MARK____BANG__ )((count )(args ) ,1 ) ) ?
 (() => {return true;
 } )()
 :
-(() => {return (((__EQUALS__ )((count )(args ) ,2 ) ) ?
+(() => {return (((identical__QUESTION_MARK____BANG__ )((count )(args ) ,2 ) ) ?
 (() => {return ((first )(args )  <= (second )(args ) );
 } )()
 :
@@ -297,11 +297,11 @@ let __GREATER_THAN__  = ((...args ) => {return (((empty__QUESTION_MARK__ )(args 
 (() => {return (raise )(`> requires at least one argument` );
 } )()
 :
-(() => {return (((__EQUALS__ )((count )(args ) ,1 ) ) ?
+(() => {return (((identical__QUESTION_MARK____BANG__ )((count )(args ) ,1 ) ) ?
 (() => {return true;
 } )()
 :
-(() => {return (((__EQUALS__ )((count )(args ) ,2 ) ) ?
+(() => {return (((identical__QUESTION_MARK____BANG__ )((count )(args ) ,2 ) ) ?
 (() => {return ((first )(args )  > (second )(args ) );
 } )()
 :
@@ -314,11 +314,11 @@ let __GREATER_THAN____EQUALS__  = ((...args ) => {return (((empty__QUESTION_MARK
 (() => {return (raise )(`>= requires at least one argument` );
 } )()
 :
-(() => {return (((__EQUALS__ )((count )(args ) ,1 ) ) ?
+(() => {return (((identical__QUESTION_MARK____BANG__ )((count )(args ) ,1 ) ) ?
 (() => {return true;
 } )()
 :
-(() => {return (((__EQUALS__ )((count )(args ) ,2 ) ) ?
+(() => {return (((identical__QUESTION_MARK____BANG__ )((count )(args ) ,2 ) ) ?
 (() => {return ((first )(args )  >= (second )(args ) );
 } )()
 :
@@ -331,9 +331,9 @@ let inc  = ((a ) => {return (__PLUS__ )(a ,1 );
 } ) ;
 let dec  = ((a ) => {return (__MINUS__ )(a ,1 );
 } ) ;
-let true__QUESTION_MARK__  = ((a ) => {return (__EQUALS__ )(a ,true );
+let true__QUESTION_MARK__  = ((a ) => {return (identical__QUESTION_MARK____BANG__ )(a ,true );
 } ) ;
-let false__QUESTION_MARK__  = ((a ) => {return (__EQUALS__ )(a ,false );
+let false__QUESTION_MARK__  = ((a ) => {return (identical__QUESTION_MARK____BANG__ )(a ,false );
 } ) ;
 let truthy__QUESTION_MARK__  = ((a ) => {return (((false__QUESTION_MARK__ )(a ) ) ?
 (() => {return false;
@@ -343,7 +343,7 @@ let truthy__QUESTION_MARK__  = ((a ) => {return (((false__QUESTION_MARK__ )(a ) 
 (() => {return false;
 } )()
 :
-(() => {return (((__EQUALS__ )(a ,undefined ) ) ?
+(() => {return (((identical__QUESTION_MARK____BANG__ )(a ,undefined ) ) ?
 (() => {return false;
 } )()
 :
@@ -359,9 +359,9 @@ let falsey__QUESTION_MARK__  = ((a ) => {return (((truthy__QUESTION_MARK__ )(a )
 (() => {return true;
 } )());
 } ) ;
-let defined__QUESTION_MARK__  = ((a ) => {return (not )((__EQUALS__ )(a ,undefined ) );
+let defined__QUESTION_MARK__  = ((a ) => {return (not )((identical__QUESTION_MARK____BANG__ )(a ,undefined ) );
 } ) ;
-let undefined__QUESTION_MARK__  = ((a ) => {return (__EQUALS__ )(undefined ,a );
+let undefined__QUESTION_MARK__  = ((a ) => {return (identical__QUESTION_MARK____BANG__ )(undefined ,a );
 } ) ;
 let not  = falsey__QUESTION_MARK__ ;
 let even__QUESTION_MARK__  = ((a ) => {return (zero__QUESTION_MARK__ )((__PERCENT__ )(a ,2 ) );
@@ -397,7 +397,7 @@ let filter  = ((f ,coll ) => {return ((((coll ) => {return (((empty__QUESTION_MA
 } ) ;
 let remove  = ((f ,coll ) => {return (filter )((complement )(f ) ,coll );
 } ) ;
-let reduce  = ((...args ) => {return (((__EQUALS__ )((count )(args ) ,2 ) ) ?
+let reduce  = ((...args ) => {return (((identical__QUESTION_MARK____BANG__ )((count )(args ) ,2 ) ) ?
 (() => {return (reduce )((first )(args ) ,(first )((second )(args ) ) ,(rest )((second )(args ) ) );
 } )()
 :
@@ -431,11 +431,11 @@ let partial  = ((f ,...args ) => {return ((...more ) => {return (apply )(f ,...a
 } );
 } ) ;
 let thread  = ((type ) => {return ((val ,...exprs ) => {return (reduce )(((acc ,curr ) => {return (((array__QUESTION_MARK__ )(curr ) ) ?
-(() => {return ((((f ) => {return (((args ) => {return (((__EQUALS__ )(type ,`first` ) ) ?
+(() => {return ((((f ) => {return (((args ) => {return (((identical__QUESTION_MARK____BANG__ )(type ,`first` ) ) ?
 (() => {return (apply )(f ,acc ,args );
 } )()
 :
-(() => {return (((__EQUALS__ )(type ,`last` ) ) ?
+(() => {return (((identical__QUESTION_MARK____BANG__ )(type ,`last` ) ) ?
 (() => {return (f )(...args ,acc );
 } )()
 :
@@ -521,7 +521,7 @@ let conj  = ((coll ,...vals ) => {return (((array__QUESTION_MARK__ )(coll ) ) ?
 } )()
 :
 (() => {return (((map__QUESTION_MARK__ )(coll ) ) ?
-(() => {return (((every__QUESTION_MARK__ )(((v ) => {return (and )((array__QUESTION_MARK__ )(v ) ,(__EQUALS__ )((count )(v ) ,2 ) );
+(() => {return (((every__QUESTION_MARK__ )(((v ) => {return (and )((array__QUESTION_MARK__ )(v ) ,(identical__QUESTION_MARK____BANG__ )((count )(v ) ,2 ) );
 } ) ,vals ) ) ?
 (() => {return (new Map ([...coll ,...vals ] ));
 } )()
@@ -655,7 +655,7 @@ let dissoc  = ((m ,k ,...ks ) => {return (((map__QUESTION_MARK__ )(m ) ) ?
 :
 (() => {return (apply )(dissoc ,result ,(first )(ks ) ,(rest )(ks ) );
 } )());
-} ) )((__MINUS____GREATER_THAN____GREATER_THAN__ )(m ,arr ,[remove ,((tuple ) => {return (__EQUALS__ )((first )(tuple ) ,k );
+} ) )((__MINUS____GREATER_THAN____GREATER_THAN__ )(m ,arr ,[remove ,((tuple ) => {return (identical__QUESTION_MARK____BANG__ )((first )(tuple ) ,k );
 } ) ] ,tuples__MINUS____GREATER_THAN__map ) ) );
 } )()
 :
