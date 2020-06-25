@@ -257,6 +257,8 @@ The core functions of the Berlin language are mostly a subset of Clojure's core,
 
 References to each specific Clojure feature that has inspired the Berlin language would be too numerous to mention individually and every time, but you will see Clojure's influence in many of Berlin's functions and special forms, particularly `def`, `let`, and `fn`. If a Berlin function or special form exists by the same name in Clojure, it was probably inspired by that Clojure counterpart.
 
+Strict functions are based on an idea [Brian Will](https://www.youtube.com/user/briantwill) mentioned in one of his videos.
+
 ## ISC License
 
 Copyright 2020 Dennis Hackethal
