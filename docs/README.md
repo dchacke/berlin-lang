@@ -218,8 +218,8 @@ Boolean
 ##### Examples
 
 ```js
-undefined?("foo") ; => true
-undefined?(undefined) ; => false
+undefined?("foo") ; => false
+undefined?(undefined) ; => true
 ```
 
 #### =
