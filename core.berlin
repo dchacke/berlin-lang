@@ -4,7 +4,7 @@ def(safe-symbol .-safe_symbol(require("./translator")))
 
 def(= fn(a b _.isEqual(a b)))
 
-def(identity fn!(a a))
+def(identity! fn!(a a))
 
 def(or fn(...args
   if(empty?(args)
@@ -504,7 +504,7 @@ map(
     set-property(exp curr eval(safe-symbol(curr)))
     set-property(exp safe-symbol(curr) eval(safe-symbol(curr)))})
   ["="
-   "identity"
+   "identity!"
    "or"
    "and"
    "zero?"

@@ -3,7 +3,7 @@ def(_ require("lodash"))
 def(core require("../core"))
 
 def(= .-=(core))
-def(identity .-identity(core))
+def(identity! .-identity!(core))
 def(or .-or(core))
 def(and .-and(core))
 def(zero? .-zero?(core))
@@ -114,9 +114,9 @@ describe("core" fn({
     }))
   }))
 
-  describe("identity" fn({
+  describe("identity!" fn({
     it("returns the given argument" fn({
-      assert(=(identity(1) 1))
+      assert(=(identity!(1) 1))
     }))
   }))
 

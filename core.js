@@ -3,7 +3,7 @@ let _  = (require )(`lodash` ) ;
 let safe__MINUS__symbol  = (((require )(`./translator` ) )[(`safe_symbol` )]) ;
 let __EQUALS__  = ((a ,b ) => {return (_.isEqual )(a ,b );
 } ) ;
-let identity  = ((a ) => {return a;
+let identity__BANG__  = ((a ) => {return a;
 } ) ;
 let or  = ((...args ) => {return (((empty__QUESTION_MARK__ )(args ) ) ?
 (() => {return null;
@@ -741,5 +741,5 @@ let complement  = ((f ) => {return ((...args ) => {return (not )((apply )(f ,arg
 let exp  = (new Object ()) ;
 (map )(((curr ) => {((exp )[(curr )] = ((eval )((safe__MINUS__symbol )(curr ) ) ));
 return ((exp )[((safe__MINUS__symbol )(curr ) )] = ((eval )((safe__MINUS__symbol )(curr ) ) ));
-} ) ,[`=` ,`identity` ,`or` ,`and` ,`zero?` ,`count` ,`empty?` ,`first` ,`ffirst` ,`second` ,`third` ,`last` ,`butlast` ,`rest` ,`next` ,`cons` ,`string?` ,`number?` ,`keyword?` ,`boolean?` ,`nil?` ,`set?` ,`map?` ,`array?` ,`arr` ,`array` ,`set` ,`hash-set` ,`hash-map` ,`tuples->map` ,`keys` ,`vals` ,`pairwise` ,`log` ,`+` ,`-` ,`*` ,`/` ,`%` ,`<` ,`<=` ,`>` ,`>=` ,`inc` ,`dec` ,`true?` ,`false?` ,`truthy?` ,`falsey?` ,`defined?` ,`undefined?` ,`not` ,`even?` ,`odd?` ,`apply` ,`map` ,`filter` ,`remove` ,`reduce` ,`reverse` ,`comp` ,`partial` ,`->` ,`->>` ,`raise` ,`get` ,`get-in` ,`contains?` ,`every?` ,`conj` ,`disj` ,`drop` ,`take` ,`flatten-1` ,`assoc` ,`assoc-in` ,`dissoc` ,`update` ,`update-in` ,`str` ,`max` ,`min` ,`int?` ,`float?` ,`neg?` ,`pos?` ,`rand` ,`rand-int` ,`repeat` ,`repeatedly` ,`complement` ] );
+} ) ,[`=` ,`identity!` ,`or` ,`and` ,`zero?` ,`count` ,`empty?` ,`first` ,`ffirst` ,`second` ,`third` ,`last` ,`butlast` ,`rest` ,`next` ,`cons` ,`string?` ,`number?` ,`keyword?` ,`boolean?` ,`nil?` ,`set?` ,`map?` ,`array?` ,`arr` ,`array` ,`set` ,`hash-set` ,`hash-map` ,`tuples->map` ,`keys` ,`vals` ,`pairwise` ,`log` ,`+` ,`-` ,`*` ,`/` ,`%` ,`<` ,`<=` ,`>` ,`>=` ,`inc` ,`dec` ,`true?` ,`false?` ,`truthy?` ,`falsey?` ,`defined?` ,`undefined?` ,`not` ,`even?` ,`odd?` ,`apply` ,`map` ,`filter` ,`remove` ,`reduce` ,`reverse` ,`comp` ,`partial` ,`->` ,`->>` ,`raise` ,`get` ,`get-in` ,`contains?` ,`every?` ,`conj` ,`disj` ,`drop` ,`take` ,`flatten-1` ,`assoc` ,`assoc-in` ,`dissoc` ,`update` ,`update-in` ,`str` ,`max` ,`min` ,`int?` ,`float?` ,`neg?` ,`pos?` ,`rand` ,`rand-int` ,`repeat` ,`repeatedly` ,`complement` ] );
 ((module )[(`exports` )] = (exp ));
