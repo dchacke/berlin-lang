@@ -10,6 +10,8 @@ You can find the source code and the Readme with credits, license information, r
 
 To try out Berlin in a REPL, use the [CLI](https://github.com/dchacke/berlin-cli).
 
+Berlin is currently in an unstable alpha phase. Expect rapid breaking changes.
+
 ## Literals and Data Structures
 
 Berlin comes with the following literals:

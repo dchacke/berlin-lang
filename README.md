@@ -6,6 +6,8 @@ Poor man's Clojure.
 
 Berlin is a small, functional programming language that lives at the intersection between JavaScript and Clojure. It comes with a transpiler that spits out JavaScript code.
 
+Berlin is currently in an unstable alpha phase. Expect rapid breaking changes.
+
 ## Documentation
 
 The documentation is available [here](https://dchacke.github.io/berlin-lang/#/).
@@ -247,7 +249,7 @@ Those functions of Berlin that exist by the same name in Clojure almost all have
 
 No! Berlin grew out of a fun side project and has not been battle tested nearly enough to be used in production. This transpiler is the first one I have ever written, and I had no idea what I was doing going in.
 
-Berlin is currently in an alpha phase and you should expect to run into bugs. That being said, I encourage you to try it out and contribute.
+Berlin is currently in an alpha phase and you should expect to run into bugs. That being said, I encourage you to try it out and contribute. I'm looking for alpha testers and contributors.
 
 ## Credit
 
