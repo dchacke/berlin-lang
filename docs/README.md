@@ -1913,12 +1913,12 @@ The same can be done for sets, arrays, etc. E.g.:
 
 ```js
 def(a [])
-.push(a 1) ; => 1
+.push(a 1) ; => 1; a is now [1]
 ```
 
 To mutate a JavaScript object, use the built-in special form `set-property`:
 
 ```js
 def(o Object.())
-set-property(o "foo" "bar") ; => "bar"
+set-property(o "foo" "bar") ; => "bar"; o is now {foo: "bar"}
 ```
