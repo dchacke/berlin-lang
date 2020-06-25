@@ -61,6 +61,7 @@ Function
 ##### Examples
 
 ```js
+fn(a a) ; => Function
 fn(a a)(1) ; => 1
 fn(a log(a))(1) ; prints "1" then returns undefined
 fn(a b {
@@ -88,6 +89,7 @@ Function
 ##### Examples
 
 ```js
+fn!(a a) ; => Function
 fn!(a a)(1) ; => 1
 
 def(a 1)
