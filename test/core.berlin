@@ -111,7 +111,15 @@ describe("core" fn({
       assert(false?(=([1 2 3] [4 5 6])))
       assert(false?(=(~{1 2 3 4} ~{5 6 7 8})))
       assert(false?(=(#{1 2 3} #{4 5 6})))
-      assert(false?(=([1 2 3 ~{:foo [1]}] [1 2 3 ~{:foo [2]}])))}))}))
+      assert(false?(=([1 2 3 ~{:foo [1]}] [1 2 3 ~{:foo [2]}])))}))
+
+    it("returns true for identical things" fn({
+      let([a []
+           m ~{}
+           s #{}]
+        {assert(identical?!(a a))
+         assert(identical?!(m m))
+         assert(identical?!(s s))})}))
 
   describe("identical?!" fn({
     it("compares primitives correctly" fn({
