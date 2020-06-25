@@ -246,6 +246,35 @@ Boolean
 =([] [1 2 3]) ; => false
 ````
 
+#### identical?!
+
+Determines whether the two given parameters are either primitives with the same value, or the same collection in memory.
+
+##### Arguments
+
+- Anything
+- Anything
+
+##### Returns
+
+Boolean
+
+##### Examples
+
+```js
+identical?!(1 1) ; => true
+identical?!(1 2) ; => false
+identical?!([] []) ; => false
+identical?!(~{:foo :bar} ~{:foo :bar}) ; => false
+
+let([a []
+     m ~{}
+     s #{}]
+  identical?!(a a) ; => true
+  identical?!(m m) ; => true
+  identical?!(s s)) ; => true
+````
+
 #### identity
 
 Returns the given argument.
