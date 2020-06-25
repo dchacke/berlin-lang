@@ -35,7 +35,7 @@ Maps implement JavaScript [maps](https://developer.mozilla.org/en-US/docs/Web/Ja
 
 ## "Typography"
 
-Berlin treats commas as whitespace. Use of commas is discouraged.
+Berlin treats commas as whitespace. Use of commas is discouraged. [Here's why.](https://medium.com/dev-genius/the-case-against-commas-and-operators-22d50010ca33?source=friends_link&sk=6ea2de496d5216ab07fe4db43dbe856e)
 Semicolons are used to start a single-line comment:
 
 ```js

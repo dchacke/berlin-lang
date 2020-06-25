@@ -233,7 +233,7 @@ As a naming convention, strict functions' names should end with a `!`.
 
 ### Miscellaneous
 
-There are no commas or semicolons--at least not how they're used in JS. Commas are treated as whitespace and discouraged. Semicolons are used for comments.
+There are no commas or semicolons--at least not how they're used in JS. Commas are treated as whitespace and discouraged. [Here's why.](https://medium.com/dev-genius/the-case-against-commas-and-operators-22d50010ca33?source=friends_link&sk=6ea2de496d5216ab07fe4db43dbe856e) Semicolons are used for comments.
 
 Berlin borrows a feature from Ruby that allows you to use underscores as thousands separator: `1_000_000`. These underscores are optional, can be placed anywhere inside a number, and won't alter the number's value in any way.
 
