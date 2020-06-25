@@ -8,6 +8,8 @@ Berlin is a small, functional programming language that lives at the intersectio
 
 You can find the source code and the Readme with credits, license information, rationale and additional information [here](https://github.com/dchacke/berlin-lang).
 
+To try out Berlin in a REPL, use the [CLI](https://github.com/dchacke/berlin-cli).
+
 ## Literals and Data Structures
 
 Berlin comes with the following literals:
@@ -21,24 +23,13 @@ Berlin comes with the following literals:
 
 Keywords implement JavaScript's [symbols](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol).
 
-And it has the following data structures:
+Berlin further has the following data structures:
 
 - Arrays: `[1 2 3]`
 - Maps: `~{:foo 1 :bar "hi"}`
 - Sets: `#{1 2 3}`
 
 Maps implement JavaScript [maps](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map), and sets implement JavaScript [sets](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set).
-
-## JavaScript Interop
-
-To use one of JavaScript's built-in constructors or prototype methods, use the dot notation as follows:
-
-```js
-.log(console "foo")
-Map.([[1 2]])
-````
-
-The first line is the same as saying `console.log("foo")` in JavaScript. The second line is the same as new `Map([[1 2]])`.
 
 ## "Typography"
 
@@ -1895,3 +1886,14 @@ Array
 ```js
 repeatedly(3 * 3 4) ; => [12 12 12]
 ```
+
+## JavaScript Interop
+
+To use one of JavaScript's built-in constructors or prototype methods, use the dot notation as follows:
+
+```js
+.log(console "foo")
+Map.([[1 2]])
+````
+
+The first line is the same as saying `console.log("foo")` in JavaScript. The second line is the same as new `Map([[1 2]])`.
