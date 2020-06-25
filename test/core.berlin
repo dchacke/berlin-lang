@@ -101,8 +101,7 @@ describe("core" fn({
       assert(=(:foo :foo))
       assert(=([1 2 3] [1 2 3]))
       assert(=(~{1 2 3 4} ~{3 4 1 2}))
-      assert(=(#{1 2 3} #{3 2 1}))
-    }))
+      assert(=(#{1 2 3} #{3 2 1}))}))
 
     it("returns false for unequal things" fn({
       assert(false?(=(1 2)))
@@ -110,704 +109,514 @@ describe("core" fn({
       assert(false?(=(:foo :bar)))
       assert(false?(=([1 2 3] [4 5 6])))
       assert(false?(=(~{1 2 3 4} ~{5 6 7 8})))
-      assert(false?(=(#{1 2 3} #{4 5 6})))
-    }))
-  }))
+      assert(false?(=(#{1 2 3} #{4 5 6})))}))}))
 
   describe("identity!" fn({
     it("returns the given argument" fn({
-      assert(=(identity!(1) 1))
-    }))
-  }))
+      assert(=(identity!(1) 1))}))}))
 
   describe("or" fn({
     it("returns the first truthy argument" fn({
       assert(=(or(1 2) 1))
-      assert(or(false true))
-    }))
+      assert(or(false true))}))
 
     it("returns the last falsey argument when all arguments are falsey" fn({
-      assert(comp(nil? or)(false nil))
-    }))
+      assert(comp(nil? or)(false nil))}))
 
     it("works for more than two args" fn({
-      assert(comp(true? or)(false true false))
-    }))
+      assert(comp(true? or)(false true false))}))
 
     it("works for a single argument" fn({
-      assert(comp(false? or)(false))
-    }))
+      assert(comp(false? or)(false))}))
 
     it("returns nil when given no arguments" fn({
-      assert(nil?(or()))
-    }))
-  }))
+      assert(nil?(or()))}))}))
 
   describe("and" fn({
     it("returns the last truthy argument when all arguments are truthy" fn({
-      assert(=(and(1 2) 2))
-    }))
+      assert(=(and(1 2) 2))}))
 
     it("returns the first falsey argument" fn({
-      assert(comp(nil? and)(nil 1))
-    }))
+      assert(comp(nil? and)(nil 1))}))
 
     it("works for more than two args" fn({
-      assert(comp(true? and)(true 1 true))
-    }))
+      assert(comp(true? and)(true 1 true))}))
 
     it("works for a single argument" fn({
-      assert(comp(false? and)(false))
-    }))
+      assert(comp(false? and)(false))}))
 
     it("returns true when given no arguments" fn({
-      assert(true?(and()))
-    }))
-  }))
+      assert(and())}))}))
 
   describe("zero?" fn({
     it("returns true for 0" fn({
-      assert(=(zero?(0) true))
-    }))
+      assert(=(zero?(0) true))}))
 
     it("returns false for non-0" fn({
-      assert(=(zero?(1) false))
-    }))
-  }))
+      assert(=(zero?(1) false))}))}))
 
   describe("count" fn({
     it("returns the size of the given array" fn({
-      assert(=(count([1 2 1]) 3))
-    }))
+      assert(=(count([1 2 1]) 3))}))
 
     it("returns the size of the given set" fn({
-      assert(=(count(#{1 2 3}) 3))
-    }))
+      assert(=(count(#{1 2 3}) 3))}))
 
     it("returns the size of the given map" fn({
-      assert(=(count(~{1 2 3 4}) 2))
-    }))
+      assert(=(count(~{1 2 3 4}) 2))}))
 
     it("returns the size of the given map" fn({
-      assert(zero?(count(nil)))
-    }))
+      assert(zero?(count(nil)))}))
 
     it("throws for other data types" fn({
-      .throws(assert fn(count(1)) RegExp.("count only works for arrays, maps, sets, and nil"))
-    }))
-  }))
+      .throws(assert fn(count(1)) RegExp.("count only works for arrays, maps, sets, and nil"))}))}))
 
   describe("empty?" fn({
     it("returns true for empty arrays" fn({
-      assert(=(empty?([]) true))
-    }))
+      assert(=(empty?([]) true))}))
 
     it("returns false for non-empty arrays" fn({
-      assert(=(empty?([1]) false))
-    }))
+      assert(=(empty?([1]) false))}))
 
     it("returns true for nil" fn({
-      assert(=(empty?(nil) true))
-    }))
-  }))
+      assert(=(empty?(nil) true))}))}))
 
   describe("first" fn({
     it("returns the first element in an array" fn({
-      assert(=(first([1 2 3]) 1))
-    }))
+      assert(=(first([1 2 3]) 1))}))
 
     it("works for sets" fn({
-      assert(=(first(#{1 2 3}) 1))
-    }))
+      assert(=(first(#{1 2 3}) 1))}))
 
     it("works for maps" fn({
-      assert(=(first(~{1 2 3 4}) [1 2]))
-    }))
+      assert(=(first(~{1 2 3 4}) [1 2]))}))
 
     it("returns nil for empty collections" fn({
-      assert(nil?(first([])))
-    }))
+      assert(nil?(first([])))}))
 
     it("returns nil for nil" fn({
-      assert(nil?(first(nil)))
-    }))
-  }))
+      assert(nil?(first(nil)))}))}))
 
   describe("ffirst" fn({
     it("is the same as first(first(coll))" fn({
-      assert(=(ffirst([[1] 2 3]) 1))
-    }))
-  }))
+      assert(=(ffirst([[1] 2 3]) 1))}))}))
 
   describe("second" fn({
     it("returns the second element in an array" fn({
-      assert(=(second([1 2 3]) 2))
-    }))
+      assert(=(second([1 2 3]) 2))}))
 
     it("works for sets" fn({
-      assert(=(second(#{1 2 3}) 2))
-    }))
+      assert(=(second(#{1 2 3}) 2))}))
 
     it("works for maps" fn({
-      assert(=(second(~{1 2 3 4}) [3 4]))
-    }))
+      assert(=(second(~{1 2 3 4}) [3 4]))}))
 
     it("returns nil for empty collections" fn({
-      assert(nil?(second([])))
-    }))
+      assert(nil?(second([])))}))
 
     it("returns nil for nil" fn({
-      assert(nil?(second(nil)))
-    }))
-  }))
+      assert(nil?(second(nil)))}))}))
 
   describe("third" fn({
     it("returns the third element in an array" fn({
-      assert(=(third([1 2 3]) 3))
-    }))
+      assert(=(third([1 2 3]) 3))}))
 
     it("works for sets" fn({
-      assert(=(third(#{1 2 3}) 3))
-    }))
+      assert(=(third(#{1 2 3}) 3))}))
 
     it("works for maps" fn({
-      assert(=(third(~{1 2 3 4 5 6}) [5 6]))
-    }))
+      assert(=(third(~{1 2 3 4 5 6}) [5 6]))}))
 
     it("returns nil for empty collections" fn({
-      assert(nil?(third([])))
-    }))
+      assert(nil?(third([])))}))
 
     it("returns nil for nil" fn({
-      assert(nil?(third(nil)))
-    }))
-  }))
+      assert(nil?(third(nil)))}))}))
 
   describe("last" fn({
     it("returns the last element in an array" fn({
-      assert(=(last([1 2 3 5]) 5))
-    }))
+      assert(=(last([1 2 3 5]) 5))}))
 
     it("returns nil when given an empty array" fn({
-      assert(=(last([]) nil))
-    }))
+      assert(=(last([]) nil))}))
 
     it("works for sets" fn({
-      assert(=(last(#{1 2 3}) 3))
-    }))
+      assert(=(last(#{1 2 3}) 3))}))
 
     it("works for maps" fn({
-      assert(=(last(~{1 2 3 4}) [3 4]))
-    }))
+      assert(=(last(~{1 2 3 4}) [3 4]))}))
 
     it("returns nil for empty collections" fn({
-      assert(nil?(last([])))
-    }))
+      assert(nil?(last([])))}))
 
     it("returns nil for nil" fn({
-      assert(nil?(last(nil)))
-    }))
-  }))
+      assert(nil?(last(nil)))}))}))
 
   describe("butlast" fn({
     it("returns all but the last element in an array" fn({
-      assert(=(butlast([1 2 3]) [1 2]))
-    }))
+      assert(=(butlast([1 2 3]) [1 2]))}))
 
     it("returns nil when given an empty array" fn({
-      assert(=(butlast([]) nil))
-    }))
+      assert(=(butlast([]) nil))}))
 
     it("returns nil for nil" fn({
-      assert(nil?(butlast(nil)))
-    }))
-  }))
+      assert(nil?(butlast(nil)))}))}))
 
   describe("rest" fn({
     it("returns all but the first element in an array" fn({
-      assert(=(rest([1 2 3]) [2 3]))
-    }))
+      assert(=(rest([1 2 3]) [2 3]))}))
 
     it("returns an empty array when given an empty array" fn({
-      assert(=(rest([]) []))
-    }))
+      assert(=(rest([]) []))}))
 
     it("returns an empty array when given nil" fn({
-      assert(=(rest(nil) []))
-    }))
+      assert(=(rest(nil) []))}))
 
     it("works for sets" fn({
-      assert(=(rest(#{1 2 3}) [2 3]))
-    }))
+      assert(=(rest(#{1 2 3}) [2 3]))}))
 
     it("works for maps" fn({
-      assert(=(rest(~{1 2 3 4}) [[3 4]]))
-    }))
-  }))
+      assert(=(rest(~{1 2 3 4}) [[3 4]]))}))}))
 
   describe("next" fn({
     it("returns all but the first element in an array" fn({
-      assert(=(next([1 2 3]) [2 3]))
-    }))
+      assert(=(next([1 2 3]) [2 3]))}))
 
     it("returns nil when given an empty array" fn({
-      assert(=(next([]) nil))
-    }))
+      assert(=(next([]) nil))}))
 
     it("returns nil when given nil" fn({
-      assert(=(next(nil) nil))
-    }))
-  }))
+      assert(=(next(nil) nil))}))}))
 
   describe("cons" fn({
     it("constructs a new array with the given element at the beginning" fn({
-      assert(=(cons(1 [2 3]) [1 2 3]))
-    }))
+      assert(=(cons(1 [2 3]) [1 2 3]))}))
 
     it("treats nil as an empty array" fn({
-      assert(=(cons(1 nil) [1]))
-    }))
-  }))
+      assert(=(cons(1 nil) [1]))}))}))
 
   describe("string?" fn({
     it("returns true for strings" fn({
-      assert(string?("foo"))
-    }))
+      assert(string?("foo"))}))
 
     it("returns false for non-strings" fn({
       assert(not(string?(1)))
       assert(not(string?(:foo)))
       assert(not(string?([])))
       assert(not(string?(~{})))
-      assert(not(string?(false)))
-    }))
-  }))
+      assert(not(string?(false)))}))}))
 
   describe("number?" fn({
     it("returns true for numbers" fn({
       assert(number?(1))
       assert(number?(1.5))
-      assert(number?(-1.5))
-    }))
+      assert(number?(-1.5))}))
 
     it("returns false for non-numbers" fn({
       assert(not(number?("1")))
       assert(not(number?(:foo)))
       assert(not(number?([])))
       assert(not(number?(~{})))
-      assert(not(number?(false)))
-    }))
-  }))
+      assert(not(number?(false)))}))}))
 
   describe("keyword?" fn({
     it("returns true for keywords" fn({
-      assert(keyword?(:foo))
-    }))
+      assert(keyword?(:foo))}))
 
     it("returns false for non-keywords" fn({
       assert(not(keyword?(1)))
       assert(not(keyword?("foo")))
       assert(not(keyword?([])))
       assert(not(keyword?(~{})))
-      assert(not(keyword?(false)))
-    }))
-  }))
+      assert(not(keyword?(false)))}))}))
 
   describe("boolean?" fn({
     it("returns true for booleans" fn({
       assert(boolean?(true))
-      assert(boolean?(false))
-    }))
+      assert(boolean?(false))}))
 
     it("returns false for non-booleans" fn({
       assert(not(boolean?(1)))
       assert(not(boolean?("foo")))
       assert(not(boolean?([])))
-      assert(not(boolean?(~{})))
-    }))
-  }))
+      assert(not(boolean?(~{})))}))}))
 
   describe("nil?" fn({
     it("returns true for nil" fn({
-      assert(nil?(nil))
-    }))
+      assert(nil?(nil))}))
 
     it("returns false for non-nil values" fn({
       assert(not(nil?(1)))
       assert(not(nil?("foo")))
       assert(not(nil?([])))
       assert(not(nil?(~{})))
-      assert(not(nil?(false)))
-    }))
-  }))
+      assert(not(nil?(false)))}))}))
 
   describe("set?" fn({
     it("returns true for sets" fn({
-      assert(set?(#{}))
-    }))
+      assert(set?(#{}))}))
 
     it("returns false for non-set values" fn({
       assert(not(set?(1)))
       assert(not(set?("foo")))
       assert(not(set?([])))
       assert(not(set?(~{})))
-      assert(not(set?(false)))
-    }))
-  }))
+      assert(not(set?(false)))}))}))
 
   describe("map?" fn({
     it("returns true for maps" fn({
-      assert(map?(~{}))
-    }))
+      assert(map?(~{}))}))
 
     it("returns false for non-set values" fn({
       assert(not(map?(1)))
       assert(not(map?("foo")))
       assert(not(map?([])))
       assert(not(map?(#{})))
-      assert(not(map?(false)))
-    }))
-  }))
+      assert(not(map?(false)))}))}))
 
   describe("array?" fn({
     it("returns true for arrays" fn({
-      assert(array?([]))
-    }))
+      assert(array?([]))}))
 
     it("returns false for non-set values" fn({
       assert(not(array?(1)))
       assert(not(array?("foo")))
       assert(not(array?(~{})))
       assert(not(array?(#{})))
-      assert(not(array?(false)))
-    }))
-  }))
+      assert(not(array?(false)))}))}))
 
   describe("arr" fn({
     it("returns the given array" fn({
-      assert(=(arr([1 2 3]) [1 2 3]))
-    }))
+      assert(=(arr([1 2 3]) [1 2 3]))}))
 
     it("returns an empty array when given nil" fn({
-      assert(=(arr(nil) []))
-    }))
+      assert(=(arr(nil) []))}))
 
     it("returns an array of characters when given a string" fn({
-      assert(=(arr("foo") ["f" "o" "o"]))
-    }))
+      assert(=(arr("foo") ["f" "o" "o"]))}))
 
     it("returns an array of the given set's elements" fn({
-      assert(=(arr(#{1 2 3}) [1 2 3]))
-    }))
+      assert(=(arr(#{1 2 3}) [1 2 3]))}))
 
     it("returns an array of the given map's tuples" fn({
-      assert(=(arr(~{1 2 3 4}) [[1 2] [3 4]]))
-    }))
+      assert(=(arr(~{1 2 3 4}) [[1 2] [3 4]]))}))
 
     it("throws for non-iterable items" fn({
       assert.throws(fn({
         arr(1)
-      }) RegExp.("^Given item not iterable$"))
-    }))
-  }))
+      }) RegExp.("^Given item not iterable$"))}))}))
 
   describe("array" fn({
     it("returns an array containing the given arguments" fn({
-      assert(=(array(1 2 3) [1 2 3]))
-    }))
+      assert(=(array(1 2 3) [1 2 3]))}))
 
     it("returns an empty array when given no arguments" fn({
-      assert(=(array() []))
-    }))
-  }))
+      assert(=(array() []))}))}))
 
   describe("set" fn({
     describe("arrays" fn({
       it("returns a set with all the elements from the array" fn({
-        assert(=(set([1 2 3]) #{1 2 3}))
-      }))
-    }))
+        assert(=(set([1 2 3]) #{1 2 3}))}))}))
 
     describe("maps" fn({
       it("returns a set with the map's tuples" fn({
-        assert(=(set(~{:foo :bar :bar :foo}) #{[:foo :bar] [:bar :foo]}))
-      }))
-    }))
+        assert(=(set(~{:foo :bar :bar :foo}) #{[:foo :bar] [:bar :foo]}))}))}))
 
     describe("sets" fn({
       it("returns a set with the same entries" fn({
-        assert(=(set(#{1 2 3}) #{1 2 3}))
-      }))
-    }))
+        assert(=(set(#{1 2 3}) #{1 2 3}))}))}))
 
     describe("nil" fn({
       it("returns an empty set" fn({
-        assert(=(set(nil) #{}))
-      }))
-    }))
-  }))
+        assert(=(set(nil) #{}))}))}))}))
 
   describe("hash-set" fn({
     it("creates a set with the given arguments" fn({
-      assert(=(hash-set(1 2 3 4) #{1 2 3 4}))
-    }))
+      assert(=(hash-set(1 2 3 4) #{1 2 3 4}))}))
 
     it("returns an empty hash set when given no keys or values" fn({
-      assert(=(hash-set() #{}))
-    }))
-  }))
+      assert(=(hash-set() #{}))}))}))
 
   describe("hash-map" fn({
     it("creates a map with the given arguments" fn({
-      assert(=(hash-map(1 2 3 4) ~{1 2 3 4}))
-    }))
+      assert(=(hash-map(1 2 3 4) ~{1 2 3 4}))}))
 
     it("returns an empty hash map when given no keys or values" fn({
-      assert(=(hash-map() ~{}))
-    }))
+      assert(=(hash-map() ~{}))}))
 
     it("throws when given an odd number of keys and values" fn({
-      .throws(assert fn(hash-map(1 2 3)) RegExp.("expected an even number of arguments"))
-    }))
-  }))
+      .throws(assert fn(hash-map(1 2 3)) RegExp.("expected an even number of arguments"))}))}))
 
   describe("tuples->map" fn({
     it("creates a map from the given tuples" fn({
-      assert(=(tuples->map([[1 2] [3 4]]) ~{1 2 3 4}))
-    }))
-  }))
+      assert(=(tuples->map([[1 2] [3 4]]) ~{1 2 3 4}))}))}))
 
   describe("keys" fn({
     it("returns an array of the given map's keys" fn({
-      assert(=(keys(~{:foo "bar" :bar "foo"}) [:foo :bar]))
-    }))
-  }))
+      assert(=(keys(~{:foo "bar" :bar "foo"}) [:foo :bar]))}))}))
 
   describe("vals" fn({
     it("returns an array of the given map's vals" fn({
-      assert(=(vals(~{:foo "bar" :bar "foo"}) ["bar" "foo"]))
-    }))
-  }))
+      assert(=(vals(~{:foo "bar" :bar "foo"}) ["bar" "foo"]))}))}))
 
   describe("pairwise" fn({
     it("pairs up the given elements" fn({
-      assert(=(pairwise(1 2 3 4) [[1 2] [3 4]]))
-    }))
+      assert(=(pairwise(1 2 3 4) [[1 2] [3 4]]))}))
 
     it("returns an empty array when given no elements" fn({
-      assert(=(pairwise() []))
-    }))
+      assert(=(pairwise() []))}))
 
     it("throws when given an odd number of arguments" fn({
-      .throws(assert fn(pairwise(1)) RegExp.("expected an even number of arguments"))
-    }))
-  }))
+      .throws(assert fn(pairwise(1)) RegExp.("expected an even number of arguments"))}))}))
 
   describe("+" fn({
     it("adds two given numbers" fn({
-      assert(=(+(1 2) 3))
-    }))
+      assert(=(+(1 2) 3))}))
 
     it("works for negative numbers, too" fn({
-      assert(=(+(-1 -2) -3))
-    }))
+      assert(=(+(-1 -2) -3))}))
 
     it("works for more than two argumetns" fn({
-      assert(=(+(1 2 3) 6))
-    }))
+      assert(=(+(1 2 3) 6))}))
 
     it("returns the given single argument" fn({
-      assert(=(+(1) 1))
-    }))
+      assert(=(+(1) 1))}))
 
     it("returns 0 when when no arguments given" fn({
-      assert(zero?(+()))
-    }))
-  }))
+      assert(zero?(+()))}))}))
 
   describe("-" fn({
     it("subtracts two given numbers" fn({
-      assert(=(-(1 2) -1))
-    }))
+      assert(=(-(1 2) -1))}))
 
     it("works for negative numbers, too" fn({
-      assert(=(-(-1 -2) 1))
-    }))
+      assert(=(-(-1 -2) 1))}))
 
     it("subtracts multiple additional arguments from the first one" fn({
-      assert(=(-(1 2 3) -4))
-    }))
+      assert(=(-(1 2 3) -4))}))
 
     it("returns the negation of the given single argument" fn({
-      assert(=(-(1) -1))
-    }))
+      assert(=(-(1) -1))}))
 
     it("throws without arguments" fn({
-      .throws(assert fn(-()) RegExp.("- requires at least one argument"))
-    }))
-  }))
+      .throws(assert fn(-()) RegExp.("- requires at least one argument"))}))}))
 
   describe("*" fn({
     it("multiplies two given numbers" fn({
-      assert(=(*(1 2) 2))
-    }))
+      assert(=(*(1 2) 2))}))
 
     it("works for negative numbers, too" fn({
-      assert(=(*(-1 -2) 2))
-    }))
+      assert(=(*(-1 -2) 2))}))
 
     it("works for more than two argumetns" fn({
-      assert(=(*(1 2 4) 8))
-    }))
+      assert(=(*(1 2 4) 8))}))
 
     it("returns the given single argument" fn({
-      assert(=(*(2) 2))
-    }))
+      assert(=(*(2) 2))}))
 
     it("returns 1 when when no arguments given" fn({
-      assert(=(*() 1))
-    }))
-  }))
+      assert(=(*() 1))}))}))
 
   describe("/" fn({
     it("divides two given numbers" fn({
-      assert(=(/(1 2) 0.5))
-    }))
+      assert(=(/(1 2) 0.5))}))
 
     it("works for negative numbers, too" fn({
-      assert(=(/(-1 -2) 0.5))
-    }))
+      assert(=(/(-1 -2) 0.5))}))
 
     it("divides the first argument by the product of all additional arguments" fn({
-      assert(=(/(1 2 5) 0.1))
-    }))
+      assert(=(/(1 2 5) 0.1))}))
 
     it("returns 1 divided by the single given argument" fn({
-      assert(=(/(2) 0.5))
-    }))
+      assert(=(/(2) 0.5))}))
 
     it("throws without arguments" fn({
-      .throws(assert fn(/()) RegExp.("/ requires at least one argument"))
-    }))
-  }))
+      .throws(assert fn(/()) RegExp.("/ requires at least one argument"))}))}))
 
   describe("%" fn({
     it("calculates the modulo" fn({
-      assert(=(%(6 4) 2))
-    }))
+      assert(=(%(6 4) 2))}))
 
     it("works for negative numbers, too" fn({
-      assert(=(%(-6 -4) -2))
-    }))
-  }))
+      assert(=(%(-6 -4) -2))}))}))
 
   describe("<" fn({
     it("returns true for the single given argument" fn({
-      assert(<(1))
-    }))
+      assert(<(1))}))
 
     it("throws without arguments" fn({
-      .throws(assert fn(<()) RegExp.("< requires at least one argument"))
-    }))
+      .throws(assert fn(<()) RegExp.("< requires at least one argument"))}))
 
     it("returns true when all given arguments are in ascending order" fn({
-      assert(<(1 2 3 4))
-    }))
+      assert(<(1 2 3 4))}))
 
     it("returns false when not all given arguments are in ascending order" fn({
       assert(false?(<(1 3 2)))
-      assert(false?(<(1 3 3)))
-    }))
-  }))
+      assert(false?(<(1 3 3)))}))}))
 
   describe("<=" fn({
     it("returns true for the single given argument" fn({
-      assert(<=(1))
-    }))
+      assert(<=(1))}))
 
     it("throws without arguments" fn({
-      .throws(assert fn(<=()) RegExp.("<= requires at least one argument"))
-    }))
+      .throws(assert fn(<=()) RegExp.("<= requires at least one argument"))}))
 
     it("returns true when all given arguments are in ascending order" fn({
-      assert(<=(1 2 2 3))
-    }))
+      assert(<=(1 2 2 3))}))
 
     it("returns false when not all given arguments are in ascending order" fn({
-      assert(false?(<=(1 3 2)))
-    }))
-  }))
+      assert(false?(<=(1 3 2)))}))}))
 
   describe(">" fn({
     it("returns true for the single given argument" fn({
-      assert(>(1))
-    }))
+      assert(>(1))}))
 
     it("throws without arguments" fn({
-      .throws(assert fn(>()) RegExp.("> requires at least one argument"))
-    }))
+      .throws(assert fn(>()) RegExp.("> requires at least one argument"))}))
 
     it("returns true when all given arguments are in descending order" fn({
-      assert(>(3 2 1 0))
-    }))
+      assert(>(3 2 1 0))}))
 
     it("returns false when not all given arguments are in descending order" fn({
       assert(false?(>(3 1 2)))
-      assert(false?(>(3 2 2)))
-    }))
-  }))
+      assert(false?(>(3 2 2)))}))}))
 
   describe(">=" fn({
     it("returns true for the single given argument" fn({
-      assert(>=(1))
-    }))
+      assert(>=(1))}))
 
     it("throws without arguments" fn({
-      .throws(assert fn(>=()) RegExp.(">= requires at least one argument"))
-    }))
+      .throws(assert fn(>=()) RegExp.(">= requires at least one argument"))}))
 
     it("returns true when all given arguments are in descending order" fn({
-      assert(>=(3 2 2 1))
-    }))
+      assert(>=(3 2 2 1))}))
 
     it("returns false when not all given arguments are in descending order" fn({
-      assert(false?(>=(3 2 4)))
-    }))
-  }))
+      assert(false?(>=(3 2 4)))}))}))
 
   describe("inc" fn({
     it("adds one to the given number" fn({
-      assert(=(inc(5) 6))
-    }))
+      assert(=(inc(5) 6))}))
 
     it("works with a negative number, too" fn({
-      assert(=(inc(-5) -4))
-    }))
-  }))
+      assert(=(inc(-5) -4))}))}))
 
   describe("dec" fn({
     it("substracts one from the given number" fn({
-      assert(=(dec(5) 4))
-    }))
+      assert(=(dec(5) 4))}))
 
     it("works with a negative number, too" fn({
-      assert(=(dec(-5) -6))
-    }))
-  }))
+      assert(=(dec(-5) -6))}))}))
 
   describe("true?" fn({
     it("returns true only when given true" fn({
       assert(true?(true))
-      assert(=(true?("123") false))
-    }))
-  }))
+      assert(=(true?("123") false))}))}))
 
   describe("false?" fn({
     it("returns true only when given false" fn({
       assert(false?(false) true)
-      assert(=(true?(nil) false))
-    }))
-  }))
+      assert(=(true?(nil) false))}))}))
 
   describe("truthy?" fn({
     it("returns true when given a truthy value" fn({
@@ -818,22 +627,18 @@ describe("core" fn({
       assert(truthy?("foo"))
       assert(truthy?(:foo))
       assert(truthy?([]))
-      assert(truthy?(~{}))
-    }))
+      assert(truthy?(~{}))}))
 
     it("returns false when given a falsey value" fn({
       assert(=(truthy?(false) false))
       assert(=(truthy?(nil) false))
-      assert(=(truthy?(undefined) false))
-    }))
-  }))
+      assert(=(truthy?(undefined) false))}))}))
 
   describe("falsey?" fn({
     it("returns true when given a falsey value" fn({
       assert(falsey?(false) true)
       assert(falsey?(nil) true)
-      assert(falsey?(undefined) true)
-    }))
+      assert(falsey?(undefined) true)}))
 
     it("returns false when given a truthy value" fn({
       assert(=(falsey?(true) false))
@@ -843,9 +648,7 @@ describe("core" fn({
       assert(=(falsey?("foo") false))
       assert(=(falsey?(:foo) false))
       assert(=(falsey?([]) false))
-      assert(=(falsey?(~{}) false))
-    }))
-  }))
+      assert(=(falsey?(~{}) false))}))}))
 
   describe("defined?" fn({
     it("returns true for defined values" fn({
@@ -854,18 +657,14 @@ describe("core" fn({
       assert(defined?(:foo))
       assert(defined?(~{}))
       assert(defined?(#{}))
-      assert(defined?([]))
-    }))
+      assert(defined?([]))}))
 
     it("returns false for undefined" fn({
-      assert(comp(false? defined?)(undefined))
-    }))
-  }))
+      assert(comp(false? defined?)(undefined))}))}))
 
   describe("undefined?" fn({
     it("returns true for undefined" fn({
-      assert(undefined?(undefined))
-    }))
+      assert(undefined?(undefined))}))
 
     it("returns false for defined values" fn({
       assert(comp(false? undefined?)(1))
@@ -873,16 +672,13 @@ describe("core" fn({
       assert(comp(false? undefined?)(:foo))
       assert(comp(false? undefined?)(~{}))
       assert(comp(false? undefined?)(#{}))
-      assert(comp(false? undefined?)([]))
-    }))
-  }))
+      assert(comp(false? undefined?)([]))}))}))
 
   describe("not" fn({
     it("returns true when given a falsey value" fn({
       assert(not(false) true)
       assert(not(nil) true)
-      assert(not(undefined) true)
-    }))
+      assert(not(undefined) true)}))
 
     it("returns false when given a truthy value" fn({
       assert(=(not(true) false))
@@ -892,238 +688,169 @@ describe("core" fn({
       assert(=(not("foo") false))
       assert(=(not(:foo) false))
       assert(=(not([]) false))
-      assert(=(not(~{}) false))
-    }))
-  }))
+      assert(=(not(~{}) false))}))}))
 
   describe("even?" fn({
     it("returns true for even numbers" fn({
-      assert(even?(2))
-    }))
+      assert(even?(2))}))
 
     it("returns false for odd numbers" fn({
-      assert(=(even?(3) false))
-    }))
-  }))
+      assert(=(even?(3) false))}))}))
 
   describe("odd?" fn({
     it("returns true for odd numbers" fn({
-      assert(odd?(3))
-    }))
+      assert(odd?(3))}))
 
     it("returns false for even numbers" fn({
-      assert(=(odd?(2) false))
-    }))
-  }))
+      assert(=(odd?(2) false))}))}))
 
   describe("apply" fn({
     it("invokes the given fn with the given arguments" fn({
-      assert(=(apply(+ [1 2]) 3))
-    }))
+      assert(=(apply(+ [1 2]) 3))}))
 
     it("appends intermediate arguments to the last argument" fn({
-      assert(=(apply(+ 1 [2]) 3))
-    }))
-  }))
+      assert(=(apply(+ 1 [2]) 3))}))}))
 
   describe("map" fn({
     it("maps a the given fn over the given array" fn({
-      assert(=(map(inc [1 2 3]) [2 3 4]))
-    }))
+      assert(=(map(inc [1 2 3]) [2 3 4]))}))
 
     it("returns an emtpy array when given one" fn({
-      assert(=(map(inc []) []))
-    }))
+      assert(=(map(inc []) []))}))
 
     it("works for maps" fn({
-      assert(=(map(partial(apply +) ~{1 2 3 4}) [3 7]))
-    }))
+      assert(=(map(partial(apply +) ~{1 2 3 4}) [3 7]))}))
 
     it("works for sets" fn({
-      assert(=(map(inc #{1 2 3}) [2 3 4]))
-    }))
-  }))
+      assert(=(map(inc #{1 2 3}) [2 3 4]))}))}))
 
   describe("filter" fn({
     it("filters a given array using the given predicate fn" fn({
-      assert(=(filter(even? [1 2 3 4]) [2 4]))
-    }))
+      assert(=(filter(even? [1 2 3 4]) [2 4]))}))
 
     it("returns an emtpy array when given one" fn({
-      assert(=(filter(even? []) []))
-    }))
+      assert(=(filter(even? []) []))}))
 
     it("works for maps" fn({
-      assert(=(filter(comp(even? first) ~{1 2 2 3}) [[2 3]]))
-    }))
+      assert(=(filter(comp(even? first) ~{1 2 2 3}) [[2 3]]))}))
 
     it("works for sets" fn({
-      assert(=(filter(even? #{1 2 3 4}) [2 4]))
-    }))
-  }))
+      assert(=(filter(even? #{1 2 3 4}) [2 4]))}))}))
 
   describe("remove" fn({
     it("filters out elements from an array using the given predicate fn" fn({
-      assert(=(remove(even? [1 2 3 4]) [1 3]))
-    }))
+      assert(=(remove(even? [1 2 3 4]) [1 3]))}))
 
     it("returns an empty array when given one" fn({
-      assert(=(remove(even? []) []))
-    }))
+      assert(=(remove(even? []) []))}))
 
     it("works for maps" fn({
-      assert(=(remove(comp(even? first) ~{1 2 2 3}) [[1 2]]))
-    }))
+      assert(=(remove(comp(even? first) ~{1 2 2 3}) [[1 2]]))}))
 
     it("works for sets" fn({
-      assert(=(remove(even? #{1 2 3 4}) [1 3]))
-    }))
-  }))
+      assert(=(remove(even? #{1 2 3 4}) [1 3]))}))}))
 
   describe("reduce" fn({
     it("reduces a given array using the given fn" fn({
-      assert(=(reduce(+ [1 2 3]) 6))
-    }))
+      assert(=(reduce(+ [1 2 3]) 6))}))
 
     it("takes an optional starting point" fn({
-      assert(=(reduce(+ 10 [1 2 3]) 16))
-    }))
+      assert(=(reduce(+ 10 [1 2 3]) 16))}))
 
     it("returns the starting point when the given array is empty" fn({
-      assert(=(reduce(+ 10 []) 10))
-    }))
+      assert(=(reduce(+ 10 []) 10))}))
 
     it("works for maps" fn({
-      assert(=(reduce(fn(acc curr +(acc second(curr))) 0 ~{1 2 2 3}) 5))
-    }))
+      assert(=(reduce(fn(acc curr +(acc second(curr))) 0 ~{1 2 2 3}) 5))}))
 
     it("works for sets" fn({
-      assert(=(reduce(+ #{1 2 3 4}) 10))
-    }))
-  }))
+      assert(=(reduce(+ #{1 2 3 4}) 10))}))}))
 
   describe("reverse" fn({
     it("reverses the given array" fn({
-      assert(=(reverse([1 2 3]) [3 2 1]))
-    }))
+      assert(=(reverse([1 2 3]) [3 2 1]))}))
 
     it("works for maps" fn({
-      assert(=(reverse(~{1 2 2 3}) [[2 3] [1 2]]))
-    }))
+      assert(=(reverse(~{1 2 2 3}) [[2 3] [1 2]]))}))
 
     it("works for sets" fn({
-      assert(=(reverse(#{1 2 3 4}) [4 3 2 1]))
-    }))
-  }))
+      assert(=(reverse(#{1 2 3 4}) [4 3 2 1]))}))}))
 
   describe("comp" fn({
     it("applies the given functions to the given value from right to left" fn({
-      assert(=(comp(not even?)(1) true))
-    }))
-  }))
+      assert(=(comp(not even?)(1) true))}))}))
 
   describe("comp" fn({
     it("prepares a function to be invoked with the given arguments
         plus any additional arguments" fn({
-      assert(=(partial(+ 1)(1) 2))
-    }))
-  }))
+      assert(=(partial(+ 1)(1) 2))}))}))
 
   describe("thread first (->)" fn({
     it("invokes the given fns and places each intermediate result
         as the first argument at every step" fn({
-      assert(=(->(1 [+ 2] [- 4] [* 4]) -4))
-    }))
-  }))
+      assert(=(->(1 [+ 2] [- 4] [* 4]) -4))}))}))
 
   describe("thread last (->>)" fn({
     it("invokes the given fns and places each intermediate result
         as the last argument at every step" fn({
-      assert(=(->>([1 2 3 4] [map inc] [filter even?] [reduce +]) 6))
-    }))
-  }))
+      assert(=(->>([1 2 3 4] [map inc] [filter even?] [reduce +]) 6))}))}))
 
   describe("raise" fn({
     it("throws the given exception" fn({
-      .throws(assert fn({raise("foo")}) RegExp.("foo"))
-    }))
-  }))
+      .throws(assert fn({raise("foo")}) RegExp.("foo"))}))}))
 
   describe("get" fn({
     it("reads the given field off the given map" fn({
-      assert(=(get(~{:foo "bar"} :foo) "bar"))
-    }))
+      assert(=(get(~{:foo "bar"} :foo) "bar"))}))
 
     it("reads the given index off the given array" fn({
-      assert(=(get([1 2 3] 0) 1))
-    }))
+      assert(=(get([1 2 3] 0) 1))}))
 
     it("returns nil when the given field does not exist on the given map" fn({
-      assert(->(~{} [get :foo] nil?))
-    }))
+      assert(->(~{} [get :foo] nil?))}))
 
     it("returns nil when trying to read off nil" fn({
-      assert(->(nil [get :foo] nil?))
-    }))
+      assert(->(nil [get :foo] nil?))}))
 
     it("throws when trying to read off a plain JS object" fn({
-      .throws(assert fn(get(Object.() "foo")) RegExp.("Can only get from array, map, or nil"))
-    }))
-  }))
+      .throws(assert fn(get(Object.() "foo")) RegExp.("Can only get from array, map, or nil"))}))}))
 
   describe("get-in" fn({
     it("reads the given deeply-nested field off the given map" fn({
-      assert(=(get-in(~{:foo [~{:bar "baz"}]} [:foo 0 :bar]) "baz"))
-    }))
+      assert(=(get-in(~{:foo [~{:bar "baz"}]} [:foo 0 :bar]) "baz"))}))
 
     it("returns nil when the given deeply-nested field does not exist on the given map" fn({
-      assert(->(~{} [get-in [:foo :bar :baz]] nil?))
-    }))
-  }))
+      assert(->(~{} [get-in [:foo :bar :baz]] nil?))}))}))
 
   describe("contains?" fn({
     describe("maps" fn({
       it("returns true for an existing field" fn({
-        assert(contains?(~{:foo "bar"} :foo))
-      }));
+        assert(contains?(~{:foo "bar"} :foo))}));
 
       it("returns false for missing fields" fn({
-        assert(false?(contains?(~{} :foo)))
-      }))
-    }));
+        assert(false?(contains?(~{} :foo)))}))}));
 
     describe("arrays" fn({
       it("returns true for an existing index" fn({
-        assert(contains?([1 2 3] 0))
-      }))
+        assert(contains?([1 2 3] 0))}))
 
       it("returns false for missing indices" fn({
-        assert(false?(contains?([1 2 3] 10)))
-      }))
-    }));
+        assert(false?(contains?([1 2 3] 10)))}))}));
 
     describe("sets" fn({
       it("returns true for an existing value" fn({
-        assert(contains?(#{1 2 3} 1))
-      }))
+        assert(contains?(#{1 2 3} 1))}))
 
       it("returns false for missing values" fn({
-        assert(false?(contains?(#{1 2 3} 10)))
-      }))
-    }));
+        assert(false?(contains?(#{1 2 3} 10)))}))}));
 
     describe("nil" fn({
       it("always returns false" fn({
-        assert(false?(contains?(nil 1)))
-      }))
-    }))
+        assert(false?(contains?(nil 1)))}))}))
 
     describe("other data types" fn({
       it("throws" fn({
-        .throws(assert fn(contains?(1 "foo")) RegExp.("Can only use contain\\? on arrays, maps, sets, and nil"))
-      }))
-    }))
-  }))
+        .throws(assert fn(contains?(1 "foo")) RegExp.("Can only use contain\\? on arrays, maps, sets, and nil"))}))}))}))
 
   describe("every?" fn({
     it("checks if the given predicate fn returns true
@@ -1131,73 +858,52 @@ describe("core" fn({
       assert(every?(even? [2 4 6]))
       assert(every?(even? #{2 4 6}))
       assert(every?(fn(kv-pair =(apply(+ kv-pair) 4)) ~{1 3 2 2}))
-      assert(false?(every?(even? [1 2 4 6])))
-    }))
+      assert(false?(every?(even? [1 2 4 6])))}))
 
     it("returns true for empty collections" fn({
       assert(every?(even? []))
       assert(every?(even? #{}))
-      assert(every?(even? ~{}))
-    }))
-  }))
+      assert(every?(even? ~{}))}))}))
 
   describe("conj" fn({
     describe("sets" fn({
       it("adds the given values to the given set" fn({
-        assert(=(conj(#{} 1 2 3) #{1 2 3}))
-      }))
-    }))
+        assert(=(conj(#{} 1 2 3) #{1 2 3}))}))}))
 
     describe("arrays" fn({
       it("adds the given values to the given array" fn({
-        assert(=(conj([] 1 2 3) [1 2 3]))
-      }))
-    }))
+        assert(=(conj([] 1 2 3) [1 2 3]))}))}))
 
     describe("maps" fn({
       it("adds the given values to the given map" fn({
-        assert(=(conj(~{} [1 2] [3 4]) ~{1 2 3 4}))
-      }))
+        assert(=(conj(~{} [1 2] [3 4]) ~{1 2 3 4}))}))
 
       it("only accepts two-value arrays" fn({
         .throws(assert fn(conj(~{} [1])) RegExp.("Values conj'ed onto map must be two-valued arrays"))
-        .throws(assert fn(conj(~{} [1 2 3])) RegExp.("Values conj'ed onto map must be two-valued arrays"))
-      }))
-    }))
+        .throws(assert fn(conj(~{} [1 2 3])) RegExp.("Values conj'ed onto map must be two-valued arrays"))}))}))
 
     describe("nil" fn({
       it("returns an array consisting of the given values" fn({
-        assert(=(conj(nil 1 2 3 4) [1 2 3 4]))
-      }))
-    }))
+        assert(=(conj(nil 1 2 3 4) [1 2 3 4]))}))}))
 
     describe("other data types" fn({
       it("throws" fn({
-        .throws(assert fn(conj(1 1)) RegExp.("Can only conj onto arrays, maps, sets, and nil"))
-      }))
-    }))
-  }))
+        .throws(assert fn(conj(1 1)) RegExp.("Can only conj onto arrays, maps, sets, and nil"))}))}))}))
 
   describe("disj" fn({
     describe("sets" fn({
       it("removes the given element from the set" fn({
-        assert(=(disj(#{1 2 3} 3) #{1 2}))
-      }))
+        assert(=(disj(#{1 2 3} 3) #{1 2}))}))
 
       it("has no effect if the given element does not exist" fn({
-        assert(=(disj(#{1 2 3} 4) #{1 2 3}))
-      }))
+        assert(=(disj(#{1 2 3} 4) #{1 2 3}))}))
 
       it("removes *all* given elements from the set" fn({
-        assert(=(disj(#{1 2 3} 1 3) #{2}))
-      }))
-    }))
+        assert(=(disj(#{1 2 3} 1 3) #{2}))}))}))
 
     describe("nil" fn({
       it("returns nil" fn({
-        assert(nil?(disj(nil 1)))
-      }))
-    }))
+        assert(nil?(disj(nil 1)))}))}))
 
     describe("other data types" fn({
       it("throws" fn({
@@ -1205,44 +911,32 @@ describe("core" fn({
         .throws(assert fn(disj(1 1)) RegExp.("disj expects a set or nil for the first argument"))
         .throws(assert fn(disj(~{} 1)) RegExp.("disj expects a set or nil for the first argument"))
         .throws(assert fn(disj([] 1)) RegExp.("disj expects a set or nil for the first argument"))
-        .throws(assert fn(disj(false 1)) RegExp.("disj expects a set or nil for the first argument"))
-      }))
-    }))
-  }))
+        .throws(assert fn(disj(false 1)) RegExp.("disj expects a set or nil for the first argument"))}))}))}))
 
   describe("drop" fn({
     it("drops the given number of elements from the given array" fn({
-      assert(=(drop(2 [1 2 3]) [3]))
-    }))
+      assert(=(drop(2 [1 2 3]) [3]))}))
 
     it("can drop more elements than the array has" fn({
-      assert(=(drop(2 [1]) []))
-    }))
+      assert(=(drop(2 [1]) []))}))
 
     it("returns the same array for negative amounts" fn({
-      assert(=(drop(-1 [1 2]) [1 2]))
-    }))
-  }))
+      assert(=(drop(-1 [1 2]) [1 2]))}))}))
 
   describe("take" fn({
     it("takes the given number of elements from the given array" fn({
-      assert(=(take(2 [1 2 3]) [1 2]))
-    }))
+      assert(=(take(2 [1 2 3]) [1 2]))}))
 
     it("can take more elements than the array has" fn({
-      assert(=(take(2 [1]) [1]))
-    }))
+      assert(=(take(2 [1]) [1]))}))
 
     it("returns an empty array for negative amounts" fn({
-      assert(=(take(-1 [1 2]) []))
-    }))
-  }))
+      assert(=(take(-1 [1 2]) []))}))}))
 
   describe("flatten-1" fn({
     it("flattens the given structure and turns it
         into an array if it isn't one already" fn({
-      assert(=(flatten-1([1 [2 3] #{4 5} ~{6 7 8 9}]) [1 2 3 #{4 5} ~{6 7 8 9}]))
-    }))
+      assert(=(flatten-1([1 [2 3] #{4 5} ~{6 7 8 9}]) [1 2 3 #{4 5} ~{6 7 8 9}]))}))
 
     it("returns an empty array when given a non-array" fn({
       assert(=(flatten-1(#{1 2 3}) []))
@@ -1250,65 +944,48 @@ describe("core" fn({
       assert(=(flatten-1(nil) []))
       assert(=(flatten-1(1) []))
       assert(=(flatten-1("foo") []))
-      assert(=(flatten-1(:foo) []))
-    }))
+      assert(=(flatten-1(:foo) []))}))
 
     it("only flattens a single level deep" fn({
-      assert(=(flatten-1([[[1]]]) [[1]]))
-    }))
-  }))
+      assert(=(flatten-1([[[1]]]) [[1]]))}))}))
 
   describe("assoc" fn({
     describe("arrays" fn({
       it("returns an array with the given field set to the given value" fn({
-        assert(=(assoc([1 2 3] 1 4) [1 4 3]))
-      }))
+        assert(=(assoc([1 2 3] 1 4) [1 4 3]))}))
 
       it("can set the index that is equal to the array's length" fn({
-        assert(=(assoc([1 2 3] 3 4) [1 2 3 4]))
-      }))
+        assert(=(assoc([1 2 3] 3 4) [1 2 3 4]))}))
 
       it("can take multiple field-value pairs" fn({
-        assert(=(assoc([1 2 3] 0 0 1 1 2 2) [0 1 2]))
-      }))
+        assert(=(assoc([1 2 3] 0 0 1 1 2 2) [0 1 2]))}))
 
       it("throws when passing incomplete field-value pairs" fn({
-        .throws(assert fn(assoc([1 2 3] 1 2 0)) RegExp.("Even number of keys and values required"))
-      }))
+        .throws(assert fn(assoc([1 2 3] 1 2 0)) RegExp.("Even number of keys and values required"))}))
 
       it("throws when trying to set an index that's greater than the array's length" fn({
-        .throws(assert fn(assoc([1 2 3] 4 10)) RegExp.("Index out of bounds"))
-      }))
+        .throws(assert fn(assoc([1 2 3] 4 10)) RegExp.("Index out of bounds"))}))
 
       it("throws when trying to set a negative index" fn({
-        .throws(assert fn(assoc([1 2 3] -1 10)) RegExp.("Index out of bounds"))
-      }))
+        .throws(assert fn(assoc([1 2 3] -1 10)) RegExp.("Index out of bounds"))}))
 
       it("throws when passing a non-number as index" fn({
-        .throws(assert fn(assoc([] :foo 1)) RegExp.("Index must be a number"))
-      }))
-    }))
+        .throws(assert fn(assoc([] :foo 1)) RegExp.("Index must be a number"))}))}))
 
     describe("maps" fn({
       it("returns a map with the given field set to the given value" fn({
-        assert(=(assoc(~{:foo "bar"} :bar "foo") ~{:foo "bar" :bar "foo"}))
-      }))
+        assert(=(assoc(~{:foo "bar"} :bar "foo") ~{:foo "bar" :bar "foo"}))}))
 
       it("can take multiple field-value pairs" fn({
-        assert(=(assoc(~{} :foo "bar" :bar "foo") ~{:foo "bar" :bar "foo"}))
-      }))
+        assert(=(assoc(~{} :foo "bar" :bar "foo") ~{:foo "bar" :bar "foo"}))}))
 
       it("throws when passing incomplete field-value pairs" fn({
-        .throws(assert fn(assoc(~{} :foo "bar" :bar)) RegExp.("Even number of keys and values required"))
-      }))
-    }))
+        .throws(assert fn(assoc(~{} :foo "bar" :bar)) RegExp.("Even number of keys and values required"))}))}))
 
     describe("nil and undefined" fn({
       it("treats nil and undefined as empty maps" fn({
         assert(=(assoc(nil :bar "foo") ~{:bar "foo"}))
-        assert(=(assoc(undefined :bar "foo") ~{:bar "foo"}))
-      }))
-    }))
+        assert(=(assoc(undefined :bar "foo") ~{:bar "foo"}))}))}))
 
     describe("other data types" fn({
       it("throws" fn({
@@ -1316,60 +993,42 @@ describe("core" fn({
         .throws(assert fn(assoc("" :foo :bar)) RegExp.("Expected one of array, map, or nil"))
         .throws(assert fn(assoc(:foo :foo :bar)) RegExp.("Expected one of array, map, or nil"))
         .throws(assert fn(assoc(#{} :foo :bar)) RegExp.("Expected one of array, map, or nil"))
-        .throws(assert fn(assoc(true :foo :bar)) RegExp.("Expected one of array, map, or nil"))
-      }))
-    }))
-  }))
+        .throws(assert fn(assoc(true :foo :bar)) RegExp.("Expected one of array, map, or nil"))}))}))}))
 
   describe("assoc-in" fn({
     it("returns the given item when the path is empty" fn({
-      assert(=(assoc-in([1 2 3] [] 1) [1 2 3]))
-    }))
+      assert(=(assoc-in([1 2 3] [] 1) [1 2 3]))}))
 
     describe("array" fn({
       it("returns an array with the given deeply-nested field set to the given value" fn({
-        assert(=(assoc-in([[1] 2 3] [0 0] 0) [[0] 2 3]))
-      }))
+        assert(=(assoc-in([[1] 2 3] [0 0] 0) [[0] 2 3]))}))
 
       it("fills in missing paths with maps" fn({
-        assert(=(assoc-in([] [0 :foo] 1) [~{:foo 1}]))
-      }))
-    }))
+        assert(=(assoc-in([] [0 :foo] 1) [~{:foo 1}]))}))}))
 
     describe("maps" fn({
       it("returns a map with the given deeply-nested field set to the given value" fn({
-        assert(=(assoc-in(~{:foo ~{:bar "foo"}} [:foo :bar] "baz") ~{:foo ~{:bar "baz"}}))
-      }))
+        assert(=(assoc-in(~{:foo ~{:bar "foo"}} [:foo :bar] "baz") ~{:foo ~{:bar "baz"}}))}))
 
       it("fills in missing paths with maps" fn({
-        assert(=(assoc-in(~{} [:foo :bar] 1) ~{:foo ~{:bar 1}}))
-      }))
-    }))
+        assert(=(assoc-in(~{} [:foo :bar] 1) ~{:foo ~{:bar 1}}))}))}))
 
     describe("mixed" fn({
       it("works the same" fn({
-        assert(=(assoc-in(~{:foo [~{:bar 1}]} [:foo 0 :baz] 2) ~{:foo [~{:bar 1 :baz 2}]}))
-      }))
-    }))
-  }))
+        assert(=(assoc-in(~{:foo [~{:bar 1}]} [:foo 0 :baz] 2) ~{:foo [~{:bar 1 :baz 2}]}))}))}))}))
 
   describe("dissoc" fn({
     describe("maps" fn({
       it("removes the given fields from the given map" fn({
-        assert(=(dissoc(~{:foo "bar" :bar "foo" :baz "foo"} :foo :bar) ~{:baz "foo"}))
-      }))
+        assert(=(dissoc(~{:foo "bar" :bar "foo" :baz "foo"} :foo :bar) ~{:baz "foo"}))}))
 
       it("returns the given map without changes if it does not
           contain the given keys" fn({
-        assert(=(dissoc(~{:foo "bar"} :bar) ~{:foo "bar"}))
-      }))
-    }))
+        assert(=(dissoc(~{:foo "bar"} :bar) ~{:foo "bar"}))}))}))
 
     describe("nil" fn({
       it("returns nil" fn({
-        assert(nil?(dissoc(nil :foo)))
-      }))
-    }))
+        assert(nil?(dissoc(nil :foo)))}))}))
 
     describe("other data types" fn({
       it("throws" fn({
@@ -1378,28 +1037,20 @@ describe("core" fn({
         .throws(assert fn(dissoc(:foo :foo :bar)) RegExp.("Expected a map nor nil for the first argument"))
         .throws(assert fn(dissoc(#{} :foo :bar)) RegExp.("Expected a map nor nil for the first argument"))
         .throws(assert fn(dissoc(true :foo :bar)) RegExp.("Expected a map nor nil for the first argument"))
-        .throws(assert fn(dissoc([] :foo :bar)) RegExp.("Expected a map nor nil for the first argument"))
-      }))
-    }))
-  }))
+        .throws(assert fn(dissoc([] :foo :bar)) RegExp.("Expected a map nor nil for the first argument"))}))}))}))
 
   describe("update" fn({
     describe("arrays" fn({
       it("updates the array at the given position by invoking the given function
           with the element at the given position and the given arguments (if any)" fn({
         assert(=(update([1 2 3] 1 inc) [1 3 3]))
-        assert(=(update([1 2 3] 0 * 3) [3 2 3]))
-      }))
-    }))
+        assert(=(update([1 2 3] 0 * 3) [3 2 3]))}))}))
 
     describe("maps" fn({
       it("updates the map at the given position by invoking the given function
           with the element at the given position and the given arguments (if any)" fn({
         assert(=(update(~{:foo 1} :foo inc) ~{:foo 2}))
-        assert(=(update(~{:foo 1} :foo * 3) ~{:foo 3}))
-      }))
-    }))
-  }))
+        assert(=(update(~{:foo 1} :foo * 3) ~{:foo 3}))}))}))}))
 
   describe("update-in" fn({
     describe("arrays" fn({
@@ -1407,60 +1058,43 @@ describe("core" fn({
           given function with the element at the given deeply-nested position
           and the given arguments (if any)" fn({
         assert(=(update-in([1 [2 3]] [1 0] inc) [1 [3 3]]))
-        assert(=(update-in([1 [2 3]] [1 1] * 3) [1 [2 9]]))
-      }))
-    }))
+        assert(=(update-in([1 [2 3]] [1 1] * 3) [1 [2 9]]))}))}))
 
     describe("maps" fn({
       it("updates the map at the given deeply-nested position by invoking the
           given function with the element at the given deeply-nested position
           and the given arguments (if any)" fn({
         assert(=(update-in(~{:foo ~{:bar 1}} [:foo :bar] inc) ~{:foo ~{:bar 2}}))
-        assert(=(update-in(~{:foo ~{:bar 1}} [:foo :bar] * 3) ~{:foo ~{:bar 3}}))
-      }))
-    }))
+        assert(=(update-in(~{:foo ~{:bar 1}} [:foo :bar] * 3) ~{:foo ~{:bar 3}}))}))}))
 
     describe("mixed" fn({
       it("works the same" fn({
-        assert(=(update-in(~{:foo [~{:bar 1}]} [:foo 0 :bar] * 3) ~{:foo [~{:bar 3}]}))
-      }))
-    }))
-  }))
+        assert(=(update-in(~{:foo [~{:bar 1}]} [:foo 0 :bar] * 3) ~{:foo [~{:bar 3}]}))}))}))}))
 
   describe("str" fn({
     it("concatenates the given arguments" fn({
-      assert(=(str("foo" "bar" 1 2) "foobar12"))
-    }))
+      assert(=(str("foo" "bar" 1 2) "foobar12"))}))
 
     it("returns an empty string when given no arguments" fn({
-      assert(=(str() ""))
-    }))
-  }))
+      assert(=(str() ""))}))}))
 
   describe("max" fn({
     it("returns the greates of the given arguments" fn({
-      assert(=(max(1 3 2 1 0 -1) 3))
-    }))
+      assert(=(max(1 3 2 1 0 -1) 3))}))
 
     it("throws when given no arguments" fn({
-      .throws(assert fn(max()) RegExp.("max requires at least one argument"))
-    }))
-  }))
+      .throws(assert fn(max()) RegExp.("max requires at least one argument"))}))}))
 
   describe("min" fn({
     it("returns the smallest of the given arguments" fn({
-      assert(=(min(1 3 2 1 0 -1) -1))
-    }))
+      assert(=(min(1 3 2 1 0 -1) -1))}))
 
     it("throws when given no arguments" fn({
-      .throws(assert fn(min()) RegExp.("min requires at least one argument"))
-    }))
-  }))
+      .throws(assert fn(min()) RegExp.("min requires at least one argument"))}))}))
 
   describe("int?" fn({
     it("returns true for integers" fn({
-      assert(int?(1))
-    }))
+      assert(int?(1))}))
 
     it("returns false for everything else" fn({
       assert(->(1.2 int? false?))
@@ -1470,14 +1104,11 @@ describe("core" fn({
       assert(->(undefined int? false?))
       assert(->([] int? false?))
       assert(->(#{} int? false?))
-      assert(->(~{} int? false?))
-    }))
-  }))
+      assert(->(~{} int? false?))}))}))
 
   describe("float?" fn({
     it("returns true for floats" fn({
-      assert(float?(1.2))
-    }))
+      assert(float?(1.2))}))
 
     it("returns false for everything else" fn({
       assert(->(1 float? false?))
@@ -1487,31 +1118,23 @@ describe("core" fn({
       assert(->(undefined float? false?))
       assert(->([] float? false?))
       assert(->(#{} float? false?))
-      assert(->(~{} float? false?))
-    }))
-  }))
+      assert(->(~{} float? false?))}))}))
 
   describe("neg?" fn({
     it("returns true for negative numbers" fn({
-      assert(neg?(-1))
-    }))
+      assert(neg?(-1))}))
 
     it("returns false for 0 and positive numbers" fn({
       assert(->(0 neg? false?))
-      assert(->(1 neg? false?))
-    }))
-  }))
+      assert(->(1 neg? false?))}))}))
 
   describe("pos?" fn({
     it("returns true for positive numbers" fn({
-      assert(pos?(1))
-    }))
+      assert(pos?(1))}))
 
     it("returns false for 0 and negative numbers" fn({
       assert(->(0 pos? false?))
-      assert(->(-1 pos? false?))
-    }))
-  }))
+      assert(->(-1 pos? false?))}))}))
 
   describe("rand" fn({
     it("returns a number between 0 (inclusive) and 1 (exclusive)" fn({
@@ -1519,9 +1142,7 @@ describe("core" fn({
         let([n rand()
              result and(>=(n 0)
                         <(n 1))]
-          assert(result))))
-    }))
-  }))
+          assert(result))))}))}))
 
   describe("rand" fn({
     it("returns a number between 0 (inclusive) and 1 (exclusive)" fn({
@@ -1529,9 +1150,7 @@ describe("core" fn({
         let([n rand()
              result and(>=(n 0)
                         <(n 1))]
-          assert(result))))
-    }))
-  }))
+          assert(result))))}))}))
 
   describe("rand-int" fn({
     it("returns a number between 0 (inclusive) and the floor of the given number (exclusive)" fn({
@@ -1541,38 +1160,26 @@ describe("core" fn({
              result and(>=(n 0)
                         <(n 10))]
           {assert(result)
-           assert(int?(n))})))
-    }))
-  }))
+           assert(int?(n))})))}))}))
 
   describe("repeat" fn({
     it("returns an array containing the given argument the given amount of times" fn({
-      assert(=(repeat(3 1) [1 1 1]))
-    }))
+      assert(=(repeat(3 1) [1 1 1]))}))
 
     it("returns an empty array when given a negative amount" fn({
-      assert(=(repeat(-1 1) []))
-    }))
-  }))
+      assert(=(repeat(-1 1) []))}))}))
 
   describe("repeatedly" fn({
     it("returns an array containing the results of invoking the given function the given amount of times" fn({
-      assert(=(repeatedly(3 fn(inc(1))) [2 2 2]))
-    }))
+      assert(=(repeatedly(3 fn(inc(1))) [2 2 2]))}))
 
     it("passes any additional arguments to the given function" fn({
-      assert(=(repeatedly(3 fn(...args apply(* 2 args)) 2 3) [12 12 12]))
-    }))
+      assert(=(repeatedly(3 fn(...args apply(* 2 args)) 2 3) [12 12 12]))}))
 
     it("returns an empty array when given a negative amount" fn({
-      assert(=(repeatedly(-1 fn(inc(1))) []))
-    }))
-  }))
+      assert(=(repeatedly(-1 fn(inc(1))) []))}))}))
 
   describe("complement" fn({
     it("returns a function which, when invoked with the given arguments, returns
         the negated truth value the given function would normally return" fn({
-      assert(true?(complement(<)(3 2 1)))
-    }))
-  }))
-}))
+      assert(complement(<)(3 2 1))}))}))}))
