@@ -46,6 +46,10 @@ Underscores can be used as optional thousands separators in numbers:
 1_000_000
 ```
 
+## Mutation
+
+None of Berlin's core functions employ mutation. Mutation is discouraged, but if you must mutate, use JavaScript interop (see below).
+
 ## API
 
 ### Special Forms
@@ -1897,3 +1901,24 @@ Map.([[1 2]])
 ````
 
 The first line is the same as saying `console.log("foo")` in JavaScript. The second line is the same as new `Map([[1 2]])`.
+
+To mutate a JavaScript map, you can do the following:
+
+```js
+def(m ~{})
+.set(m "foo" 1) ; => ~{"foo" 1}
+```
+
+The same can be done for sets, arrays, etc. E.g.:
+
+```js
+def(a [])
+.push(a 1) ; => 1
+```
+
+To mutate a JavaScript object, use the built-in special form `set-property`:
+
+```js
+def(o Object.())
+set-property(o "foo" "bar") ; => "bar"
+```
