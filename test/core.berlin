@@ -825,24 +825,24 @@ describe("core" fn({
   describe("contains?" fn({
     describe("maps" fn({
       it("returns true for an existing field" fn({
-        assert(contains?(~{:foo "bar"} :foo))}));
+        assert(contains?(~{:foo "bar"} :foo))}))
 
       it("returns false for missing fields" fn({
-        assert(false?(contains?(~{} :foo)))}))}));
+        assert(false?(contains?(~{} :foo)))}))}))
 
     describe("arrays" fn({
       it("returns true for an existing index" fn({
         assert(contains?([1 2 3] 0))}))
 
       it("returns false for missing indices" fn({
-        assert(false?(contains?([1 2 3] 10)))}))}));
+        assert(false?(contains?([1 2 3] 10)))}))}))
 
     describe("sets" fn({
       it("returns true for an existing value" fn({
         assert(contains?(#{1 2 3} 1))}))
 
       it("returns false for missing values" fn({
-        assert(false?(contains?(#{1 2 3} 10)))}))}));
+        assert(false?(contains?(#{1 2 3} 10)))}))}))
 
     describe("nil" fn({
       it("always returns false" fn({
