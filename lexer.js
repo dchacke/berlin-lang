@@ -43,12 +43,12 @@ let lex = source => {
   let tokenContainer = source
     .split("")
     .reduce((acc, curr, i) => {
-      switch (last(acc.mode)) {
+      switch (acc.mode) {
         case "number": {
           // We want to close the number and ignore
           // the current character
           if (curr === " " || curr === "\n" || curr === ",") {
-            acc.mode.pop();
+            acc.mode = null;
 
             return acc;
           // We want to ignore underscores (they serve
@@ -61,7 +61,7 @@ let lex = source => {
           // even though they are not separated by a
           // whitespace.
           } else if (/[{}\[\]()#~]/.test(curr)) {
-            acc.mode.pop();
+            acc.mode = null;
             acc.result.push([curr, curr]);
 
             return acc;
@@ -80,7 +80,7 @@ let lex = source => {
           // We want to close the symbol and ignore
           // the current character
           if (curr === " " || curr === "\n" || curr === ",") {
-            acc.mode.pop();
+            acc.mode = null;
 
             return acc;
           // A symbol must not contain the following
@@ -89,7 +89,7 @@ let lex = source => {
           // even though they are not separated by a
           // whitespace.
           } else if (/[{}\[\]()#~]/.test(curr)) {
-            acc.mode.pop();
+            acc.mode = null;
             acc.result.push([curr, curr]);
 
             return acc;
@@ -107,7 +107,7 @@ let lex = source => {
         case "string": {
           // We want to close the string
           if (curr === "\"") {
-            acc.mode.pop();
+            acc.mode = null;
             acc.result.push(["\"", "\""]);
 
             return acc;
@@ -125,7 +125,7 @@ let lex = source => {
         case "keyword": {
           // We want to close the keyword
           if (curr === " " || curr === "\n" || curr === ",") {
-            acc.mode.pop();
+            acc.mode = null;
 
             return acc;
           // A keyword must not contain the following
@@ -135,7 +135,7 @@ let lex = source => {
           // even though they are not separated by a
           // whitespace.
           } else if (/[{}\[\]()#~]/.test(curr)) {
-            acc.mode.pop();
+            acc.mode = null;
             acc.result.push([curr, curr]);
 
             return acc;
@@ -154,13 +154,13 @@ let lex = source => {
           // We want to open a string
           if (curr === "\"") {
             acc.result.push(["\"", "\""]);
-            acc.mode.push("string");
+            acc.mode = "string";
             acc.result.push(["string", ""]);
 
             return acc;
           // We want to open a keyword
           } else if (curr === ":") {
-            acc.mode.push("keyword");
+            acc.mode = "keyword";
             acc.result.push(["keyword", ""]);
 
             return acc;
@@ -169,7 +169,7 @@ let lex = source => {
             isNumber(curr) ||
             (isNumber(source[i + 1]) && (curr === "-" || curr === "+"))
           ) {
-            acc.mode.push("number");
+            acc.mode = "number";
             // The current character is already the first
             // character in the result
             acc.result.push(["number", curr]);
@@ -189,7 +189,7 @@ let lex = source => {
               return acc;
             }
 
-            acc.mode.push("symbol");
+            acc.mode = "symbol";
             // The current character is already the first
             // character in the result
             acc.result.push(["symbol", curr]);
@@ -199,7 +199,7 @@ let lex = source => {
         }
       }
     }, {
-      mode: [], // does this really need to be an array? I don't think tokens can be nested...
+      mode: null,
       result: [],
       unclosedDelimiters: []
     });
