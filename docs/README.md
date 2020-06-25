@@ -12,7 +12,7 @@ You can find the source code and the Readme with credits and license information
 
 ### Special Forms
 
-Special forms look--for the most part--just like function invocations, but they are not declared as functions anywhere. Instead, the transpiler treats recognizes them to apply special logic. That logic depends on the particular special form.
+Special forms look--for the most part--just like function invocations, but they are not declared as functions anywhere. Instead, the transpiler recognizes them to apply a certain logic. That logic depends on the particular special form.
 
 Special forms take blocks, indicated by curly braces `{}`. When blocks only contain a single statement, the curly braces can be omitted. This applies to all special forms.
 
