@@ -7,6 +7,7 @@ def(identical?! .-identical?!(core))
 def(identity! .-identity!(core))
 def(coll? .-coll?(core))
 def(primitive? .-primitive?(core))
+def(type .-type(core))
 def(or .-or(core))
 def(and .-and(core))
 def(zero? .-zero?(core))
@@ -103,7 +104,7 @@ describe("core" fn({
       assert(=("foo" "foo"))
       assert(=(:foo :foo))
       assert(=([1 2 3] [1 2 3]))
-      assert(=(~{1 2 3 4} ~{3 4 1 2}))
+      assert(=(~{1 2 3 4 ~{} 1} ~{3 4 1 2 ~{} 1}))
       assert(=(#{1 2 3} #{3 2 1}))}))
 
     it("returns false for unequal things" fn({
@@ -196,6 +197,19 @@ describe("core" fn({
       assert(false?(primitive?([])))
       assert(false?(primitive?(#{})))}))}))
 
+  describe("type" fn({
+    it("returns the type of the given argument as a string" fn({
+      assert(=(type("foo") "string"))
+      assert(=(type(1) "number"))
+      assert(=(type(1.5) "number"))
+      assert(=(type(:foo) "keyword"))
+      assert(=(type(nil) "nil"))
+      assert(=(type(undefined) "undefined"))
+      assert(=(type(true) "boolean"))
+      assert(=(type(~{}) "map"))
+      assert(=(type([]) "array"))
+      assert(=(type(#{}) "set"))}))}))
+
   describe("or" fn({
     it("returns the first truthy argument" fn({
       assert(=(or(1 2) 1))
@@ -246,11 +260,14 @@ describe("core" fn({
     it("returns the size of the given map" fn({
       assert(=(count(~{1 2 3 4}) 2))}))
 
-    it("returns the size of the given map" fn({
+    it("returns the size of the given string" fn({
+      assert(=(count("foo") 3))}))
+
+    it("returns zero for nil" fn({
       assert(zero?(count(nil)))}))
 
     it("throws for other data types" fn({
-      .throws(assert fn(count(1)) RegExp.("count only works for arrays, maps, sets, and nil"))}))}))
+      .throws(assert fn(count(1)) RegExp.("count only works for arrays, maps, sets, strings, and nil"))}))}))
 
   describe("empty?" fn({
     it("returns true for empty arrays" fn({
@@ -258,6 +275,12 @@ describe("core" fn({
 
     it("returns false for non-empty arrays" fn({
       assert(=(empty?([1]) false))}))
+
+    it("returns true for empty strings" fn({
+      assert(=(empty?("") true))}))
+
+    it("returns false for non-empty strings" fn({
+      assert(=(empty?("foo") false))}))
 
     it("returns true for nil" fn({
       assert(=(empty?(nil) true))}))}))

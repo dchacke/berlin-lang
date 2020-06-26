@@ -2,7 +2,7 @@ def(lib require("./lib"))
 def(_ require("lodash"))
 def(safe-symbol .-safe_symbol(require("./translator")))
 
-def(= fn(a b _.isEqual(a b)))
+def(= _.isEqual)
 
 def(identical?! fn(a b invoke-operator("===" a b)))
 
@@ -14,6 +14,26 @@ def(coll? fn(a
      set?(a))))
 
 def(primitive? fn(a not(coll?(a))))
+
+def(type fn(a
+  reduce(fn(acc curr
+           if(empty?(acc)
+             let([f first(curr)
+                  result second(curr)]
+               if(f(a)
+                 result
+                 nil))
+             acc))
+         nil
+         ~{string? "string"
+           nil? "nil"
+           undefined? "undefined"
+           boolean? "boolean"
+           keyword? "keyword"
+           number? "number"
+           array? "array"
+           map? "map"
+           set? "set"})))
 
 def(or fn(...args
   if(empty?(args)
@@ -52,7 +72,9 @@ def(count fn(coll
         .-size(coll)
         if(nil?(coll)
           0
-          raise("count only works for arrays, maps, sets, and nil")))))))
+          if(string?(coll)
+            .-length(coll)
+            raise("count only works for arrays, maps, sets, strings, and nil"))))))))
 
 def(empty? fn(coll
   if(nil?(coll)
@@ -517,6 +539,7 @@ map(
    "identity!"
    "coll?"
    "primitive?"
+   "type"
    "or"
    "and"
    "zero?"

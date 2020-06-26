@@ -340,6 +340,29 @@ primitive?(~{}) ; => false
 primitive?(#{}) ; => false
 ```
 
+#### primitive?
+
+Returns the given argument's type as a string.
+
+##### Arguments
+
+- Anything
+
+##### Returns
+
+String
+
+##### Examples
+
+```js
+type(1) ; => "number"
+type(nil) ; => "nil"
+type([]) ; => "array"
+type(true) ; => "boolean"
+; ... etc
+```
+
+
 #### or
 
 Returns the first truthy or last falsey argument. All arguments are evaluated before invocation.
@@ -1052,7 +1075,7 @@ Determines if the given collection does not have any entries.
 
 ##### Arguments
 
-- Collection or `nil`
+- Collection, string, or `nil`
 
 ##### Returns
 
@@ -1066,6 +1089,7 @@ empty?(~{}) ; => true
 empty?(~{:foo :bar}) ; => false
 empty?(#{1}) ; => false
 empty?(nil) ; => true
+empty?("") ; => true
 ```
 
 #### first
