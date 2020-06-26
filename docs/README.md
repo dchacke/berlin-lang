@@ -294,6 +294,52 @@ identity(1) ; => 1
 identity([]) ; => []
 ```
 
+#### coll?
+
+Determines whether the given arguments is a collection.
+
+##### Arguments
+
+- Anything
+
+##### Returns
+
+Boolean
+
+##### Examples
+
+```js
+coll?(1) ; => false
+coll?(nil) ; => false
+; ... and so on for all primitives
+coll?([]) ; => true
+coll?(~{}) ; => true
+coll?(#{}) ; => true
+```
+
+#### primitive?
+
+Determines whether the given arguments is a primitive.
+
+##### Arguments
+
+- Anything
+
+##### Returns
+
+Boolean
+
+##### Examples
+
+```js
+primitive?(1) ; => true
+primitive?(nil) ; => true
+; ... and so on for all primitives
+primitive?([]) ; => false
+primitive?(~{}) ; => false
+primitive?(#{}) ; => false
+```
+
 #### or
 
 Returns the first truthy or last falsey argument. All arguments are evaluated before invocation.

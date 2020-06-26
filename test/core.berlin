@@ -5,6 +5,8 @@ def(core require("../core"))
 def(= .-=(core))
 def(identical?! .-identical?!(core))
 def(identity! .-identity!(core))
+def(coll? .-coll?(core))
+def(primitive? .-primitive?(core))
 def(or .-or(core))
 def(and .-and(core))
 def(zero? .-zero?(core))
@@ -163,6 +165,36 @@ describe("core" fn({
   describe("identity!" fn({
     it("returns the given argument" fn({
       assert(=(identity!(1) 1))}))}))
+
+  describe("coll?" fn({
+    it("returns true for collections" fn({
+      assert(coll?(~{}))
+      assert(coll?([]))
+      assert(coll?(#{}))}))
+
+    it("returns false for collections" fn({
+      assert(false?(coll?(1)))
+      assert(false?(coll?(1.5)))
+      assert(false?(coll?("foo")))
+      assert(false?(coll?(:foo)))
+      assert(false?(coll?(true)))
+      assert(false?(coll?(nil)))
+      assert(false?(coll?(undefined)))}))}))
+
+  describe("primitive?" fn({
+    it("returns true for primitives" fn({
+      assert(primitive?(1))
+      assert(primitive?(1.5))
+      assert(primitive?("foo"))
+      assert(primitive?(:foo))
+      assert(primitive?(true))
+      assert(primitive?(nil))
+      assert(primitive?(undefined))}))
+
+    it("returns false for collections" fn({
+      assert(false?(primitive?(~{})))
+      assert(false?(primitive?([])))
+      assert(false?(primitive?(#{})))}))}))
 
   describe("or" fn({
     it("returns the first truthy argument" fn({

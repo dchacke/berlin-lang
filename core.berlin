@@ -8,6 +8,13 @@ def(identical?! fn(a b invoke-operator("===" a b)))
 
 def(identity! fn!(a a))
 
+def(coll? fn(a
+  or(map?(a)
+     array?(a)
+     set?(a))))
+
+def(primitive? fn(a not(coll?(a))))
+
 def(or fn(...args
   if(empty?(args)
     nil
@@ -508,6 +515,8 @@ map(
   ["="
    "identical?!"
    "identity!"
+   "coll?"
+   "primitive?"
    "or"
    "and"
    "zero?"
