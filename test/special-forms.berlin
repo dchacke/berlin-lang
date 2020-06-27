@@ -1,0 +1,31 @@
+def(assert require("assert"))
+def(core require("../core"))
+
+def(= .-=(core))
+def(+ .-+(core))
+
+describe("special forms" fn({
+  describe("if" fn({
+    it("executes the first block when given a truthy condition" fn({
+      assert(=(if(true 1 2) 1))}))
+
+    it("executes the second block when given a falsey condition" fn({
+      assert(=(if(false 1 2) 2))}))
+
+    it("considers values truthy that are traditionally considered
+        falsey in JS" fn({
+      assert(=(if(0 1 2) 1))
+      assert(=(if("" 1 2) 1))}))}))
+
+  describe("let" fn({
+    it("assigns local variables" fn({
+      let([a 1
+           b 2
+           b 3
+           result +(a b)]
+        assert(=(result 4)))}))}))
+
+  describe("def" fn({
+    it("assigns top-level variables" fn({
+      def(x 1)
+      assert(=(x 1))}))}))}))

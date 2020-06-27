@@ -112,3 +112,4 @@ temp/
 
 
 test/core.js
+test/special-forms.js
