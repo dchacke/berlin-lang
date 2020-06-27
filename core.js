@@ -1,47 +1,7 @@
 let lib  = (require )(`./lib` ) ;
 let _  = (require )(`lodash` ) ;
 let safe__MINUS__symbol  = (((require )(`./translator` ) )[(`safe_symbol` )]) ;
-let __EQUALS__  = ((a ,b ) => {(console.log )(a ,b );
-return (((identical__QUESTION_MARK____BANG__ )(a ,b ) ) ?
-(() => {return true;
-} )()
-:
-(() => {return (((identical__QUESTION_MARK____BANG__ )((type )(a ) ,(type )(b ) ) ) ?
-(() => {return (((and )((coll__QUESTION_MARK__ )(a ) ,(coll__QUESTION_MARK__ )(b ) ) ) ?
-(() => {return (((and )((empty__QUESTION_MARK__ )(a ) ,(empty__QUESTION_MARK__ )(b ) ) ) ?
-(() => {return true;
-} )()
-:
-(() => {return (((not )((identical__QUESTION_MARK____BANG__ )((count )(a ) ,(count )(b ) ) ) ) ?
-(() => {return false;
-} )()
-:
-(() => {return (((array__QUESTION_MARK__ )(a ) ) ?
-(() => {return (and )((__EQUALS__ )((first )(a ) ,(first )(b ) ) ,(__EQUALS__ )((rest )(a ) ,(rest )(b ) ) );
-} )()
-:
-(() => {return (((map__QUESTION_MARK__ )(a ) ) ?
-(() => {return (every__QUESTION_MARK__ )(true__QUESTION_MARK__ ,(map )(((tuple ) => {return ((((key ) => {return (((value ) => {return (and )((contains__QUESTION_MARK__ )(b ,key ) ,(__EQUALS__ )((get )(b ,key ) ,value ) );
-} ) )((second )(tuple ) );
-} ) )((first )(tuple ) ) );
-} ) ,a ) );
-} )()
-:
-(() => {return true;
-} )());
-} )());
-} )());
-} )());
-} )()
-:
-(() => {return false;
-} )());
-} )()
-:
-(() => {return false;
-} )());
-} )());
-} ) ;
+let __EQUALS__  = _.isEqual ;
 let identical__QUESTION_MARK____BANG__  = ((a ,b ) => {return (a  === b );
 } ) ;
 let identity__BANG__  = ((a ) => {return a;
