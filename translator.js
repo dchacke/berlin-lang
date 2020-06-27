@@ -230,17 +230,20 @@ let translate = (ast, depth = 0, parentType = null, symbolWhitelist = new Set())
               trueBranch = wrapInBlock(trueBranch);
             }
 
+            let translatedCondition = translate([condition], depth + 1, null, symbolWhitelist);
+            translatedCondition = `((${translatedCondition}) !== false && (${translatedCondition}) !== null && (${translatedCondition}) !== undefined)`;
+
             if (falseBranch) {
               if (falseBranch[0] !== "block-declaration") {
                 falseBranch = wrapInBlock(falseBranch);
               }
 
-              result = `((${translate([condition], depth + 1, null, symbolWhitelist)}) ?
+              result = `(${translatedCondition} ?
 (() => ${translate([trueBranch], depth + 1, null, symbolWhitelist)})()
 :
 (() => ${translate([falseBranch], depth + 1, null, symbolWhitelist)})())`;
             } else {
-              result = `((${translate([condition], depth + 1, null, symbolWhitelist)}) ?
+              result = `(${translatedCondition} ?
   (() => ${translate([trueBranch], depth + 1, null, symbolWhitelist)})() : undefined)`;
             }
           // We are declaring variables in a let-block

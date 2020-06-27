@@ -1185,7 +1185,7 @@ return ...c;
         let result = translate(ast);
 
         it("translates the if special form", () => {
-          assert.equal(result, `((true ) ?
+          assert.equal(result, `(((true ) !== false && (true ) !== null && (true ) !== undefined) ?
 (() => {return 1;
 } )()
 :
@@ -1220,7 +1220,7 @@ return ...c;
         let result = translate(ast);
 
         it("translates the if special form", () => {
-          assert.equal(result, `((true ) ?
+          assert.equal(result, `(((true ) !== false && (true ) !== null && (true ) !== undefined) ?
   (() => {return 1;
 } )() : undefined);
 `);
@@ -1272,7 +1272,7 @@ return ...c;
         let result = translate(ast);
 
         it("wraps the second and third argument in blocks", () => {
-          assert.equal(result, `((true ) ?
+          assert.equal(result, `(((true ) !== false && (true ) !== null && (true ) !== undefined) ?
 (() => {return 1;
 } )()
 :
