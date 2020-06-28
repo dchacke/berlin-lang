@@ -285,13 +285,12 @@ def(map fn(f coll
       cons(f(el) map(f rest(coll)))))))
 
 def(filter fn(f coll
-  let([coll arr(coll)]
-    if(empty?(coll)
-      []
-      let([el first(coll)]
-        if(f(el)
-          cons(el filter(f rest(coll)))
-          filter(f rest(coll))))))))
+  if(empty?(coll)
+    []
+    let([el first(coll)]
+      if(f(el)
+        cons(el filter(f rest(coll)))
+        filter(f rest(coll)))))))
 
 def(remove fn(f coll
   filter(complement(f) coll)))

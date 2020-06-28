@@ -404,7 +404,7 @@ let map  = ((f ,coll ) => {return ((((empty__QUESTION_MARK__ )(coll ) ) !== fals
 } ) )((first )(coll ) ) );
 } )());
 } ) ;
-let filter  = ((f ,coll ) => {return ((((coll ) => {return ((((empty__QUESTION_MARK__ )(coll ) ) !== false && ((empty__QUESTION_MARK__ )(coll ) ) !== null && ((empty__QUESTION_MARK__ )(coll ) ) !== undefined) ?
+let filter  = ((f ,coll ) => {return ((((empty__QUESTION_MARK__ )(coll ) ) !== false && ((empty__QUESTION_MARK__ )(coll ) ) !== null && ((empty__QUESTION_MARK__ )(coll ) ) !== undefined) ?
 (() => {return [];
 } )()
 :
@@ -416,7 +416,6 @@ let filter  = ((f ,coll ) => {return ((((coll ) => {return ((((empty__QUESTION_M
 } )());
 } ) )((first )(coll ) ) );
 } )());
-} ) )((arr )(coll ) ) );
 } ) ;
 let remove  = ((f ,coll ) => {return (filter )((complement )(f ) ,coll );
 } ) ;
