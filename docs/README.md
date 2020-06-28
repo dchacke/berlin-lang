@@ -78,7 +78,7 @@ Anything
 
 ##### Examples
 
-```js
+```clojure
 if(true 1 2) ; => 1
 if(false 1 2) ; => 2
 if(false 1) ; => undefined
