@@ -79,10 +79,10 @@ Anything
 ##### Examples
 
 ```js
-if (true 1 2) ; => 1
-if (false 1 2) ; => 2
-if (false 1) ; => undefined
-if (true {
+if(true 1 2) ; => 1
+if(false 1 2) ; => 2
+if(false 1) ; => undefined
+if(true {
   log("computing...")
   1} {
   log("that didn't work.")
