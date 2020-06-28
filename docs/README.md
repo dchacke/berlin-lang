@@ -275,7 +275,7 @@ let([a []
   identical?!(s s)) ; => true
 ````
 
-#### identity
+#### identity!
 
 Returns the given argument.
 
@@ -290,8 +290,8 @@ Anything
 ##### Examples
 
 ```js
-identity(1) ; => 1
-identity([]) ; => []
+identity!(1) ; => 1
+identity!([]) ; => []
 ```
 
 #### coll?
