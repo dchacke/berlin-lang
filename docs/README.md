@@ -1,6 +1,6 @@
 # Berlin
 
-Poor man's Clojure.
+Poor man's Clojure—rich man's JavaScript.
 
 ## Description
 
